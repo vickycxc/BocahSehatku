@@ -4,14 +4,14 @@ import 'package:app/features/auth/view/widgets/auth_field.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                'Masuk ke Akun Anda',
+                'Mendaftar Akun Baru',
                 style: TextTheme.of(context).titleLarge,
               ),
               AuthField(
@@ -40,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 4),
               CustomButton(
                 onPressed: () {
-                  context.push('/otp', extra: 'login');
+                  context.push('/otp', extra: 'register');
                 },
                 text: 'Kirim Kode OTP',
               ),
@@ -50,15 +50,15 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Belum punya akun? ',
+                    'Sudah punya akun? ',
                     style: TextTheme.of(context).titleMedium,
                   ),
                   GestureDetector(
                     onTap: () {
-                      context.pushReplacement('/register');
+                      context.pushReplacement('/login');
                     },
                     child: Text(
-                      'Daftar',
+                      'Masuk',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -68,36 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Tidak Dapat Mengakses Akun',
-                    style: TextTheme.of(context).titleMedium,
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Anda? ', style: TextTheme.of(context).titleMedium),
-                      GestureDetector(
-                        onTap: () {
-                          context.push('/edit-phone');
-                        },
-                        child: Text(
-                          'Ganti No. HP',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              SizedBox(height: 48),
             ],
           ),
         ),

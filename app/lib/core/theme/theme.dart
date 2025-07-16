@@ -6,5 +6,9 @@ class AppTheme {
     fontFamily: 'Poppins',
     primaryColor: Pallete.accentColor,
     scaffoldBackgroundColor: Pallete.backgroundPrimaryColor,
+    textTheme: TextTheme(
+      titleLarge: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+      titleMedium: TextStyle(fontSize: 16),
+    ),
   );
 }

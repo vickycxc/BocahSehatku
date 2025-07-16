@@ -22,7 +22,7 @@ class _OnboardingMessagesState extends State<OnboardingMessages> {
         curve: Curves.easeInOut,
       );
       setState(() {
-        _currentPage = (_currentPage + 1 % Constants.splashMessages.length) - 1;
+        _currentPage = (_currentPage + 1 % splashMessages.length) - 1;
       });
       _startAutoSwipe();
     });
@@ -46,7 +46,7 @@ class _OnboardingMessagesState extends State<OnboardingMessages> {
             child: PageView.builder(
               onPageChanged: (index) {
                 setState(() {
-                  _currentPage = index % Constants.splashMessages.length;
+                  _currentPage = index % splashMessages.length;
                 });
               },
               controller: _pageController,
@@ -59,7 +59,7 @@ class _OnboardingMessagesState extends State<OnboardingMessages> {
                     spacing: 16,
                     children: [
                       Text(
-                        Constants.splashMessages[_currentPage]['title']!,
+                        splashMessages[_currentPage]['title']!,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -67,7 +67,7 @@ class _OnboardingMessagesState extends State<OnboardingMessages> {
                         ),
                       ),
                       Text(
-                        Constants.splashMessages[_currentPage]['subtitle']!,
+                        splashMessages[_currentPage]['subtitle']!,
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 14),
                       ),
@@ -79,7 +79,7 @@ class _OnboardingMessagesState extends State<OnboardingMessages> {
           ),
           SmoothPageIndicator(
             controller: _pageController,
-            count: Constants.splashMessages.length,
+            count: splashMessages.length,
             effect: WormEffect(
               dotHeight: 8,
               dotWidth: 8,

@@ -18,7 +18,7 @@ class OnboardingScreenPage extends StatelessWidget {
           const SizedBox(height: 32),
           CustomButton(
             onPressed: () {
-              context.go('/login');
+              context.push('/login-posyandu');
             },
             text: 'Masuk',
           ),
@@ -28,7 +28,9 @@ class OnboardingScreenPage extends StatelessWidget {
               fixedSize: const Size(320, 55),
               side: BorderSide(color: Pallete.accentColor, width: 2.0),
             ),
-            onPressed: () {},
+            onPressed: () {
+              context.push('/register');
+            },
             child: Text(
               'Daftar',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
