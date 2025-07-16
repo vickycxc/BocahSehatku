@@ -1,4 +1,4 @@
-import 'package:app/core/theme/app_pallete.dart';
+import 'package:app/core/theme/app_palette.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/view/widgets/auth_background.dart';
 import 'package:app/features/auth/view/widgets/onboarding_messages.dart';
@@ -18,7 +18,7 @@ class OnboardingScreenPage extends StatelessWidget {
           const SizedBox(height: 32),
           CustomButton(
             onPressed: () {
-              context.push('/login-posyandu');
+              context.push('/pick-role');
             },
             text: 'Masuk',
           ),
@@ -26,7 +26,7 @@ class OnboardingScreenPage extends StatelessWidget {
           OutlinedButton(
             style: OutlinedButton.styleFrom(
               fixedSize: const Size(320, 55),
-              side: BorderSide(color: Pallete.accentColor, width: 2.0),
+              side: BorderSide(color: Palette.accentColor, width: 2.0),
             ),
             onPressed: () {
               context.push('/register');

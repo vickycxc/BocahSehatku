@@ -1,4 +1,4 @@
-import 'package:app/core/theme/app_pallete.dart';
+import 'package:app/core/theme/app_palette.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/view/widgets/auth_background.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +13,6 @@ class OtpPage extends StatefulWidget {
 }
 
 class _OtpPageState extends State<OtpPage> {
-  OutlineInputBorder _border(Color color) => OutlineInputBorder(
-    borderRadius: BorderRadius.circular(12),
-    borderSide: BorderSide(color: color, width: 3),
-  );
   final TextEditingController _otpController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   @override
@@ -42,7 +38,7 @@ class _OtpPageState extends State<OtpPage> {
                   height: 56,
                   textStyle: TextTheme.of(context).titleLarge,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Pallete.accentColor, width: 3),
+                    border: Border.all(color: Palette.accentColor, width: 3),
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),

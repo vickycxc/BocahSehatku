@@ -1,6 +1,5 @@
 import 'package:app/core/size_config.dart';
 import 'package:app/core/theme/theme.dart';
-import 'package:app/features/auth/view/pages/onboarding_screen_page.dart';
 import 'package:app/core/routes.dart';
 import 'package:flutter/material.dart';
 

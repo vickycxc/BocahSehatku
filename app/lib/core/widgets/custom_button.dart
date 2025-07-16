@@ -1,4 +1,4 @@
-import 'package:app/core/theme/app_pallete.dart';
+import 'package:app/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
@@ -11,7 +11,7 @@ class CustomButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         fixedSize: Size(320, 55),
-        backgroundColor: Pallete.accentColor,
+        backgroundColor: Palette.accentColor,
       ),
       onPressed: onPressed,
       child: Text(
@@ -19,7 +19,7 @@ class CustomButton extends StatelessWidget {
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
-          color: Pallete.backgroundPrimaryColor,
+          color: Palette.backgroundPrimaryColor,
         ),
       ),
     );

@@ -2,7 +2,6 @@ import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/view/widgets/auth_background.dart';
 import 'package:app/features/auth/view/widgets/auth_field.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class PosyanduLoginPage extends StatefulWidget {
   const PosyanduLoginPage({super.key});

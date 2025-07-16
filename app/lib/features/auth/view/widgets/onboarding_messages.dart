@@ -1,5 +1,5 @@
 import 'package:app/core/constants.dart';
-import 'package:app/core/theme/app_pallete.dart';
+import 'package:app/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -83,7 +83,7 @@ class _OnboardingMessagesState extends State<OnboardingMessages> {
             effect: WormEffect(
               dotHeight: 8,
               dotWidth: 8,
-              activeDotColor: Pallete.accentColor,
+              activeDotColor: Palette.accentColor,
               dotColor: Colors.grey.shade300,
             ),
             onDotClicked: (index) {

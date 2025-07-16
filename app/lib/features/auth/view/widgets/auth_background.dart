@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:app/core/size_config.dart';
-import 'package:app/core/theme/app_pallete.dart';
+import 'package:app/core/theme/app_palette.dart';
 import 'package:app/core/widgets/custom_back_button.dart';
 import 'package:app/features/auth/view/widgets/bezier_curve_one.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class AuthBackground extends StatelessWidget {
             children: [
               ClipPath(
                 clipper: BezierCurveOne(),
-                child: Container(color: Pallete.primaryColor),
+                child: Container(color: Palette.primaryColor),
               ),
               Container(
                 padding: const EdgeInsets.only(top: 60),
