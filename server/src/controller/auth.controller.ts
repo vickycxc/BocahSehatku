@@ -2,8 +2,57 @@ import bcryptjs from "bcryptjs";
 import generateToken from "../lib/jwt.ts";
 import prisma from "../lib/prisma.ts";
 import { type Request, type Response } from "express";
+import axios from "axios";
 
-export const register = async (req: Request, res: Response) => {
+export const kirimOtp = async (req: Request, res: Response) => {
+  if (!req.body) {
+    return res.status(400).json({ error: "No. HP Harus Diisi!" });
+  }
+  const { noHp } = req.body;
+  try {
+    if (!noHp) {
+      return res.status(400).json({ error: "No. HP Harus Diisi!" });
+    }
+    const data = {
+      phone: noHp,
+      gateway_key: process.env.GATEWAY_KEY!,
+    };
+    const response = await axios.post(
+      "https://api.fazpass.com/v1/otp/generate",
+      data,
+      {
+        headers: {
+          Authorization: "Bearer " + process.env.MERCHANT_KEY!,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.data.status == true) {
+      const kodeOtp = response.data.data.otp;
+      return res.status(200).json({
+        message: "OTP berhasil dikirim!",
+        kodeOtp,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Gagal Mengirim OTP, Pastikan No. HP Valid!",
+      });
+    }
+  } catch (error) {
+    console.error("Gagal Mengirim OTP, Error di kirimOtp Controller", error);
+    return res.status(500).json({
+      message: "Gagal Mengirim OTP, Pastikan No. HP Valid!",
+    });
+  }
+};
+
+export const daftar = async (req: Request, res: Response) => {
+  if (!req.body) {
+    return res
+      .status(400)
+      .json({ error: "Gagal Membuat Akun, No. HP Harus Diisi!" });
+  }
   const { noHp } = req.body;
   try {
     if (!noHp) {
@@ -38,12 +87,17 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
-export const completeProfile = async (req: Request, res: Response) => {
+export const perbaruiProfil = async (req: Request, res: Response) => {
+  if (!req.body) {
+    return res.status(400).json({
+      message: "Gagal Memperbarui Profil, Semua Field Harus Diisi!",
+    });
+  }
   const { id, nama, nik, jenisKelamin, alamat, posyanduId } = req.body;
   try {
     if (!id || !nama || !nik || !jenisKelamin || !alamat || !posyanduId) {
       return res.status(400).json({
-        message: "Gagal Melengkapi Profil, Semua Field Harus Diisi!",
+        message: "Gagal Memperbarui Profil, Semua Field Harus Diisi!",
       });
     }
 
@@ -58,21 +112,66 @@ export const completeProfile = async (req: Request, res: Response) => {
       },
     });
     return res.status(200).json({
-      message: "Profil Berhasil Dilengkapi",
+      message: "Profil Berhasil Diperbarui",
       orangTua: orangTua,
     });
   } catch (error) {
     console.error(
-      "Gagal Melengkapi Profil, Error di completeProfile Controller",
+      "Gagal Memperbarui Profil, Error di lengkapiProfil Controller",
       error
     );
     return res.status(500).json({
-      message: "Gagal Melengkapi Profil, Terjadi Kesalahan Pada Server!",
+      message: "Gagal Memperbarui Profil, Terjadi Kesalahan Pada Server!",
     });
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const ubahNoHp = async (req: Request, res: Response) => {
+  if (!req.body) {
+    return res
+      .status(400)
+      .json({ error: "Gagal Mengubah No. HP, Id dan No. HP Harus Diisi!" });
+  }
+  const { id, noHpBaru } = req.body;
+  try {
+    if (!id || !noHpBaru) {
+      return res
+        .status(400)
+        .json({ error: "Gagal Mengubah No. HP Id dan No. HP Harus Diisi!" });
+    }
+
+    const existingUser = await prisma.orangTua.findUnique({
+      where: { noHp: noHpBaru },
+    });
+
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ message: "Gagal Mengubah No. HP, No. HP Sudah Terdaftar!" });
+    }
+
+    const orangTua = await prisma.orangTua.update({
+      where: { id },
+      data: {
+        noHp: noHpBaru,
+      },
+    });
+    return res.status(200).json({
+      message: "Profil Berhasil Diperbarui",
+      orangTua: orangTua,
+    });
+  } catch (error) {
+    console.error("Gagal Mengubah No. HP, Error di ubahNoHp Controller", error);
+    return res.status(500).json({
+      message: "Gagal Mengubah No. HP, Terjadi Kesalahan Pada Server!",
+    });
+  }
+};
+
+export const masuk = async (req: Request, res: Response) => {
+  if (!req.body) {
+    return res.status(400).json({ error: "No. HP Harus Diisi!" });
+  }
   const { noHp } = req.body;
   try {
     if (!noHp) {
@@ -94,14 +193,19 @@ export const login = async (req: Request, res: Response) => {
       token: token,
     });
   } catch (error) {
-    console.error("Error di login controller", error);
+    console.error("Error di masuk controller", error);
     return res.status(500).json({
       message: "Gagal Login, Terjadi Kesalahan Pada Server!",
     });
   }
 };
 
-export const loginPosyandu = async (req: Request, res: Response) => {
+export const masukPosyandu = async (req: Request, res: Response) => {
+  if (!req.body) {
+    return res.status(400).json({
+      message: "Kode Posyandu dan Password Harus Diisi!",
+    });
+  }
   const { kodePosyandu, password } = req.body;
   try {
     if (!kodePosyandu || !password) {
@@ -138,7 +242,7 @@ export const loginPosyandu = async (req: Request, res: Response) => {
       token: token,
     });
   } catch (error) {
-    console.error("Error di loginPosyandu controller", error);
+    console.error("Error di masukPosyandu controller", error);
     return res.status(500).json({
       message: "Gagal Login Posyandu, Terjadi Kesalahan Pada Server!",
     });
