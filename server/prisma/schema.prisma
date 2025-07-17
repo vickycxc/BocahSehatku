@@ -15,34 +15,34 @@ datasource db {
 }
 
 model OrangTua {
-  id           Int       @id @default(autoincrement())
-  noHp         String    @unique
+  id           Int           @id @default(autoincrement())
+  noHp         String        @unique
   nama         String?
-  nik          String?   @unique
-  jenisKelamin Gender?
+  nik          String?       @unique
+  jenisKelamin jenisKelamin?
   alamat       String?
-  posyandu     Posyandu? @relation(fields: [posyanduId], references: [id])
+  posyandu     Posyandu?     @relation(fields: [posyanduId], references: [id])
   posyanduId   Int?
   anak         Anak[]
 }
 
 model Posyandu {
-  id        Int        @id @default(autoincrement())
-  kode      String     @unique
-  password  String
-  nama      String
-  kecamatan String
-  puskesmas String
-  desa      String
-  alamat    String
-  orangTua  OrangTua[]
+  id            Int        @id @default(autoincrement())
+  kodePosyandu  String     @unique
+  password      String
+  namaPosyandu  String
+  kecamatan     String
+  puskesmas     String
+  desaKelurahan String
+  alamat        String
+  orangTua      OrangTua[]
 }
 
 model Anak {
   id           Int          @id @default(autoincrement())
   nama         String
   tanggalLahir DateTime
-  jenisKelamin Gender
+  jenisKelamin jenisKelamin
   nik          String?      @unique
   bbLahir      Float?
   tbLahir      Float?
@@ -68,9 +68,9 @@ model Pengukuran {
   kategoriIMTU      kategorIMTU
 }
 
-enum Gender {
-  MALE
-  FEMALE
+enum jenisKelamin {
+  LAKI_LAKI
+  PEREMPUAN
 }
 
 enum kategoriBBU {
