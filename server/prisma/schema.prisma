@@ -14,6 +14,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model VerifikasiOtp {
+  id           Int      @id @default(autoincrement())
+  noHp         String   @unique
+  kodeOtp      String
+  otpExpiresAt DateTime
+}
+
 model OrangTua {
   id           Int           @id @default(autoincrement())
   noHp         String        @unique
@@ -24,6 +31,8 @@ model OrangTua {
   posyandu     Posyandu?     @relation(fields: [posyanduId], references: [id])
   posyanduId   Int?
   anak         Anak[]
+  kodeOtp      String?
+  otpExpiresAt DateTime?
 }
 
 model Posyandu {
