@@ -9,12 +9,6 @@ async function main() {
   config();
   const app = express();
   const port = process.env.PORT;
-  const post = await prisma.post.update({
-    where: { id: 1 },
-    data: { published: true },
-  });
-  console.log(post);
-
   app.listen(port, () => {
     console.log(`Listening on port ${port}`);
   });
