@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model OrangTua {
+  id           Int       @id @default(autoincrement())
+  noHp         String    @unique
+  nama         String?
+  nik          String?   @unique
+  jenisKelamin Gender?
+  alamat       String?
+  posyandu     Posyandu? @relation(fields: [posyanduId], references: [id])
+  posyanduId   Int?
+  anak         Anak[]
+}
+
+model Posyandu {
+  id        Int        @id @default(autoincrement())
+  kode      String     @unique
+  password  String
+  nama      String
+  kecamatan String
+  puskesmas String
+  desa      String
+  alamat    String
+  orangTua  OrangTua[]
+}
+
+model Anak {
+  id           Int          @id @default(autoincrement())
+  nama         String
+  tanggalLahir DateTime
+  jenisKelamin Gender
+  nik          String?      @unique
+  bbLahir      Float?
+  tbLahir      Float?
+  mingguLahir  Int?
+  orangTua     OrangTua?    @relation(fields: [orangTuaId], references: [id])
+  orangTuaId   Int?
+  pengukuran   Pengukuran[]
+}
+
+model Pengukuran {
+  id                Int          @id @default(autoincrement())
+  tanggalPengukuran DateTime
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  beratBadan        Float
+  tinggiBadan       Float
+  anak              Anak         @relation(fields: [anakId], references: [id])
+  anakId            Int
+  imt               Float
+  kategoriBBU       kategoriBBU
+  kategoriTBU       kategoriTBU
+  kategoriBBTB      kategoriBBTB
+  kategoriIMTU      kategorIMTU
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum kategoriBBU {
+  SANGAT_KURANG
+  KURANG
+  NORMAL
+  LEBIH
+}
+
+enum kategoriTBU {
+  SANGAT_PENDEK
+  PENDEK
+  NORMAL
+  TINGGI
+}
+
+enum kategoriBBTB {
+  GIZI_BURUK
+  GIZI_KURANG
+  GIZI_BAIK
+  BERISIKO_GIZI_LEBIH
+  GIZI_LEBIH
+  OBESITAS
+}
+
+enum kategorIMTU {
+  GIZI_BURUK
+  GIZI_KURANG
+  GIZI_BAIK
+  BERISIKO_GIZI_LEBIH
+  GIZI_LEBIH
+  OBESITAS
+}
