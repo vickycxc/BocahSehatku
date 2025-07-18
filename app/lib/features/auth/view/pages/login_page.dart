@@ -40,7 +40,10 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 4),
               CustomButton(
                 onPressed: () {
-                  context.push('/otp', extra: 'login');
+                  context.push(
+                    '/otp',
+                    extra: {'tujuan': 'Masuk', 'noHp': _phoneController.text},
+                  );
                 },
                 text: 'Kirim Kode OTP',
               ),

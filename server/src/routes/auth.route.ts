@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.post("/kirim-otp", kirimOtp);
 router.post("/daftar", daftar);
-router.post("/lengkapi-profil", perbaruiProfil);
+router.put("/lengkapi-profil", perbaruiProfil);
 router.post("/ubah-no-hp", ubahNoHp);
 router.post("/masuk", masuk);
 router.post("/masuk-posyandu", masukPosyandu);

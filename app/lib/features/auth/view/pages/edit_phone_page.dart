@@ -12,8 +12,8 @@ class EditPhonePage extends StatefulWidget {
 }
 
 class _EditPhonePageState extends State<EditPhonePage> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nikController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -37,19 +37,24 @@ class _EditPhonePageState extends State<EditPhonePage> {
                 label: 'NIK',
                 hintText: 'Masukkan NIK Anda',
                 keyboardType: TextInputType.number,
-                controller: _usernameController,
+                controller: _nikController,
               ),
               AuthField(
                 label: 'No. HP Baru',
                 hintText: 'Masukkan No. HP Baru Anda',
-                keyboardType: TextInputType.visiblePassword,
-                controller: _usernameController,
-                isObscure: true,
+                keyboardType: TextInputType.phone,
+                controller: _phoneNumberController,
               ),
               SizedBox(height: 4),
               CustomButton(
                 onPressed: () {
-                  context.push('/otp', extra: 'edit phone');
+                  context.push(
+                    '/otp',
+                    extra: {
+                      'tujuan': 'Ubah No. HP',
+                      'noHp': _phoneNumberController.text,
+                    },
+                  );
                 },
                 text: 'Kirim Kode OTP',
               ),
@@ -68,8 +73,8 @@ class _EditPhonePageState extends State<EditPhonePage> {
 
   @override
   void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
+    _nikController.dispose();
+    _phoneNumberController.dispose();
     super.dispose();
   }
 }

@@ -33,6 +33,7 @@ class AuthField extends StatelessWidget {
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         TextFormField(
+          controller: controller,
           keyboardType: keyboardType,
           obscureText: isObscure,
           validator: (val) {

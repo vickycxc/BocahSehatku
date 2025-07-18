@@ -40,7 +40,15 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(height: 4),
               CustomButton(
                 onPressed: () {
-                  context.push('/otp', extra: 'register');
+                  if (_formKey.currentState!.validate()) {
+                    context.push(
+                      '/otp',
+                      extra: {
+                        'tujuan': 'Daftar',
+                        'noHp': _phoneController.text,
+                      },
+                    );
+                  }
                 },
                 text: 'Kirim Kode OTP',
               ),

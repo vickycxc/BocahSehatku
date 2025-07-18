@@ -1,7 +1,9 @@
 import 'package:app/core/theme/app_palette.dart';
 import 'package:app/core/widgets/custom_button.dart';
+import 'package:app/features/auth/repositories/auth_remote_repository.dart';
 import 'package:app/features/auth/view/widgets/auth_background.dart';
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 
@@ -17,7 +19,40 @@ class _OtpPageState extends State<OtpPage> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    final String origin = GoRouterState.of(context).extra! as String;
+    final Map<String, String> extra =
+        GoRouterState.of(context).extra! as Map<String, String>;
+    void onSubmitted({String? kodeOtp}) async {
+      switch (extra['tujuan']) {
+        case 'Masuk':
+          final res = await AuthRemoteRepository().masuk(
+            noHp: extra['noHp']!,
+            kodeOtp: _otpController.text,
+          );
+          final val = switch (res) {
+            Left(value: final l) => l,
+            Right(value: final r) => r.toString(),
+          };
+          print(val);
+        case 'Daftar':
+          final res = await AuthRemoteRepository().daftar(
+            noHp: extra['noHp']!,
+            kodeOtp: kodeOtp ?? _otpController.text,
+          );
+          final val = switch (res) {
+            Left(value: final l) => l,
+            Right(value: final r) => r.toString(),
+          };
+          print(val);
+        case 'Ubah No. HP':
+          await AuthRemoteRepository().ubahNoHp(
+            // noHp: extra['noHp']!,
+            // kodeOtp: _otpController.text,
+          );
+        default:
+          throw Exception('Origin tidak diketahui!: ${extra['tujuan']}');
+      }
+    }
+
     return AuthBackground(
       withBack: true,
       child: Padding(
@@ -33,6 +68,17 @@ class _OtpPageState extends State<OtpPage> {
                 style: TextTheme.of(context).titleLarge,
               ),
               Pinput(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Kode OTP tidak boleh kosong';
+                  }
+                  if (value.length != 4) {
+                    return 'Kode OTP harus 4 digit';
+                  }
+                  return null;
+                },
+                // onSubmitted: (kodeOtp) async => onSubmitted(kodeOtp: kodeOtp),
+                controller: _otpController,
                 defaultPinTheme: PinTheme(
                   width: 56,
                   height: 56,
@@ -42,23 +88,27 @@ class _OtpPageState extends State<OtpPage> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                validator: (s) {
-                  return s == '2222' ? null : 'Kode OTP Salah!';
-                },
                 pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                 showCursor: true,
                 onCompleted: (pin) => {
-                  if (_formKey.currentState!.validate()) context.pop(),
+                  if (_formKey.currentState!.validate())
+                    {onSubmitted(kodeOtp: pin)},
                 },
               ),
               SizedBox(height: 4),
               CustomButton(
-                onPressed: () {},
-                text: switch (origin) {
-                  'login' => 'Masuk',
-                  'register' => 'Daftar',
-                  'edit phone' => 'Konfirmasi',
-                  _ => throw Exception('Origin tidak diketahui!: $origin'),
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    onSubmitted();
+                  }
+                },
+                text: switch (extra['tujuan']) {
+                  'Masuk' => 'Masuk',
+                  'Daftar' => 'Daftar',
+                  'Ubah No. HP' => 'Konfirmasi',
+                  _ => throw Exception(
+                    'Origin tidak diketahui!: ${extra['tujuan']}',
+                  ),
                 },
               ),
               SizedBox(height: 4),

@@ -15,10 +15,10 @@ export const kirimOtp = async (req: Request, res: Response) => {
     }
 
     if (tujuan === "Daftar" || tujuan === "Ubah No. HP") {
-      const orangTua = await prisma.orangTua.findUnique({
+      const userOrangTua = await prisma.orangTua.findUnique({
         where: { noHp },
       });
-      if (orangTua) {
+      if (userOrangTua) {
         return res.status(400).json({
           message: "Gagal Mengirim OTP, No. HP Sudah Terdaftar!",
         });
@@ -32,19 +32,21 @@ export const kirimOtp = async (req: Request, res: Response) => {
       phone: noHp,
       gateway_key: process.env.GATEWAY_KEY!,
     };
-    const response = await axios.post(
-      "https://api.fazpass.com/v1/otp/generate",
-      data,
-      {
-        headers: {
-          Authorization: "Bearer " + process.env.MERCHANT_KEY!,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    // const response = await axios.post(
+    //   "https://api.fazpass.com/v1/otp/generate",
+    //   data,
+    //   {
+    //     headers: {
+    //       Authorization: "Bearer " + process.env.MERCHANT_KEY!,
+    //       "Content-Type": "application/json",
+    //     },
+    //   }
+    // );
 
-    if (response.data.status === true) {
-      const kodeOtp = response.data.data.otp;
+    // if (response.data.status === true) {
+    if (true) {
+      const kodeOtp = "9817";
+      // const kodeOtp = response.data.data.otp;
       const otpExpiresAt = new Date(Date.now() + 5 * 60 * 1000);
 
       if (tujuan === "Masuk" || tujuan === "Ubah No. HP") {
@@ -86,15 +88,16 @@ export const kirimOtp = async (req: Request, res: Response) => {
 
 export const daftar = async (req: Request, res: Response) => {
   if (!req.body) {
-    return res
-      .status(400)
-      .json({ error: "Gagal Membuat Akun, No. HP dan Kode OTP Harus Diisi!" });
+    return res.status(400).json({
+      error: "Gagal Membuat Akun, No. HP dan Kode OTP Harus Diisi! 1",
+    });
   }
   const { noHp, kodeOtp } = req.body;
   try {
     if (!noHp || !kodeOtp) {
+      console.log(req.body);
       return res.status(400).json({
-        error: "Gagal Membuat Akun, No. HP dan Kode OTP Harus Diisi!",
+        error: "Gagal Membuat Akun, No. HP dan Kode OTP Harus Diisi! 2",
       });
     }
     const existingUser = await prisma.orangTua.findUnique({
@@ -111,23 +114,28 @@ export const daftar = async (req: Request, res: Response) => {
       where: { noHp },
     });
 
-    if (kodeOtp !== verifikasiOtp?.kodeOtp) {
+    if (!verifikasiOtp || kodeOtp !== verifikasiOtp?.kodeOtp) {
       return res.status(400).json({
         message: "Gagal Membuat Akun, Kode OTP Tidak Valid!",
       });
     }
+    if (verifikasiOtp.otpExpiresAt < new Date()) {
+      return res.status(400).json({
+        message: "Gagal Membuat Akun, Kode OTP Sudah Kadaluarsa!",
+      });
+    }
 
-    const orangTua = await prisma.orangTua.create({
+    const userOrangTua = await prisma.orangTua.create({
       data: { noHp },
     });
-    const token = generateToken({ userId: orangTua.id, role: "ORANG_TUA" });
+    const token = generateToken({ userId: userOrangTua.id, role: "ORANG_TUA" });
 
     await prisma.verifikasiOtp.delete({
       where: { noHp },
     });
     return res.status(201).json({
       message: "Registrasi Berhasil, Silakan Melengkapi Profil Anda",
-      orangTua: orangTua,
+      userOrangTua: userOrangTua,
       token: token,
     });
   } catch (error) {
@@ -152,7 +160,7 @@ export const perbaruiProfil = async (req: Request, res: Response) => {
       });
     }
 
-    const orangTua = await prisma.orangTua.update({
+    const userOrangTua = await prisma.orangTua.update({
       where: { id },
       data: {
         nama,
@@ -161,10 +169,14 @@ export const perbaruiProfil = async (req: Request, res: Response) => {
         alamat,
         posyandu: { connect: { id: posyanduId } },
       },
+      omit: {
+        kodeOtp: true,
+        otpExpiresAt: true,
+      },
     });
     return res.status(200).json({
       message: "Profil Berhasil Diperbarui",
-      orangTua: orangTua,
+      userOrangTua: userOrangTua,
     });
   } catch (error) {
     console.error(
@@ -201,13 +213,23 @@ export const ubahNoHp = async (req: Request, res: Response) => {
         .json({ message: "Gagal Mengubah No. HP, No. HP Sudah Terdaftar!" });
     }
 
-    const orangTua = await prisma.orangTua.findUnique({
+    const userOrangTua = await prisma.orangTua.findUnique({
       where: { id },
     });
 
-    if (kodeOtp !== orangTua?.kodeOtp) {
+    if (
+      !userOrangTua ||
+      kodeOtp !== userOrangTua?.kodeOtp ||
+      !userOrangTua.otpExpiresAt
+    ) {
       return res.status(400).json({
         message: "Gagal Mengubah No. HP, Kode OTP Tidak Valid!",
+      });
+    }
+
+    if (userOrangTua.otpExpiresAt < new Date()) {
+      return res.status(400).json({
+        message: "Gagal Mengubah No. HP, Kode OTP Sudah Kadaluarsa!",
       });
     }
     const orangTuaNew = await prisma.orangTua.update({
@@ -215,10 +237,14 @@ export const ubahNoHp = async (req: Request, res: Response) => {
       data: {
         noHp: noHpBaru,
       },
+      omit: {
+        kodeOtp: true,
+        otpExpiresAt: true,
+      },
     });
     return res.status(200).json({
       message: "Profil Berhasil Diperbarui",
-      orangTua: orangTuaNew,
+      userOrangTua: orangTuaNew,
     });
   } catch (error) {
     console.error("Gagal Mengubah No. HP, Error di ubahNoHp Controller", error);
@@ -240,24 +266,37 @@ export const masuk = async (req: Request, res: Response) => {
         .json({ error: "No. HP dan Kode OTP Harus Diisi!" });
     }
 
-    const orangTua = await prisma.orangTua.findUnique({
+    const userOrangTua = await prisma.orangTua.findUnique({
       where: { noHp },
     });
 
-    if (!orangTua) {
+    if (!userOrangTua) {
       return res.status(404).json({ message: "Akun Tidak Ditemukan!" });
     }
 
-    if (kodeOtp !== orangTua.kodeOtp) {
+    if (
+      !userOrangTua ||
+      kodeOtp !== userOrangTua.kodeOtp ||
+      !userOrangTua.otpExpiresAt
+    ) {
       return res.status(400).json({
         message: "Gagal Masuk, Kode OTP Tidak Valid!",
       });
     }
 
-    const token = generateToken({ userId: orangTua.id, role: "ORANG_TUA" });
+    if (userOrangTua.otpExpiresAt < new Date()) {
+      return res.status(400).json({
+        message: "Gagal Mengubah No. HP, Kode OTP Sudah Kadaluarsa!",
+      });
+    }
+
+    userOrangTua.kodeOtp = null; // Clear OTP after successful login
+    userOrangTua.otpExpiresAt = null; // Clear OTP expiration after successful
+
+    const token = generateToken({ userId: userOrangTua.id, role: "ORANG_TUA" });
     return res.status(200).json({
       message: "Berhasil Masuk, Selamat Datang!",
-      orangTua: orangTua,
+      userOrangTua: userOrangTua,
       token: token,
     });
   } catch (error) {

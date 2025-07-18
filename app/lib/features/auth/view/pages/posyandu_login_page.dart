@@ -41,7 +41,7 @@ class _PosyanduLoginPageState extends State<PosyanduLoginPage> {
                 label: 'Password',
                 hintText: 'Password',
                 keyboardType: TextInputType.visiblePassword,
-                controller: _usernameController,
+                controller: _passwordController,
                 isObscure: true,
               ),
               SizedBox(height: 4),
