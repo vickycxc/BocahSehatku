@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/core/constants.dart';
 import 'package:app/core/falure/app_failure.dart';
 import 'package:app/features/auth/model/user_orang_tua_model.dart';
 import 'package:fpdart/fpdart.dart';
@@ -13,7 +14,7 @@ class AuthRemoteRepository {
   }) async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.88.19:3000/api/auth/daftar'),
+        Uri.parse('${Constants.serverUrl}/auth/daftar'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'noHp': noHp, 'kodeOtp': kodeOtp}),
       );
@@ -35,7 +36,7 @@ class AuthRemoteRepository {
   }) async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.88.19:3000/api/auth/masuk'),
+        Uri.parse('${Constants.serverUrl}/auth/masuk'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'noHp': noHp, 'kodeOtp': kodeOtp}),
       );
