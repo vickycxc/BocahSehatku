@@ -1,7 +1,7 @@
 import bcryptjs from "bcryptjs";
 import generateToken from "../lib/jwt.ts";
 import prisma from "../lib/prisma.ts";
-import { type Request, type Response } from "express";
+import type { Request, Response } from "express";
 import axios from "axios";
 
 export const kirimOtp = async (req: Request, res: Response) => {
@@ -345,7 +345,7 @@ export const masukPosyandu = async (req: Request, res: Response) => {
     });
     return res.status(200).json({
       message: "Berhasil Masuk Ke Akun Posyandu, Selamat Datang!",
-      posyandu: posyanduTanpaPassword,
+      userPosyandu: posyanduTanpaPassword,
       token: token,
     });
   } catch (error) {
@@ -353,5 +353,30 @@ export const masukPosyandu = async (req: Request, res: Response) => {
     return res.status(500).json({
       message: "Gagal Login Posyandu, Terjadi Kesalahan Pada Server!",
     });
+  }
+};
+
+export const checkAuth = (req: Request, res: Response) => {
+  try {
+    if (req.orangTua) {
+      return res.status(200).json({
+        message: "Token Valid.",
+        userOrangTua: req.orangTua,
+      });
+    }
+    if (req.posyandu) {
+      return res.status(200).json({
+        message: "Token Valid.",
+        userPosyandu: req.posyandu,
+      });
+    }
+    return res.status(401).json({ message: "Gagal Mengecek Otorisasi!" });
+  } catch (error) {
+    console.error("Error in checkAuth controller", error);
+    res
+      .status(500)
+      .json({
+        message: "Gagal Mengecek Otorisasi, Terjadi Kesalahan Pada Server!",
+      });
   }
 };

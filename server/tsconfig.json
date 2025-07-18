@@ -30,6 +30,9 @@
     "declarationMap": true,
 
     /* If your code doesn't run in the DOM: */
-    "lib": ["es2022"]
+    "lib": ["es2022"],
+
+    /* Include Req Types */
+    "typeRoots": ["./types"]
   }
 }

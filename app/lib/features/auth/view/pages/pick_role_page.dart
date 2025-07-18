@@ -3,6 +3,7 @@ import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/view/widgets/auth_background.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:app/core/utils.dart';
 
 class PickRolePage extends StatelessWidget {
   const PickRolePage({super.key});
@@ -61,11 +62,7 @@ class PickRolePage extends StatelessWidget {
                     context.push('/login-posyandu');
                   }
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Silakan pilih peran terlebih dahulu'),
-                    ),
-                  );
+                  showSnackBar(context, 'Silakan Pilih Peran Terlebih Dahulu!');
                 }
               },
               text: 'Masuk',

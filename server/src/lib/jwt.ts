@@ -6,7 +6,7 @@ interface TokenPayload {
 }
 
 const generateToken = ({ userId, role }: TokenPayload) => {
-  return jwt.sign({ userId, role }, process.env.JWT_SECRET || "my_jwt_secret", {
+  return jwt.sign({ userId, role }, process.env.JWT_SECRET!, {
     expiresIn: "7d",
   });
 };

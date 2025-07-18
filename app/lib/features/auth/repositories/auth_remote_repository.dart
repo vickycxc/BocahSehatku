@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:app/core/constants.dart';
 import 'package:app/core/failure/app_failure.dart';
 import 'package:app/features/auth/model/user_orang_tua_model.dart';
+import 'package:app/features/auth/model/user_posyandu_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
@@ -35,7 +36,9 @@ class AuthRemoteRepository {
       }
       return Right((
         resBodyMap['message'],
-        UserOrangTuaModel.fromMap(resBodyMap['userOrangTua']),
+        UserOrangTuaModel.fromMap(
+          resBodyMap['userOrangTua'],
+        ).copyWith(token: resBodyMap['token']),
       ));
     } catch (error) {
       return Left(AppFailure(error.toString()));
@@ -69,4 +72,42 @@ class AuthRemoteRepository {
 
   Future<void> masukPosyandu() async {}
   Future<void> ubahNoHp() async {}
+  Future<
+    Either<AppFailure, (String, Either<UserOrangTuaModel, UserPosyanduModel>)>
+  >
+  ambilDataPenggunaSaatIni(String token) async {
+    try {
+      final response = await http.get(
+        Uri.parse('${Constants.serverUrl}/auth/masuk'),
+        headers: {'Content-Type': 'application/json', 'x-auth-token': token},
+      );
+
+      final resBodyMap = jsonDecode(response.body) as Map<String, dynamic>;
+
+      if (response.statusCode != 200) {
+        return Left(AppFailure(resBodyMap['message']));
+      }
+
+      if (resBodyMap['userOrangTua'] != null) {
+        return Right((
+          resBodyMap['message'],
+          Left(
+            UserOrangTuaModel.fromMap(
+              resBodyMap['userOrangTua'],
+            ).copyWith(token: token),
+          ),
+        ));
+      }
+
+      if (resBodyMap['userPosyandu'] != null) {
+        return Right((
+          resBodyMap['message'],
+          Right(resBodyMap['userPosyandu']),
+        ));
+      }
+      throw Exception('Format tidak sesuai');
+    } catch (error) {
+      return Left(AppFailure(error.toString()));
+    }
+  }
 }

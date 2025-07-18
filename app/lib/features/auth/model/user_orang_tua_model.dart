@@ -8,8 +8,9 @@ class UserOrangTuaModel {
   final String? jenisKelamin;
   final String? alamat;
   final String? posyanduId;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String? token;
   UserOrangTuaModel({
     required this.id,
     required this.noHp,
@@ -18,8 +19,9 @@ class UserOrangTuaModel {
     this.jenisKelamin,
     this.alamat,
     this.posyanduId,
-    this.createdAt,
-    this.updatedAt,
+    required this.createdAt,
+    required this.updatedAt,
+    this.token,
   });
 
   UserOrangTuaModel copyWith({
@@ -32,6 +34,7 @@ class UserOrangTuaModel {
     String? posyanduId,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? token,
   }) {
     return UserOrangTuaModel(
       id: id ?? this.id,
@@ -43,6 +46,7 @@ class UserOrangTuaModel {
       posyanduId: posyanduId ?? this.posyanduId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      token: token ?? this.token,
     );
   }
 
@@ -55,8 +59,9 @@ class UserOrangTuaModel {
       'jenisKelamin': jenisKelamin,
       'alamat': alamat,
       'posyanduId': posyanduId,
-      'createdAt': createdAt?.millisecondsSinceEpoch,
-      'updatedAt': updatedAt?.millisecondsSinceEpoch,
+      'createdAt': createdAt.millisecondsSinceEpoch,
+      'updatedAt': updatedAt.millisecondsSinceEpoch,
+      'token': token,
     };
   }
 
@@ -73,12 +78,9 @@ class UserOrangTuaModel {
       posyanduId: map['posyanduId'] != null
           ? map['posyanduId'] as String
           : null,
-      createdAt: map['createdAt'] != null
-          ? DateTime.tryParse(map['createdAt'] as String)
-          : null,
-      updatedAt: map['updatedAt'] != null
-          ? DateTime.tryParse(map['updatedAt'] as String)
-          : null,
+      createdAt: DateTime.tryParse(map['createdAt'] as String)!,
+      updatedAt: DateTime.tryParse(map['updatedAt'] as String)!,
+      token: map['token'] != null ? map['token'] as String : null,
     );
   }
 
@@ -89,7 +91,7 @@ class UserOrangTuaModel {
 
   @override
   String toString() {
-    return 'UserOrangTuaModel(id: $id, noHp: $noHp, nama: $nama, nik: $nik, jenisKelamin: $jenisKelamin, alamat: $alamat, posyanduId: $posyanduId, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'UserOrangTuaModel(id: $id, noHp: $noHp, nama: $nama, nik: $nik, jenisKelamin: $jenisKelamin, alamat: $alamat, posyanduId: $posyanduId, createdAt: $createdAt, updatedAt: $updatedAt, token: $token)';
   }
 
   @override
@@ -104,7 +106,8 @@ class UserOrangTuaModel {
         other.alamat == alamat &&
         other.posyanduId == posyanduId &&
         other.createdAt == createdAt &&
-        other.updatedAt == updatedAt;
+        other.updatedAt == updatedAt &&
+        other.token == token;
   }
 
   @override
@@ -117,6 +120,7 @@ class UserOrangTuaModel {
         alamat.hashCode ^
         posyanduId.hashCode ^
         createdAt.hashCode ^
-        updatedAt.hashCode;
+        updatedAt.hashCode ^
+        token.hashCode;
   }
 }
