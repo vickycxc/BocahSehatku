@@ -1,48 +1,58 @@
 import 'package:app/core/theme/app_palette.dart';
+import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/repositories/auth_remote_repository.dart';
 import 'package:app/features/auth/view/widgets/auth_background.dart';
+import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
-import 'package:fpdart/fpdart.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 
-class OtpPage extends StatefulWidget {
+class OtpPage extends ConsumerStatefulWidget {
   const OtpPage({super.key});
 
   @override
-  State<OtpPage> createState() => _OtpPageState();
+  ConsumerState<OtpPage> createState() => _OtpPageState();
 }
 
-class _OtpPageState extends State<OtpPage> {
+class _OtpPageState extends ConsumerState<OtpPage> {
   final TextEditingController _otpController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(authViewModelProvider)?.isLoading == true;
+
+    ref.listen(authViewModelProvider, (_, next) {
+      next?.when(
+        data: (data) {
+          showSnackBar(context, data.$1);
+        },
+        error: (error, stackTrace) {
+          showSnackBar(context, error.toString());
+        },
+        loading: () {},
+      );
+    });
+
     final Map<String, String> extra =
         GoRouterState.of(context).extra! as Map<String, String>;
     void onSubmitted({String? kodeOtp}) async {
       switch (extra['tujuan']) {
         case 'Masuk':
-          final res = await AuthRemoteRepository().masuk(
-            noHp: extra['noHp']!,
-            kodeOtp: _otpController.text,
-          );
-          final val = switch (res) {
-            Left(value: final l) => l,
-            Right(value: final r) => r.toString(),
-          };
-          print(val);
+          await ref
+              .read(authViewModelProvider.notifier)
+              .masuk(
+                noHp: extra['noHp']!,
+                kodeOtp: kodeOtp ?? _otpController.text,
+              );
         case 'Daftar':
-          final res = await AuthRemoteRepository().daftar(
-            noHp: extra['noHp']!,
-            kodeOtp: kodeOtp ?? _otpController.text,
-          );
-          final val = switch (res) {
-            Left(value: final l) => l,
-            Right(value: final r) => r.toString(),
-          };
-          print(val);
+          await ref
+              .read(authViewModelProvider.notifier)
+              .daftar(
+                noHp: extra['noHp']!,
+                kodeOtp: kodeOtp ?? _otpController.text,
+              );
         case 'Ubah No. HP':
           await AuthRemoteRepository().ubahNoHp(
             // noHp: extra['noHp']!,
@@ -97,6 +107,7 @@ class _OtpPageState extends State<OtpPage> {
               ),
               SizedBox(height: 4),
               CustomButton(
+                isLoading: isLoading,
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     onSubmitted();

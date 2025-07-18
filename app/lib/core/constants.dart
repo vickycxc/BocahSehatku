@@ -17,5 +17,5 @@ class Constants {
     },
   ];
 
-  static const String serverUrl = 'http://192.168.88.19:3000/api';
+  static const String serverUrl = 'http://192.168.155.36:3000/api';
 }
