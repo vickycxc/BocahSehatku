@@ -1,6 +1,7 @@
 import 'package:app/core/providers/current_user_notifier.dart';
 import 'package:app/core/model/user_orang_tua_model.dart';
 import 'package:app/core/model/user_posyandu_model.dart';
+import 'package:app/features/auth/model/auth_response.dart';
 import 'package:app/features/auth/repositories/auth_local_repository.dart';
 import 'package:app/features/auth/repositories/auth_remote_repository.dart';
 import 'package:fpdart/fpdart.dart';
@@ -15,7 +16,7 @@ class AuthViewModel extends _$AuthViewModel {
   late CurrentUserNotifier _currentUserNotifier;
 
   @override
-  AsyncValue<Either<UserOrangTuaModel, UserPosyanduModel>>? build() {
+  AsyncValue<String>? build() {
     _authRemoteRepository = ref.watch(authRemoteRepositoryProvider);
     _authLocalRepository = ref.watch(authLocalRepositoryProvider);
     _currentUserNotifier = ref.watch(currentUserNotifierProvider.notifier);
@@ -33,59 +34,49 @@ class AuthViewModel extends _$AuthViewModel {
       noHp: noHp,
       kodeOtp: kodeOtp,
     );
-    final val = switch (res) {
-      Left(value: final l) => state = AsyncError(l.message, StackTrace.current),
-      Right(value: final r) => state = AsyncData(r),
-    };
-    print(val);
+    if (res.token != null) {
+      state = AsyncData(res.message);
+    } else {
+      state = AsyncError(res.message, StackTrace.current);
+    }
   }
 
   Future<void> masuk({required String noHp, required String kodeOtp}) async {
     state = const AsyncLoading();
     final res = await _authRemoteRepository.masuk(noHp: noHp, kodeOtp: kodeOtp);
-    final val = switch (res) {
-      Left(value: final l) => state = AsyncError(l.message, StackTrace.current),
-      Right(value: final r) => _berhasilMasuk(r),
-    };
-    print(val);
+    if (res.token != null) {
+      _berhasilMasuk(res);
+    } else {
+      state = AsyncError(res.message, StackTrace.current);
+    }
   }
 
-  AsyncValue<Either<UserOrangTuaModel, UserPosyanduModel>>? _berhasilMasuk(
-    Either<UserOrangTuaModel, UserPosyanduModel> r1,
-  ) {
-    final token = switch (r1) {
-      Left(value: final l2) => l2.token,
-      Right(value: final r2) => r2.token,
-    };
+  void _berhasilMasuk(AuthResponse res) {
+    final token = res.token;
     _authLocalRepository.setToken(token);
-    _currentUserNotifier.addUser(r1);
-    state = AsyncData(r1);
-    return null;
+    final Either<UserOrangTuaModel, UserPosyanduModel> user =
+        res.userOrangTua != null
+        ? Left(res.userOrangTua!)
+        : Right(res.userPosyandu!);
+    _currentUserNotifier.addUser(user);
+    state = AsyncData(res.message);
   }
 
-  Future<Either<UserOrangTuaModel, UserPosyanduModel>?>
-  ambilDataPengguna() async {
-    state = const AsyncLoading();
+  Future<void> ambilDataPengguna() async {
     final token = _authLocalRepository.getToken();
     if (token != null) {
       final res = await _authRemoteRepository.ambilDataPenggunaSaatIni(token);
-      final val = switch (res) {
-        Left(value: final l) => state = AsyncError(
-          l.message,
-          StackTrace.current,
-        ),
-        Right(value: final r) => _berhasilAmbilDataPengguna(r),
-      };
-      return val.value;
+      if (res.userOrangTua != null || res.userPosyandu != null) {
+        _berhasilAmbilDataPengguna(res);
+      }
     }
-    return null;
   }
 
-  AsyncValue<Either<UserOrangTuaModel, UserPosyanduModel>>
-  _berhasilAmbilDataPengguna(
-    Either<UserOrangTuaModel, UserPosyanduModel> user,
-  ) {
+  void _berhasilAmbilDataPengguna(AuthResponse res) {
+    final Either<UserOrangTuaModel, UserPosyanduModel> user =
+        res.userOrangTua != null
+        ? Left(res.userOrangTua!)
+        : Right(res.userPosyandu!);
     _currentUserNotifier.addUser(user);
-    return state = AsyncData((user));
   }
 }

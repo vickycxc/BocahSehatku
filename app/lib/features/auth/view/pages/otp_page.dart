@@ -27,12 +27,8 @@ class _OtpPageState extends ConsumerState<OtpPage> {
     );
     ref.listen(authViewModelProvider, (_, next) {
       next?.when(
-        data: (data) {
-          final message = switch (data) {
-            Left(value: final l) => l.message,
-            Right(value: final r) => r.message,
-          };
-          if (message != null && message.isNotEmpty) {
+        data: (message) {
+          if (message.isNotEmpty) {
             showSnackBar(context, message);
           }
           context.go('/');

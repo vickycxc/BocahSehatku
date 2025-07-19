@@ -11,8 +11,6 @@ class UserOrangTuaModel {
   final String? posyanduId;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final String? token;
-  final String? message;
   UserOrangTuaModel({
     required this.id,
     required this.noHp,
@@ -23,8 +21,6 @@ class UserOrangTuaModel {
     this.posyanduId,
     required this.createdAt,
     required this.updatedAt,
-    this.token,
-    this.message,
   });
 
   UserOrangTuaModel copyWith({
@@ -50,8 +46,6 @@ class UserOrangTuaModel {
       posyanduId: posyanduId ?? this.posyanduId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      token: token ?? this.token,
-      message: message ?? this.message,
     );
   }
 
@@ -64,10 +58,8 @@ class UserOrangTuaModel {
       'jenisKelamin': jenisKelamin,
       'alamat': alamat,
       'posyanduId': posyanduId,
-      'createdAt': createdAt.millisecondsSinceEpoch,
-      'updatedAt': updatedAt.millisecondsSinceEpoch,
-      'token': token,
-      'message': message,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
     };
   }
 
@@ -86,8 +78,6 @@ class UserOrangTuaModel {
           : null,
       createdAt: DateTime.tryParse(map['createdAt'] as String)!,
       updatedAt: DateTime.tryParse(map['updatedAt'] as String)!,
-      token: map['token'] != null ? map['token'] as String : null,
-      message: map['message'] != null ? map['message'] as String : null,
     );
   }
 
@@ -98,7 +88,7 @@ class UserOrangTuaModel {
 
   @override
   String toString() {
-    return 'UserOrangTuaModel(id: $id, noHp: $noHp, nama: $nama, nik: $nik, jenisKelamin: $jenisKelamin, alamat: $alamat, posyanduId: $posyanduId, createdAt: $createdAt, updatedAt: $updatedAt, token: $token, message: $message)';
+    return 'UserOrangTuaModel(id: $id, noHp: $noHp, nama: $nama, nik: $nik, jenisKelamin: $jenisKelamin, alamat: $alamat, posyanduId: $posyanduId, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -113,9 +103,7 @@ class UserOrangTuaModel {
         other.alamat == alamat &&
         other.posyanduId == posyanduId &&
         other.createdAt == createdAt &&
-        other.updatedAt == updatedAt &&
-        other.token == token &&
-        other.message == message;
+        other.updatedAt == updatedAt;
   }
 
   @override
@@ -128,8 +116,6 @@ class UserOrangTuaModel {
         alamat.hashCode ^
         posyanduId.hashCode ^
         createdAt.hashCode ^
-        updatedAt.hashCode ^
-        token.hashCode ^
-        message.hashCode;
+        updatedAt.hashCode;
   }
 }
