@@ -1,8 +1,9 @@
 import 'package:app/core/theme/app_palette.dart';
 import 'package:app/core/widgets/custom_button.dart';
+import 'package:app/features/auth/view/pages/login_page.dart';
+import 'package:app/features/auth/view/pages/posyandu_login_page.dart';
 import 'package:app/features/auth/view/widgets/auth_background.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:app/core/utils.dart';
 
 class PickRolePage extends StatelessWidget {
@@ -57,9 +58,17 @@ class PickRolePage extends StatelessWidget {
               onPressed: () {
                 if (selectedRole != null) {
                   if (selectedRole == 'ortu') {
-                    context.push('/login');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
                   } else if (selectedRole == 'posyandu') {
-                    context.push('/login-posyandu');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PosyanduLoginPage(),
+                      ),
+                    );
                   }
                 } else {
                   showSnackBar(context, 'Silakan Pilih Peran Terlebih Dahulu!');

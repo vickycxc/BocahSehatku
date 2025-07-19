@@ -1,11 +1,13 @@
 import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
+import 'package:app/features/auth/view/pages/edit_phone_page.dart';
+import 'package:app/features/auth/view/pages/otp_page.dart';
+import 'package:app/features/auth/view/pages/register_page.dart';
 import 'package:app/features/auth/view/widgets/auth_background.dart';
 import 'package:app/features/auth/view/widgets/auth_field.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -30,9 +32,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           if (message.isNotEmpty) {
             showSnackBar(context, message);
           }
-          context.push(
-            '/otp',
-            extra: {'tujuan': tujuan, 'noHp': _phoneController.text},
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  OtpPage(noHp: _phoneController.text, tujuan: tujuan),
+            ),
           );
         },
         error: (error, stackTrace) {
@@ -66,9 +71,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               CustomButton(
                 isLoading: isLoading,
                 onPressed: () async {
-                  await ref
-                      .read(authViewModelProvider.notifier)
-                      .kirimOtp(noHp: _phoneController.text, tujuan: tujuan);
+                  if (_formKey.currentState!.validate()) {
+                    await ref
+                        .read(authViewModelProvider.notifier)
+                        .kirimOtp(noHp: _phoneController.text, tujuan: tujuan);
+                  }
                 },
                 text: 'Kirim Kode OTP',
               ),
@@ -83,7 +90,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      context.pushReplacement('/register');
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RegisterPage()),
+                      );
                     },
                     child: Text(
                       'Daftar',
@@ -111,7 +122,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       Text('Anda? ', style: TextTheme.of(context).titleMedium),
                       GestureDetector(
                         onTap: () {
-                          context.push('/edit-phone');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditPhonePage(),
+                            ),
+                          );
                         },
                         child: Text(
                           'Ganti No. HP',

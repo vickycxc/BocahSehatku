@@ -1,11 +1,12 @@
 import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
+import 'package:app/features/auth/view/pages/login_page.dart';
+import 'package:app/features/auth/view/pages/otp_page.dart';
 import 'package:app/features/auth/view/widgets/auth_background.dart';
 import 'package:app/features/auth/view/widgets/auth_field.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
@@ -30,9 +31,10 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
           if (message.isNotEmpty) {
             showSnackBar(context, message);
           }
-          context.push(
-            '/otp',
-            extra: {'tujuan': tujuan, 'noHp': _phoneController.text},
+
+          MaterialPageRoute(
+            builder: (context) =>
+                OtpPage(noHp: _phoneController.text, tujuan: tujuan),
           );
         },
         error: (error, stackTrace) {
@@ -63,6 +65,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               ),
               SizedBox(height: 4),
               CustomButton(
+                isLoading: isLoading,
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     await ref
@@ -83,7 +86,11 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      context.pushReplacement('/login');
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                      );
                     },
                     child: Text(
                       'Masuk',

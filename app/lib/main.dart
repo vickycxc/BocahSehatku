@@ -2,11 +2,12 @@ import 'package:app/core/providers/current_user_notifier.dart';
 import 'package:app/core/size_config.dart';
 import 'package:app/core/theme/theme.dart';
 import 'package:app/core/routes.dart';
+import 'package:app/features/auth/view/pages/onboarding_screen_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:app/features/user_orang_tua/view/pages/ortu_dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:go_router/go_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,15 +24,20 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     SizeConfig().init(context);
     final currentUser = ref.watch(currentUserNotifierProvider);
-    return MaterialApp.router(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Bocah Sehatku',
       theme: AppTheme.theme,
-      routerConfig: switch (currentUser) {
-        Left() => userOrangTuaRouter,
-        Right() => userOrangTuaRouter,
-        null => authRouter,
+      home: switch (currentUser) {
+        Left() => OrtuDashboardPage(),
+        Right() => OrtuDashboardPage(),
+        null => OnboardingScreenPage(),
       },
+      // routerConfig: switch (currentUser) {
+      //   Left() => userOrangTuaRouter,
+      //   Right() => userOrangTuaRouter,
+      //   null => authRouter,
+      // },
     );
   }
 }

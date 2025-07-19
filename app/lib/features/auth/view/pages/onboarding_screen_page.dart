@@ -1,9 +1,10 @@
 import 'package:app/core/theme/app_palette.dart';
 import 'package:app/core/widgets/custom_button.dart';
+import 'package:app/features/auth/view/pages/pick_role_page.dart';
+import 'package:app/features/auth/view/pages/register_page.dart';
 import 'package:app/features/auth/view/widgets/auth_background.dart';
 import 'package:app/features/auth/view/widgets/onboarding_messages.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class OnboardingScreenPage extends StatelessWidget {
   const OnboardingScreenPage({super.key});
@@ -18,7 +19,10 @@ class OnboardingScreenPage extends StatelessWidget {
           const SizedBox(height: 32),
           CustomButton(
             onPressed: () {
-              context.push('/pick-role');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PickRolePage()),
+              );
             },
             text: 'Masuk',
           ),
@@ -29,7 +33,10 @@ class OnboardingScreenPage extends StatelessWidget {
               side: BorderSide(color: Palette.accentColor, width: 2.0),
             ),
             onPressed: () {
-              context.push('/register');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RegisterPage()),
+              );
             },
             child: Text(
               'Daftar',

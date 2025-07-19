@@ -1,23 +1,50 @@
+import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
+import 'package:app/features/auth/view/pages/otp_page.dart';
 import 'package:app/features/auth/view/widgets/auth_background.dart';
 import 'package:app/features/auth/view/widgets/auth_field.dart';
+import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class EditPhonePage extends StatefulWidget {
+class EditPhonePage extends ConsumerStatefulWidget {
   const EditPhonePage({super.key});
 
   @override
-  State<EditPhonePage> createState() => _EditPhonePageState();
+  ConsumerState<EditPhonePage> createState() => _EditPhonePageState();
 }
 
-class _EditPhonePageState extends State<EditPhonePage> {
+class _EditPhonePageState extends ConsumerState<EditPhonePage> {
+  final String tujuan = "UBAH_NO_HP";
   final TextEditingController _nikController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(
+      authViewModelProvider.select((val) => val?.isLoading == true),
+    );
+    ref.listen(authViewModelProvider, (_, next) {
+      next?.when(
+        data: (message) {
+          if (message.isNotEmpty) {
+            showSnackBar(context, message);
+          }
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  OtpPage(noHp: _phoneNumberController.text, tujuan: tujuan),
+            ),
+          );
+        },
+        error: (error, stackTrace) {
+          showSnackBar(context, error.toString());
+        },
+        loading: () {},
+      );
+    });
     return AuthBackground(
       withBack: true,
       child: Padding(
@@ -47,14 +74,16 @@ class _EditPhonePageState extends State<EditPhonePage> {
               ),
               SizedBox(height: 4),
               CustomButton(
-                onPressed: () {
-                  context.push(
-                    '/otp',
-                    extra: {
-                      'tujuan': 'Ubah No. HP',
-                      'noHp': _phoneNumberController.text,
-                    },
-                  );
+                isLoading: isLoading,
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    await ref
+                        .read(authViewModelProvider.notifier)
+                        .kirimOtp(
+                          noHp: _phoneNumberController.text,
+                          tujuan: tujuan,
+                        );
+                  }
                 },
                 text: 'Kirim Kode OTP',
               ),

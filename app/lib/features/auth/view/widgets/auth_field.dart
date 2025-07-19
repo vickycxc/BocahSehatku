@@ -38,7 +38,7 @@ class AuthField extends StatelessWidget {
           obscureText: isObscure,
           validator: (val) {
             if (val!.trim().isEmpty) {
-              return '$label harus diisi!';
+              return '$label Harus Diisi!';
             }
             return null;
           },
@@ -51,6 +51,9 @@ class AuthField extends StatelessWidget {
             hintText: hintText,
             enabledBorder: border(Palette.accentColor),
             focusedBorder: border(Palette.accentColor),
+            errorBorder: border(Palette.accentColor),
+            focusedErrorBorder: border(Palette.accentColor),
+            border: border(Palette.accentColor),
           ),
         ),
       ],

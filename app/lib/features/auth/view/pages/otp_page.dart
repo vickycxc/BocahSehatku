@@ -4,13 +4,15 @@ import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/repositories/auth_remote_repository.dart';
 import 'package:app/features/auth/view/widgets/auth_background.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:app/features/user_orang_tua/view/pages/ortu_dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpPage extends ConsumerStatefulWidget {
-  const OtpPage({super.key});
+  final String noHp;
+  final String tujuan;
+  const OtpPage({super.key, required this.noHp, required this.tujuan});
 
   @override
   ConsumerState<OtpPage> createState() => _OtpPageState();
@@ -27,9 +29,12 @@ class _OtpPageState extends ConsumerState<OtpPage> {
     ref.listen(authViewModelProvider, (_, next) {
       next?.when(
         data: (message) {
-          if (message.isNotEmpty) {
-            showSnackBar(context, message);
-          }
+          showSnackBar(context, message);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const OrtuDashboardPage()),
+            (_) => false,
+          );
         },
         error: (error, stackTrace) {
           showSnackBar(context, error.toString());
@@ -37,23 +42,20 @@ class _OtpPageState extends ConsumerState<OtpPage> {
         loading: () {},
       );
     });
-
-    final Map<String, String> extra =
-        GoRouterState.of(context).extra! as Map<String, String>;
     void onSubmitted({String? kodeOtp}) async {
-      switch (extra['tujuan']) {
+      switch (widget.tujuan) {
         case 'MASUK':
           await ref
               .read(authViewModelProvider.notifier)
               .masuk(
-                noHp: extra['noHp']!,
+                noHp: widget.noHp,
                 kodeOtp: kodeOtp ?? _otpController.text,
               );
         case 'DAFTAR':
           await ref
               .read(authViewModelProvider.notifier)
               .daftar(
-                noHp: extra['noHp']!,
+                noHp: widget.noHp,
                 kodeOtp: kodeOtp ?? _otpController.text,
               );
         case 'UBAH_NO_HP':
@@ -62,7 +64,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
             // kodeOtp: _otpController.text,
           );
         default:
-          throw Exception('Origin tidak diketahui!: ${extra['tujuan']}');
+          throw Exception('Origin tidak diketahui!: ${widget.tujuan}');
       }
     }
 
@@ -118,12 +120,12 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                     showSnackBar(context, 'Kode OTP Tidak Valid!');
                   }
                 },
-                text: switch (extra['tujuan']) {
+                text: switch (widget.tujuan) {
                   'MASUK' => 'Masuk',
                   'DAFTAR' => 'Daftar',
                   'UBAH_NO_HP' => 'Konfirmasi',
                   _ => throw Exception(
-                    'Origin tidak diketahui!: ${extra['tujuan']}',
+                    'Origin tidak diketahui!: ${widget.tujuan}',
                   ),
                 },
               ),

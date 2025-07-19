@@ -45,7 +45,15 @@ class _PosyanduLoginPageState extends State<PosyanduLoginPage> {
                 isObscure: true,
               ),
               SizedBox(height: 4),
-              CustomButton(onPressed: () {}, text: 'Masuk'),
+              CustomButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    // Handle login logic here
+                    // For example, call a login function with the username and password
+                  }
+                },
+                text: 'Masuk',
+              ),
               SizedBox(height: 2),
             ],
           ),
