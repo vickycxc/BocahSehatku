@@ -17,14 +17,17 @@ class _OnboardingMessagesState extends State<OnboardingMessages> {
 
   void _startAutoSwipe() {
     Future.delayed(Duration(seconds: 5), () {
-      _pageController.nextPage(
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-      setState(() {
-        _currentPage = (_currentPage + 1 % Constants.splashMessages.length) - 1;
-      });
-      _startAutoSwipe();
+      // Periksa apakah PageController sudah ter-attach dan widget masih mounted
+      if (_pageController.hasClients && mounted) {
+        _pageController.nextPage(
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+        setState(() {
+          _currentPage = (_currentPage + 1) % Constants.splashMessages.length;
+        });
+        _startAutoSwipe();
+      }
     });
   }
 

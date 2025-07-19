@@ -1,5 +1,6 @@
-import 'package:app/features/auth/model/user_orang_tua_model.dart';
-import 'package:app/features/auth/model/user_posyandu_model.dart';
+import 'package:app/core/providers/current_user_notifier.dart';
+import 'package:app/core/model/user_orang_tua_model.dart';
+import 'package:app/core/model/user_posyandu_model.dart';
 import 'package:app/features/auth/repositories/auth_local_repository.dart';
 import 'package:app/features/auth/repositories/auth_remote_repository.dart';
 import 'package:fpdart/fpdart.dart';
@@ -11,11 +12,13 @@ part 'auth_viewmodel.g.dart';
 class AuthViewModel extends _$AuthViewModel {
   late AuthRemoteRepository _authRemoteRepository;
   late AuthLocalRepository _authLocalRepository;
+  late CurrentUserNotifier _currentUserNotifier;
 
   @override
-  AsyncValue<(String, Either<UserOrangTuaModel, UserPosyanduModel>)>? build() {
+  AsyncValue<Either<UserOrangTuaModel, UserPosyanduModel>>? build() {
     _authRemoteRepository = ref.watch(authRemoteRepositoryProvider);
     _authLocalRepository = ref.watch(authLocalRepositoryProvider);
+    _currentUserNotifier = ref.watch(currentUserNotifierProvider.notifier);
 
     return null;
   }
@@ -32,7 +35,7 @@ class AuthViewModel extends _$AuthViewModel {
     );
     final val = switch (res) {
       Left(value: final l) => state = AsyncError(l.message, StackTrace.current),
-      Right(value: final r) => state = AsyncData((r.$1, Left(r.$2))),
+      Right(value: final r) => state = AsyncData(r),
     };
     print(val);
   }
@@ -42,16 +45,21 @@ class AuthViewModel extends _$AuthViewModel {
     final res = await _authRemoteRepository.masuk(noHp: noHp, kodeOtp: kodeOtp);
     final val = switch (res) {
       Left(value: final l) => state = AsyncError(l.message, StackTrace.current),
-      Right(value: final r) => _suksesMasuk(r),
+      Right(value: final r) => _berhasilMasuk(r),
     };
     print(val);
   }
 
-  AsyncValue<(String, UserOrangTuaModel)>? _suksesMasuk(
-    (String, UserOrangTuaModel) r,
+  AsyncValue<Either<UserOrangTuaModel, UserPosyanduModel>>? _berhasilMasuk(
+    Either<UserOrangTuaModel, UserPosyanduModel> r1,
   ) {
-    _authLocalRepository.setToken(r.$2.token);
-    state = AsyncData((r.$1, Left(r.$2)));
+    final token = switch (r1) {
+      Left(value: final l2) => l2.token,
+      Right(value: final r2) => r2.token,
+    };
+    _authLocalRepository.setToken(token);
+    _currentUserNotifier.addUser(r1);
+    state = AsyncData(r1);
     return null;
   }
 
@@ -66,10 +74,18 @@ class AuthViewModel extends _$AuthViewModel {
           l.message,
           StackTrace.current,
         ),
-        Right(value: final r) => state = (AsyncData(r)),
+        Right(value: final r) => _berhasilAmbilDataPengguna(r),
       };
-      return val.value?.$2;
+      return val.value;
     }
     return null;
+  }
+
+  AsyncValue<Either<UserOrangTuaModel, UserPosyanduModel>>
+  _berhasilAmbilDataPengguna(
+    Either<UserOrangTuaModel, UserPosyanduModel> user,
+  ) {
+    _currentUserNotifier.addUser(user);
+    return state = AsyncData((user));
   }
 }

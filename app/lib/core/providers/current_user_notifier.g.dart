@@ -1,32 +1,31 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_viewmodel.dart';
+part of 'current_user_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authViewModelHash() => r'f65f59f36a095e455650341c6733c049a01323a5';
+String _$currentUserNotifierHash() =>
+    r'c0f1a0dcd1668d78d406d6c21451f6660c29173e';
 
-/// See also [AuthViewModel].
-@ProviderFor(AuthViewModel)
-final authViewModelProvider =
-    AutoDisposeNotifierProvider<
-      AuthViewModel,
-      AsyncValue<Either<UserOrangTuaModel, UserPosyanduModel>>?
+/// See also [CurrentUserNotifier].
+@ProviderFor(CurrentUserNotifier)
+final currentUserNotifierProvider =
+    NotifierProvider<
+      CurrentUserNotifier,
+      Either<UserOrangTuaModel, UserPosyanduModel>?
     >.internal(
-      AuthViewModel.new,
-      name: r'authViewModelProvider',
+      CurrentUserNotifier.new,
+      name: r'currentUserNotifierProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
           ? null
-          : _$authViewModelHash,
+          : _$currentUserNotifierHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );
 
-typedef _$AuthViewModel =
-    AutoDisposeNotifier<
-      AsyncValue<Either<UserOrangTuaModel, UserPosyanduModel>>?
-    >;
+typedef _$CurrentUserNotifier =
+    Notifier<Either<UserOrangTuaModel, UserPosyanduModel>?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

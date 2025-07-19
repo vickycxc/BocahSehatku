@@ -1,0 +1,24 @@
+import 'package:app/core/providers/current_user_notifier.dart';
+import 'package:app/core/widgets/custom_button.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class OrtuDashboardPage extends ConsumerWidget {
+  const OrtuDashboardPage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(currentUserNotifierProvider);
+    print(user);
+    return Scaffold(
+      body: Center(
+        child: Column(
+          children: [
+            Text('Halo nona nona'),
+            CustomButton(onPressed: () => {}, text: 'Keluar'),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -6,6 +6,7 @@ import 'package:app/features/auth/view/widgets/auth_background.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 
@@ -21,12 +22,20 @@ class _OtpPageState extends ConsumerState<OtpPage> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(authViewModelProvider)?.isLoading == true;
-
+    final isLoading = ref.watch(
+      authViewModelProvider.select((val) => val?.isLoading == true),
+    );
     ref.listen(authViewModelProvider, (_, next) {
       next?.when(
         data: (data) {
-          showSnackBar(context, data.$1);
+          final message = switch (data) {
+            Left(value: final l) => l.message,
+            Right(value: final r) => r.message,
+          };
+          if (message != null && message.isNotEmpty) {
+            showSnackBar(context, message);
+          }
+          context.go('/');
         },
         error: (error, stackTrace) {
           showSnackBar(context, error.toString());
@@ -111,6 +120,8 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     onSubmitted();
+                  } else {
+                    showSnackBar(context, 'Kode OTP Tidak Valid!');
                   }
                 },
                 text: switch (extra['tujuan']) {

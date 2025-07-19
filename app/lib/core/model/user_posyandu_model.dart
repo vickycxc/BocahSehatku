@@ -12,6 +12,7 @@ class UserPosyanduModel {
   final DateTime createdAt;
   final DateTime updatedAt;
   final String? token;
+  final String? message;
 
   UserPosyanduModel({
     required this.id,
@@ -24,6 +25,7 @@ class UserPosyanduModel {
     required this.createdAt,
     required this.updatedAt,
     this.token,
+    this.message,
   });
 
   UserPosyanduModel copyWith({
@@ -37,6 +39,7 @@ class UserPosyanduModel {
     DateTime? createdAt,
     DateTime? updatedAt,
     String? token,
+    String? message,
   }) {
     return UserPosyanduModel(
       id: id ?? this.id,
@@ -49,6 +52,7 @@ class UserPosyanduModel {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       token: token ?? this.token,
+      message: message ?? this.message,
     );
   }
 
@@ -64,6 +68,7 @@ class UserPosyanduModel {
       'createdAt': createdAt.millisecondsSinceEpoch,
       'updatedAt': updatedAt.millisecondsSinceEpoch,
       'token': token,
+      'message': message,
     };
   }
 
@@ -79,6 +84,7 @@ class UserPosyanduModel {
       createdAt: DateTime.tryParse(map['createdAt'] as String)!,
       updatedAt: DateTime.tryParse(map['updatedAt'] as String)!,
       token: map['token'] != null ? map['token'] as String : null,
+      message: map['message'] != null ? map['message'] as String : null,
     );
   }
 
@@ -89,7 +95,7 @@ class UserPosyanduModel {
 
   @override
   String toString() {
-    return 'UserPosyanduModel(id: $id, kodePosyandu: $kodePosyandu, namaPosyandu: $namaPosyandu, kecamatan: $kecamatan, puskesmas: $puskesmas, desaKelurahan: $desaKelurahan, alamat: $alamat, createdAt: $createdAt, updatedAt: $updatedAt, token: $token)';
+    return 'UserPosyanduModel(id: $id, kodePosyandu: $kodePosyandu, namaPosyandu: $namaPosyandu, kecamatan: $kecamatan, puskesmas: $puskesmas, desaKelurahan: $desaKelurahan, alamat: $alamat, createdAt: $createdAt, updatedAt: $updatedAt, token: $token, message: $message)';
   }
 
   @override
@@ -105,7 +111,8 @@ class UserPosyanduModel {
         other.alamat == alamat &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt &&
-        other.token == token;
+        other.token == token &&
+        other.message == message;
   }
 
   @override
@@ -119,6 +126,7 @@ class UserPosyanduModel {
         alamat.hashCode ^
         createdAt.hashCode ^
         updatedAt.hashCode ^
-        token.hashCode;
+        token.hashCode ^
+        message.hashCode;
   }
 }

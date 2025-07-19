@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class UserOrangTuaModel {
@@ -11,6 +12,7 @@ class UserOrangTuaModel {
   final DateTime createdAt;
   final DateTime updatedAt;
   final String? token;
+  final String? message;
   UserOrangTuaModel({
     required this.id,
     required this.noHp,
@@ -22,6 +24,7 @@ class UserOrangTuaModel {
     required this.createdAt,
     required this.updatedAt,
     this.token,
+    this.message,
   });
 
   UserOrangTuaModel copyWith({
@@ -35,6 +38,7 @@ class UserOrangTuaModel {
     DateTime? createdAt,
     DateTime? updatedAt,
     String? token,
+    String? message,
   }) {
     return UserOrangTuaModel(
       id: id ?? this.id,
@@ -47,6 +51,7 @@ class UserOrangTuaModel {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       token: token ?? this.token,
+      message: message ?? this.message,
     );
   }
 
@@ -62,6 +67,7 @@ class UserOrangTuaModel {
       'createdAt': createdAt.millisecondsSinceEpoch,
       'updatedAt': updatedAt.millisecondsSinceEpoch,
       'token': token,
+      'message': message,
     };
   }
 
@@ -81,6 +87,7 @@ class UserOrangTuaModel {
       createdAt: DateTime.tryParse(map['createdAt'] as String)!,
       updatedAt: DateTime.tryParse(map['updatedAt'] as String)!,
       token: map['token'] != null ? map['token'] as String : null,
+      message: map['message'] != null ? map['message'] as String : null,
     );
   }
 
@@ -91,7 +98,7 @@ class UserOrangTuaModel {
 
   @override
   String toString() {
-    return 'UserOrangTuaModel(id: $id, noHp: $noHp, nama: $nama, nik: $nik, jenisKelamin: $jenisKelamin, alamat: $alamat, posyanduId: $posyanduId, createdAt: $createdAt, updatedAt: $updatedAt, token: $token)';
+    return 'UserOrangTuaModel(id: $id, noHp: $noHp, nama: $nama, nik: $nik, jenisKelamin: $jenisKelamin, alamat: $alamat, posyanduId: $posyanduId, createdAt: $createdAt, updatedAt: $updatedAt, token: $token, message: $message)';
   }
 
   @override
@@ -107,7 +114,8 @@ class UserOrangTuaModel {
         other.posyanduId == posyanduId &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt &&
-        other.token == token;
+        other.token == token &&
+        other.message == message;
   }
 
   @override
@@ -121,6 +129,7 @@ class UserOrangTuaModel {
         posyanduId.hashCode ^
         createdAt.hashCode ^
         updatedAt.hashCode ^
-        token.hashCode;
+        token.hashCode ^
+        message.hashCode;
   }
 }

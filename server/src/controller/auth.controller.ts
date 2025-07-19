@@ -373,10 +373,8 @@ export const checkAuth = (req: Request, res: Response) => {
     return res.status(401).json({ message: "Gagal Mengecek Otorisasi!" });
   } catch (error) {
     console.error("Error in checkAuth controller", error);
-    res
-      .status(500)
-      .json({
-        message: "Gagal Mengecek Otorisasi, Terjadi Kesalahan Pada Server!",
-      });
+    res.status(500).json({
+      message: "Gagal Mengecek Otorisasi, Terjadi Kesalahan Pada Server!",
+    });
   }
 };
