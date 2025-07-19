@@ -14,9 +14,14 @@ class AuthBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 0,
+        backgroundColor: Palette.primaryColor,
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         child: SizedBox(
-          height: SizeConfig.screenHeight,
+          height: SizeConfig.safeScreenHeight,
           child: Stack(
             children: [
               ClipPath(
@@ -24,7 +29,7 @@ class AuthBackground extends StatelessWidget {
                 child: Container(color: Palette.primaryColor),
               ),
               Container(
-                padding: const EdgeInsets.only(top: 60),
+                padding: const EdgeInsets.only(top: 30),
                 alignment: Alignment.topCenter,
                 child: SvgPicture.asset(
                   'assets/logo.svg',

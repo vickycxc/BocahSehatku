@@ -5,7 +5,7 @@ class BezierCurveOne extends CustomClipper<Path> {
   Path getClip(Size size) {
     Path path = Path();
     final double xScaling = size.width / 400;
-    final double yScaling = 0.8;
+    final double yScaling = 0.7;
     path.lineTo(412 * xScaling, 377.135 * yScaling);
     path.cubicTo(
       365.333 * xScaling,

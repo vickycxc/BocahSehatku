@@ -6,7 +6,6 @@ import 'package:app/features/auth/view/widgets/auth_background.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 
@@ -31,7 +30,6 @@ class _OtpPageState extends ConsumerState<OtpPage> {
           if (message.isNotEmpty) {
             showSnackBar(context, message);
           }
-          context.go('/');
         },
         error: (error, stackTrace) {
           showSnackBar(context, error.toString());
@@ -44,21 +42,21 @@ class _OtpPageState extends ConsumerState<OtpPage> {
         GoRouterState.of(context).extra! as Map<String, String>;
     void onSubmitted({String? kodeOtp}) async {
       switch (extra['tujuan']) {
-        case 'Masuk':
+        case 'MASUK':
           await ref
               .read(authViewModelProvider.notifier)
               .masuk(
                 noHp: extra['noHp']!,
                 kodeOtp: kodeOtp ?? _otpController.text,
               );
-        case 'Daftar':
+        case 'DAFTAR':
           await ref
               .read(authViewModelProvider.notifier)
               .daftar(
                 noHp: extra['noHp']!,
                 kodeOtp: kodeOtp ?? _otpController.text,
               );
-        case 'Ubah No. HP':
+        case 'UBAH_NO_HP':
           await AuthRemoteRepository().ubahNoHp(
             // noHp: extra['noHp']!,
             // kodeOtp: _otpController.text,
@@ -121,9 +119,9 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                   }
                 },
                 text: switch (extra['tujuan']) {
-                  'Masuk' => 'Masuk',
-                  'Daftar' => 'Daftar',
-                  'Ubah No. HP' => 'Konfirmasi',
+                  'MASUK' => 'Masuk',
+                  'DAFTAR' => 'Daftar',
+                  'UBAH_NO_HP' => 'Konfirmasi',
                   _ => throw Exception(
                     'Origin tidak diketahui!: ${extra['tujuan']}',
                   ),

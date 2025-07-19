@@ -14,7 +14,7 @@ export const kirimOtp = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "No. HP dan Tujuan Harus Diisi!" });
     }
 
-    if (tujuan === "Daftar" || tujuan === "Ubah No. HP") {
+    if (tujuan === "DAFTAR" || tujuan === "UBAH_NO_HP") {
       const userOrangTua = await prisma.orangTua.findUnique({
         where: { noHp },
       });
@@ -23,7 +23,7 @@ export const kirimOtp = async (req: Request, res: Response) => {
           message: "Gagal Mengirim OTP, No. HP Sudah Terdaftar!",
         });
       }
-    } else if (tujuan != "Masuk") {
+    } else if (tujuan != "MASUK") {
       return res.status(400).json({
         message: "Gagal Mengirim OTP, Tujuan Tidak Valid!",
       });
@@ -49,7 +49,7 @@ export const kirimOtp = async (req: Request, res: Response) => {
       // const kodeOtp = response.data.data.otp;
       const otpExpiresAt = new Date(Date.now() + 5 * 60 * 1000);
 
-      if (tujuan === "Masuk" || tujuan === "Ubah No. HP") {
+      if (tujuan === "MASUK" || tujuan === "UBAH_NO_HP") {
         await prisma.orangTua.update({
           where: {
             noHp,
@@ -61,7 +61,7 @@ export const kirimOtp = async (req: Request, res: Response) => {
         });
       }
 
-      if (tujuan === "Daftar") {
+      if (tujuan === "DAFTAR") {
         await prisma.verifikasiOtp.create({
           data: {
             noHp,
@@ -71,7 +71,7 @@ export const kirimOtp = async (req: Request, res: Response) => {
         });
       }
       return res.status(200).json({
-        message: "OTP berhasil dikirim!",
+        message: "OTP berhasil Dikirim!",
       });
     } else {
       return res.status(400).json({
@@ -286,7 +286,7 @@ export const masuk = async (req: Request, res: Response) => {
 
     if (userOrangTua.otpExpiresAt < new Date()) {
       return res.status(400).json({
-        message: "Gagal Mengubah No. HP, Kode OTP Sudah Kadaluarsa!",
+        message: "Gagal Masuk, Kode OTP Sudah Kadaluarsa!",
       });
     }
 

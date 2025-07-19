@@ -6,6 +6,7 @@ import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:go_router/go_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +29,8 @@ class MyApp extends ConsumerWidget {
       theme: AppTheme.theme,
       routerConfig: switch (currentUser) {
         Left() => userOrangTuaRouter,
-        _ => authRouter,
+        Right() => userOrangTuaRouter,
+        null => authRouter,
       },
     );
   }

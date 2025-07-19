@@ -1,12 +1,8 @@
 import 'dart:convert';
 
 import 'package:app/core/constants.dart';
-import 'package:app/core/failure/app_failure.dart';
-import 'package:app/core/model/user_orang_tua_model.dart';
-import 'package:app/core/model/user_posyandu_model.dart';
 import 'package:app/features/auth/model/auth_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -19,6 +15,32 @@ AuthRemoteRepository authRemoteRepository(Ref ref) {
 
 class AuthRemoteRepository {
   // TODO add connection timeout
+
+  Future<AuthResponse> kirimOtp({
+    required String noHp,
+    required String tujuan,
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse('${Constants.serverUrl}/auth/kirim-otp'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'noHp': noHp, 'tujuan': tujuan}),
+      );
+
+      if (response.statusCode == 200) {
+        return AuthResponse.fromJson(
+          response.body,
+        ).copyWith(suksesMengirimOtp: true);
+      } else {
+        return AuthResponse.fromJson(
+          response.body,
+        ).copyWith(suksesMengirimOtp: false);
+      }
+    } catch (error) {
+      return AuthResponse(message: error.toString(), suksesMengirimOtp: false);
+    }
+  }
+
   Future<AuthResponse> daftar({
     required String noHp,
     required String kodeOtp,

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/core/constants.dart';
 import 'package:app/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
@@ -12,31 +14,41 @@ class OnboardingMessages extends StatefulWidget {
 
 class _OnboardingMessagesState extends State<OnboardingMessages> {
   final _pageController = PageController();
-
+  Timer? _timer;
   int _currentPage = 0;
 
   void _startAutoSwipe() {
-    Future.delayed(Duration(seconds: 5), () {
-      // Periksa apakah PageController sudah ter-attach dan widget masih mounted
+    _timer?.cancel(); // Cancel timer sebelumnya jika ada
+    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
       if (_pageController.hasClients && mounted) {
-        _pageController.nextPage(
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
-        setState(() {
-          _currentPage = (_currentPage + 1) % Constants.splashMessages.length;
-        });
-        _startAutoSwipe();
+        try {
+          final nextPage = (_currentPage + 1) % Constants.splashMessages.length;
+          _pageController.nextPage(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+          if (mounted) {
+            setState(() {
+              _currentPage = nextPage;
+            });
+          }
+        } catch (e) {
+          print('Error in auto swipe: $e');
+          timer.cancel();
+        }
+      } else {
+        timer.cancel();
       }
     });
   }
 
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 5), () {
+    super.initState();
+    // Tunggu frame berikutnya untuk memastikan PageView sudah ter-build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _startAutoSwipe();
     });
-    super.initState();
   }
 
   @override
@@ -104,6 +116,7 @@ class _OnboardingMessagesState extends State<OnboardingMessages> {
 
   @override
   void dispose() {
+    _timer?.cancel(); // Cancel timer untuk mencegah memory leak
     _pageController.dispose();
     super.dispose();
   }

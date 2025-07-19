@@ -1,22 +1,46 @@
+import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/view/widgets/auth_background.dart';
 import 'package:app/features/auth/view/widgets/auth_field.dart';
+import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class RegisterPage extends StatefulWidget {
+class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  ConsumerState<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterPageState extends ConsumerState<RegisterPage> {
   final TextEditingController _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final tujuan = 'DAFTAR';
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(
+      authViewModelProvider.select((val) => val?.isLoading == true),
+    );
+    ref.listen(authViewModelProvider, (_, next) {
+      next?.when(
+        data: (message) {
+          if (message.isNotEmpty) {
+            showSnackBar(context, message);
+          }
+          context.push(
+            '/otp',
+            extra: {'tujuan': tujuan, 'noHp': _phoneController.text},
+          );
+        },
+        error: (error, stackTrace) {
+          showSnackBar(context, error.toString());
+        },
+        loading: () {},
+      );
+    });
     return AuthBackground(
       withBack: true,
       child: Padding(
@@ -39,15 +63,11 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               SizedBox(height: 4),
               CustomButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    context.push(
-                      '/otp',
-                      extra: {
-                        'tujuan': 'Daftar',
-                        'noHp': _phoneController.text,
-                      },
-                    );
+                    await ref
+                        .read(authViewModelProvider.notifier)
+                        .kirimOtp(noHp: _phoneController.text, tujuan: tujuan);
                   }
                 },
                 text: 'Kirim Kode OTP',

@@ -6,11 +6,13 @@ import 'package:app/core/model/user_posyandu_model.dart';
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class AuthResponse {
   final String message;
+  final bool? suksesMengirimOtp;
   final String? token;
   final UserOrangTuaModel? userOrangTua;
   final UserPosyanduModel? userPosyandu;
   AuthResponse({
     required this.message,
+    this.suksesMengirimOtp,
     this.token,
     this.userOrangTua,
     this.userPosyandu,
@@ -18,12 +20,14 @@ class AuthResponse {
 
   AuthResponse copyWith({
     String? message,
+    bool? suksesMengirimOtp,
     String? token,
     UserOrangTuaModel? userOrangTua,
     UserPosyanduModel? userPosyandu,
   }) {
     return AuthResponse(
       message: message ?? this.message,
+      suksesMengirimOtp: suksesMengirimOtp ?? this.suksesMengirimOtp,
       token: token ?? this.token,
       userOrangTua: userOrangTua ?? this.userOrangTua,
       userPosyandu: userPosyandu ?? this.userPosyandu,
@@ -33,6 +37,7 @@ class AuthResponse {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'message': message,
+      'suksesMengirimOtp': suksesMengirimOtp,
       'token': token,
       'userOrangTua': userOrangTua?.toMap(),
       'userPosyandu': userPosyandu?.toMap(),
@@ -42,6 +47,9 @@ class AuthResponse {
   factory AuthResponse.fromMap(Map<String, dynamic> map) {
     return AuthResponse(
       message: map['message'] as String,
+      suksesMengirimOtp: map['suksesMengirimOtp'] != null
+          ? map['suksesMengirimOtp'] as bool
+          : null,
       token: map['token'] != null ? map['token'] as String : null,
       userOrangTua: map['userOrangTua'] != null
           ? UserOrangTuaModel.fromMap(
@@ -63,7 +71,7 @@ class AuthResponse {
 
   @override
   String toString() {
-    return 'AuthResponse(message: $message, token: $token, userOrangTua: $userOrangTua, userPosyandu: $userPosyandu)';
+    return 'AuthResponse(message: $message, suksesMengirimOtp: $suksesMengirimOtp, token: $token, userOrangTua: $userOrangTua, userPosyandu: $userPosyandu)';
   }
 
   @override
@@ -71,6 +79,7 @@ class AuthResponse {
     if (identical(this, other)) return true;
 
     return other.message == message &&
+        other.suksesMengirimOtp == suksesMengirimOtp &&
         other.token == token &&
         other.userOrangTua == userOrangTua &&
         other.userPosyandu == userPosyandu;
@@ -79,6 +88,7 @@ class AuthResponse {
   @override
   int get hashCode {
     return message.hashCode ^
+        suksesMengirimOtp.hashCode ^
         token.hashCode ^
         userOrangTua.hashCode ^
         userPosyandu.hashCode;

@@ -39,7 +39,8 @@ export const protectRoute = async (
             .json({ message: "Tidak Diizinkan - Pengguna Tidak Ditemukan!" });
         }
         req.orangTua = orangTua;
-        next();
+        return next();
+
       case "PETUGAS_POSYANDU":
         const posyandu = await prisma.posyandu.findUnique({
           where: { id: decoded.userId },
@@ -50,7 +51,8 @@ export const protectRoute = async (
             .json({ message: "Tidak Diizinkan - Pengguna Tidak Ditemukan!" });
         }
         req.posyandu = posyandu;
-        next();
+        return next();
+
       default:
         return res
           .status(401)

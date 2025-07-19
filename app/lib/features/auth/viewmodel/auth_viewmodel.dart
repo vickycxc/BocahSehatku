@@ -28,6 +28,29 @@ class AuthViewModel extends _$AuthViewModel {
     await _authLocalRepository.init();
   }
 
+  Future<void> ambilDataPengguna() async {
+    final token = _authLocalRepository.getToken();
+    if (token != null) {
+      final res = await _authRemoteRepository.ambilDataPenggunaSaatIni(token);
+      if (res.userOrangTua != null || res.userPosyandu != null) {
+        _berhasilAmbilDataPengguna(res);
+      }
+    }
+  }
+
+  Future<void> kirimOtp({required String noHp, required String tujuan}) async {
+    state = const AsyncLoading();
+    final res = await _authRemoteRepository.kirimOtp(
+      noHp: noHp,
+      tujuan: tujuan,
+    );
+    if (res.suksesMengirimOtp == true) {
+      state = AsyncData(res.message);
+    } else {
+      state = AsyncError(res.message, StackTrace.current);
+    }
+  }
+
   Future<void> daftar({required String noHp, required String kodeOtp}) async {
     state = const AsyncLoading();
     final res = await _authRemoteRepository.daftar(
@@ -35,7 +58,7 @@ class AuthViewModel extends _$AuthViewModel {
       kodeOtp: kodeOtp,
     );
     if (res.token != null) {
-      state = AsyncData(res.message);
+      _berhasilMasuk(res);
     } else {
       state = AsyncError(res.message, StackTrace.current);
     }
@@ -51,6 +74,11 @@ class AuthViewModel extends _$AuthViewModel {
     }
   }
 
+  void keluar() {
+    _authLocalRepository.removeToken();
+    _currentUserNotifier.removeUser();
+  }
+
   void _berhasilMasuk(AuthResponse res) {
     final token = res.token;
     _authLocalRepository.setToken(token);
@@ -60,16 +88,6 @@ class AuthViewModel extends _$AuthViewModel {
         : Right(res.userPosyandu!);
     _currentUserNotifier.addUser(user);
     state = AsyncData(res.message);
-  }
-
-  Future<void> ambilDataPengguna() async {
-    final token = _authLocalRepository.getToken();
-    if (token != null) {
-      final res = await _authRemoteRepository.ambilDataPenggunaSaatIni(token);
-      if (res.userOrangTua != null || res.userPosyandu != null) {
-        _berhasilAmbilDataPengguna(res);
-      }
-    }
   }
 
   void _berhasilAmbilDataPengguna(AuthResponse res) {
