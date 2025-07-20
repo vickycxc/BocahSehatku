@@ -33,7 +33,6 @@ class _OnboardingMessagesState extends State<OnboardingMessages> {
             });
           }
         } catch (e) {
-          print('Error in auto swipe: $e');
           timer.cancel();
         }
       } else {

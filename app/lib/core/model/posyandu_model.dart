@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class UserPosyanduModel {
+class PosyanduModel {
   final int id;
   final String kodePosyandu;
   final String namaPosyandu;
@@ -12,7 +12,7 @@ class UserPosyanduModel {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  UserPosyanduModel({
+  PosyanduModel({
     required this.id,
     required this.kodePosyandu,
     required this.namaPosyandu,
@@ -24,7 +24,7 @@ class UserPosyanduModel {
     required this.updatedAt,
   });
 
-  UserPosyanduModel copyWith({
+  PosyanduModel copyWith({
     int? id,
     String? kodePosyandu,
     String? namaPosyandu,
@@ -37,7 +37,7 @@ class UserPosyanduModel {
     String? token,
     String? message,
   }) {
-    return UserPosyanduModel(
+    return PosyanduModel(
       id: id ?? this.id,
       kodePosyandu: kodePosyandu ?? this.kodePosyandu,
       namaPosyandu: namaPosyandu ?? this.namaPosyandu,
@@ -64,8 +64,8 @@ class UserPosyanduModel {
     };
   }
 
-  factory UserPosyanduModel.fromMap(Map<String, dynamic> map) {
-    return UserPosyanduModel(
+  factory PosyanduModel.fromMap(Map<String, dynamic> map) {
+    return PosyanduModel(
       id: map['id'] as int,
       kodePosyandu: map['kodePosyandu'] as String,
       namaPosyandu: map['namaPosyandu'] as String,
@@ -80,8 +80,8 @@ class UserPosyanduModel {
 
   String toJson() => json.encode(toMap());
 
-  factory UserPosyanduModel.fromJson(String source) =>
-      UserPosyanduModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory PosyanduModel.fromJson(String source) =>
+      PosyanduModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -89,7 +89,7 @@ class UserPosyanduModel {
   }
 
   @override
-  bool operator ==(covariant UserPosyanduModel other) {
+  bool operator ==(covariant PosyanduModel other) {
     if (identical(this, other)) return true;
 
     return other.id == id &&

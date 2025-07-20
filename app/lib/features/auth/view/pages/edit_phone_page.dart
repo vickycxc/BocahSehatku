@@ -1,8 +1,8 @@
 import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/view/pages/otp_page.dart';
-import 'package:app/features/auth/view/widgets/auth_background.dart';
-import 'package:app/features/auth/view/widgets/auth_field.dart';
+import 'package:app/core/widgets/wave_background.dart';
+import 'package:app/core/widgets/custom_field.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +17,7 @@ class EditPhonePage extends ConsumerStatefulWidget {
 class _EditPhonePageState extends ConsumerState<EditPhonePage> {
   final String tujuan = "UBAH_NO_HP";
   final TextEditingController _nikController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _noHpController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -35,7 +35,7 @@ class _EditPhonePageState extends ConsumerState<EditPhonePage> {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  OtpPage(noHp: _phoneNumberController.text, tujuan: tujuan),
+                  OtpPage(noHp: _noHpController.text, tujuan: tujuan),
             ),
           );
         },
@@ -45,7 +45,7 @@ class _EditPhonePageState extends ConsumerState<EditPhonePage> {
         loading: () {},
       );
     });
-    return AuthBackground(
+    return WaveBackground(
       withBack: true,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
@@ -60,17 +60,35 @@ class _EditPhonePageState extends ConsumerState<EditPhonePage> {
                 textAlign: TextAlign.center,
                 style: TextTheme.of(context).titleLarge,
               ),
-              AuthField(
+              CustomField(
                 label: 'NIK',
                 hintText: 'Masukkan NIK Anda',
                 keyboardType: TextInputType.number,
                 controller: _nikController,
+                validator: (val) {
+                  if (val!.trim().isEmpty) {
+                    return 'NIK Harus Diisi!';
+                  }
+                  if (val.length != 16) {
+                    return 'Masukkan 16 Digit NIK!';
+                  }
+                  if (!RegExp(r'^\d{16}$').hasMatch(val)) {
+                    return 'NIK Harus 16 Digit Angka!';
+                  }
+                  return null;
+                },
               ),
-              AuthField(
+              CustomField(
                 label: 'No. HP Baru',
                 hintText: 'Masukkan No. HP Baru Anda',
                 keyboardType: TextInputType.phone,
-                controller: _phoneNumberController,
+                controller: _noHpController,
+                validator: (val) {
+                  if (val!.trim().isEmpty) {
+                    return 'No. HP Harus Diisi!';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 4),
               CustomButton(
@@ -79,10 +97,7 @@ class _EditPhonePageState extends ConsumerState<EditPhonePage> {
                   if (_formKey.currentState!.validate()) {
                     await ref
                         .read(authViewModelProvider.notifier)
-                        .kirimOtp(
-                          noHp: _phoneNumberController.text,
-                          tujuan: tujuan,
-                        );
+                        .kirimOtp(noHp: _noHpController.text, tujuan: tujuan);
                   }
                 },
                 text: 'Kirim Kode OTP',
@@ -103,7 +118,7 @@ class _EditPhonePageState extends ConsumerState<EditPhonePage> {
   @override
   void dispose() {
     _nikController.dispose();
-    _phoneNumberController.dispose();
+    _noHpController.dispose();
     super.dispose();
   }
 }

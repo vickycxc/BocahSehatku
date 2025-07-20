@@ -1,15 +1,18 @@
 import 'package:app/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
   final bool isLoading;
+  final bool withIcon;
   const CustomButton({
     super.key,
     required this.onPressed,
     required this.text,
     this.isLoading = false,
+    this.withIcon = false,
   });
 
   @override
@@ -35,6 +38,7 @@ class CustomButton extends StatelessWidget {
                 ),
               ),
             ),
+          if (withIcon) SizedBox(width: 8),
           Text(
             text,
             style: TextStyle(
@@ -44,6 +48,11 @@ class CustomButton extends StatelessWidget {
             ),
           ),
           if (isLoading) SizedBox(width: 8),
+          if (withIcon)
+            Icon(
+              LucideIcons.chevronRight,
+              color: Palette.backgroundPrimaryColor,
+            ),
         ],
       ),
     );

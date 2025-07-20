@@ -1,17 +1,17 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class UserOrangTuaModel {
+class OrangTuaModel {
   final int id;
   final String noHp;
   final String? nama;
   final String? nik;
   final String? jenisKelamin;
   final String? alamat;
-  final String? posyanduId;
+  final int? posyanduId;
   final DateTime createdAt;
   final DateTime updatedAt;
-  UserOrangTuaModel({
+  OrangTuaModel({
     required this.id,
     required this.noHp,
     this.nama,
@@ -23,20 +23,20 @@ class UserOrangTuaModel {
     required this.updatedAt,
   });
 
-  UserOrangTuaModel copyWith({
+  OrangTuaModel copyWith({
     int? id,
     String? noHp,
     String? nama,
     String? nik,
     String? jenisKelamin,
     String? alamat,
-    String? posyanduId,
+    int? posyanduId,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? token,
     String? message,
   }) {
-    return UserOrangTuaModel(
+    return OrangTuaModel(
       id: id ?? this.id,
       noHp: noHp ?? this.noHp,
       nama: nama ?? this.nama,
@@ -63,8 +63,8 @@ class UserOrangTuaModel {
     };
   }
 
-  factory UserOrangTuaModel.fromMap(Map<String, dynamic> map) {
-    return UserOrangTuaModel(
+  factory OrangTuaModel.fromMap(Map<String, dynamic> map) {
+    return OrangTuaModel(
       id: map['id'] as int,
       noHp: map['noHp'] as String,
       nama: map['nama'] != null ? map['nama'] as String : null,
@@ -73,9 +73,7 @@ class UserOrangTuaModel {
           ? map['jenisKelamin'] as String
           : null,
       alamat: map['alamat'] != null ? map['alamat'] as String : null,
-      posyanduId: map['posyanduId'] != null
-          ? map['posyanduId'] as String
-          : null,
+      posyanduId: map['posyanduId'] != null ? map['posyanduId'] as int : null,
       createdAt: DateTime.tryParse(map['createdAt'] as String)!,
       updatedAt: DateTime.tryParse(map['updatedAt'] as String)!,
     );
@@ -83,8 +81,8 @@ class UserOrangTuaModel {
 
   String toJson() => json.encode(toMap());
 
-  factory UserOrangTuaModel.fromJson(String source) =>
-      UserOrangTuaModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory OrangTuaModel.fromJson(String source) =>
+      OrangTuaModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -92,7 +90,7 @@ class UserOrangTuaModel {
   }
 
   @override
-  bool operator ==(covariant UserOrangTuaModel other) {
+  bool operator ==(covariant OrangTuaModel other) {
     if (identical(this, other)) return true;
 
     return other.id == id &&

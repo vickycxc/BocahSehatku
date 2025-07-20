@@ -2,8 +2,9 @@ import 'package:app/core/theme/app_palette.dart';
 import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/repositories/auth_remote_repository.dart';
-import 'package:app/features/auth/view/widgets/auth_background.dart';
+import 'package:app/core/widgets/wave_background.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:app/features/user_orang_tua/view/pages/complete_profile_page.dart';
 import 'package:app/features/user_orang_tua/view/pages/ortu_dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,7 +33,16 @@ class _OtpPageState extends ConsumerState<OtpPage> {
           showSnackBar(context, message);
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => const OrtuDashboardPage()),
+            MaterialPageRoute(
+              builder: (context) => switch (widget.tujuan) {
+                'MASUK' => const OrtuDashboardPage(),
+                'DAFTAR' => const CompleteProfilePage(),
+                'UBAH_NO_HP' => const OrtuDashboardPage(),
+                _ => throw Exception(
+                  'Origin tidak diketahui!: ${widget.tujuan}',
+                ),
+              },
+            ),
             (_) => false,
           );
         },
@@ -68,7 +78,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
       }
     }
 
-    return AuthBackground(
+    return WaveBackground(
       withBack: true,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 42),

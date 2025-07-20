@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.post("/kirim-otp", kirimOtp);
 router.post("/daftar", daftar);
-router.put("/lengkapi-profil", protectRoute, perbaruiProfil);
+router.put("/perbarui-profil", protectRoute, perbaruiProfil);
 router.post("/ubah-no-hp", protectRoute, ubahNoHp);
 router.post("/masuk", masuk);
 router.post("/masuk-posyandu", masukPosyandu);

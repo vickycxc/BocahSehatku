@@ -7,15 +7,12 @@ part of 'current_user_notifier.dart';
 // **************************************************************************
 
 String _$currentUserNotifierHash() =>
-    r'c0f1a0dcd1668d78d406d6c21451f6660c29173e';
+    r'021cf117df589fb9405d37442998f95dbdc8d8a6';
 
 /// See also [CurrentUserNotifier].
 @ProviderFor(CurrentUserNotifier)
 final currentUserNotifierProvider =
-    NotifierProvider<
-      CurrentUserNotifier,
-      Either<UserOrangTuaModel, UserPosyanduModel>?
-    >.internal(
+    NotifierProvider<CurrentUserNotifier, UserModel?>.internal(
       CurrentUserNotifier.new,
       name: r'currentUserNotifierProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -25,7 +22,6 @@ final currentUserNotifierProvider =
       allTransitiveDependencies: null,
     );
 
-typedef _$CurrentUserNotifier =
-    Notifier<Either<UserOrangTuaModel, UserPosyanduModel>?>;
+typedef _$CurrentUserNotifier = Notifier<UserModel?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

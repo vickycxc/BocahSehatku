@@ -1,15 +1,15 @@
 import 'dart:convert';
 
-import 'package:app/core/model/user_orang_tua_model.dart';
-import 'package:app/core/model/user_posyandu_model.dart';
+import 'package:app/core/model/orang_tua_model.dart';
+import 'package:app/core/model/posyandu_model.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class AuthResponse {
   final String message;
   final bool? suksesMengirimOtp;
   final String? token;
-  final UserOrangTuaModel? userOrangTua;
-  final UserPosyanduModel? userPosyandu;
+  final OrangTuaModel? userOrangTua;
+  final PosyanduModel? userPosyandu;
   AuthResponse({
     required this.message,
     this.suksesMengirimOtp,
@@ -22,8 +22,8 @@ class AuthResponse {
     String? message,
     bool? suksesMengirimOtp,
     String? token,
-    UserOrangTuaModel? userOrangTua,
-    UserPosyanduModel? userPosyandu,
+    OrangTuaModel? userOrangTua,
+    PosyanduModel? userPosyandu,
   }) {
     return AuthResponse(
       message: message ?? this.message,
@@ -52,14 +52,10 @@ class AuthResponse {
           : null,
       token: map['token'] != null ? map['token'] as String : null,
       userOrangTua: map['userOrangTua'] != null
-          ? UserOrangTuaModel.fromMap(
-              map['userOrangTua'] as Map<String, dynamic>,
-            )
+          ? OrangTuaModel.fromMap(map['userOrangTua'] as Map<String, dynamic>)
           : null,
       userPosyandu: map['userPosyandu'] != null
-          ? UserPosyanduModel.fromMap(
-              map['userPosyandu'] as Map<String, dynamic>,
-            )
+          ? PosyanduModel.fromMap(map['userPosyandu'] as Map<String, dynamic>)
           : null,
     );
   }

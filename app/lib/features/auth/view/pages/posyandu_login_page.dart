@@ -1,6 +1,6 @@
 import 'package:app/core/widgets/custom_button.dart';
-import 'package:app/features/auth/view/widgets/auth_background.dart';
-import 'package:app/features/auth/view/widgets/auth_field.dart';
+import 'package:app/core/widgets/wave_background.dart';
+import 'package:app/core/widgets/custom_field.dart';
 import 'package:flutter/material.dart';
 
 class PosyanduLoginPage extends StatefulWidget {
@@ -17,7 +17,7 @@ class _PosyanduLoginPageState extends State<PosyanduLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AuthBackground(
+    return WaveBackground(
       withBack: true,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 42),
@@ -31,18 +31,30 @@ class _PosyanduLoginPageState extends State<PosyanduLoginPage> {
                 'Masuk ke Akun Posyandu',
                 style: TextTheme.of(context).titleLarge,
               ),
-              AuthField(
+              CustomField(
                 label: 'Kode Posyandu',
                 hintText: 'Kode Posyandu',
                 keyboardType: TextInputType.text,
                 controller: _usernameController,
+                validator: (val) {
+                  if (val!.trim().isEmpty) {
+                    return 'Kode Posyandu Harus Diisi!';
+                  }
+                  return null;
+                },
               ),
-              AuthField(
+              CustomField(
                 label: 'Password',
                 hintText: 'Password',
                 keyboardType: TextInputType.visiblePassword,
                 controller: _passwordController,
                 isObscure: true,
+                validator: (val) {
+                  if (val!.trim().isEmpty) {
+                    return 'Kode Posyandu Harus Diisi!';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 4),
               CustomButton(

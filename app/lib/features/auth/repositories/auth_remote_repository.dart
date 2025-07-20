@@ -87,4 +87,32 @@ class AuthRemoteRepository {
       return AuthResponse(message: error.toString());
     }
   }
+
+  Future<AuthResponse> perbaruiProfil({
+    required String token,
+    required int id,
+    required String nama,
+    required String nik,
+    required String jenisKelamin,
+    required String alamat,
+    required int posyanduId,
+  }) async {
+    try {
+      final response = await http.put(
+        Uri.parse('${Constants.serverUrl}/auth/perbarui-profil'),
+        headers: {'Content-Type': 'application/json', 'x-auth-token': token},
+        body: jsonEncode({
+          'id': id,
+          'nama': nama,
+          'nik': nik,
+          'jenisKelamin': jenisKelamin,
+          'alamat': alamat,
+          'posyanduId': posyanduId,
+        }),
+      );
+      return AuthResponse.fromJson(response.body);
+    } catch (error) {
+      return AuthResponse(message: error.toString());
+    }
+  }
 }

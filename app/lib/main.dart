@@ -1,9 +1,9 @@
 import 'package:app/core/providers/current_user_notifier.dart';
 import 'package:app/core/size_config.dart';
 import 'package:app/core/theme/theme.dart';
-import 'package:app/core/routes.dart';
 import 'package:app/features/auth/view/pages/onboarding_screen_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:app/features/user_orang_tua/view/pages/complete_profile_page.dart';
 import 'package:app/features/user_orang_tua/view/pages/ortu_dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,16 +28,19 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: 'Bocah Sehatku',
       theme: AppTheme.theme,
-      home: switch (currentUser) {
-        Left() => OrtuDashboardPage(),
-        Right() => OrtuDashboardPage(),
-        null => OnboardingScreenPage(),
-      },
-      // routerConfig: switch (currentUser) {
-      //   Left() => userOrangTuaRouter,
-      //   Right() => userOrangTuaRouter,
-      //   null => authRouter,
-      // },
+      home: currentUser != null
+          ? switch (currentUser.data) {
+              Left(value: final l) =>
+                l.nama != null &&
+                        l.nik != null &&
+                        l.jenisKelamin != null &&
+                        l.alamat != null &&
+                        l.posyanduId != null
+                    ? const OrtuDashboardPage()
+                    : const CompleteProfilePage(),
+              Right() => const OrtuDashboardPage(),
+            }
+          : const OnboardingScreenPage(),
     );
   }
 }

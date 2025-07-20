@@ -8,17 +8,31 @@ export const kirimOtp = async (req: Request, res: Response) => {
   if (!req.body) {
     return res.status(400).json({ error: "No. HP dan Tujuan Harus Diisi!" });
   }
-  const { noHp, tujuan } = req.body;
+  const { noHp, tujuan, nik } = req.body;
   try {
     if (!noHp || !tujuan) {
       return res.status(400).json({ error: "No. HP dan Tujuan Harus Diisi!" });
     }
 
+    if (tujuan === "UBAH_NO_HP" && !nik) {
+      return res
+        .status(400)
+        .json({ error: "NIK Harus Diisi untuk Mengubah No. HP!" });
+    }
+
+    const cekNoHp = await prisma.orangTua.findUnique({
+      where: { noHp },
+    });
+    const cekNik = await prisma.orangTua.findUnique({
+      where: { nik },
+    });
     if (tujuan === "DAFTAR" || tujuan === "UBAH_NO_HP") {
-      const userOrangTua = await prisma.orangTua.findUnique({
-        where: { noHp },
-      });
-      if (userOrangTua) {
+      if (tujuan === "UBAH_NO_HP" && !cekNik) {
+        return res
+          .status(400)
+          .json({ message: "Gagal Mengirim OTP, Akun Tidak Ditemukan!" });
+      }
+      if (cekNoHp) {
         return res.status(400).json({
           message: "Gagal Mengirim OTP, No. HP Sudah Terdaftar!",
         });
@@ -49,7 +63,7 @@ export const kirimOtp = async (req: Request, res: Response) => {
       // const kodeOtp = response.data.data.otp;
       const otpExpiresAt = new Date(Date.now() + 5 * 60 * 1000);
 
-      if (tujuan === "MASUK" || tujuan === "UBAH_NO_HP") {
+      if (tujuan === "MASUK") {
         await prisma.orangTua.update({
           where: {
             noHp,
@@ -70,12 +84,19 @@ export const kirimOtp = async (req: Request, res: Response) => {
           },
         });
       }
+
+      if (tujuan === "UBAH_NO_HP") {
+        await prisma.orangTua.update({
+          where: { nik },
+          data: {
+            noHp,
+            kodeOtp,
+            otpExpiresAt,
+          },
+        });
+      }
       return res.status(200).json({
         message: "OTP berhasil Dikirim!",
-      });
-    } else {
-      return res.status(400).json({
-        message: "Gagal Mengirim OTP, Pastikan No. HP Valid!",
       });
     }
   } catch (error) {
@@ -152,11 +173,28 @@ export const perbaruiProfil = async (req: Request, res: Response) => {
       message: "Gagal Memperbarui Profil, Semua Field Harus Diisi!",
     });
   }
+  console.log(req.body);
   const { id, nama, nik, jenisKelamin, alamat, posyanduId } = req.body;
   try {
     if (!id || !nama || !nik || !jenisKelamin || !alamat || !posyanduId) {
       return res.status(400).json({
         message: "Gagal Memperbarui Profil, Semua Field Harus Diisi!",
+      });
+    }
+
+    if (!["LAKI_LAKI", "PEREMPUAN"].includes(jenisKelamin)) {
+      return res.status(400).json({
+        message: "Gagal Memperbarui Profil, Jenis Kelamin Tidak Valid!",
+      });
+    }
+
+    const cekNik = await prisma.orangTua.findUnique({
+      where: { nik },
+    });
+
+    if (cekNik) {
+      return res.status(400).json({
+        message: "Gagal Memperbarui Profil, NIK Sudah Terdaftar!",
       });
     }
 
@@ -174,6 +212,12 @@ export const perbaruiProfil = async (req: Request, res: Response) => {
         otpExpiresAt: true,
       },
     });
+
+    if (!userOrangTua) {
+      return res.status(404).json({
+        message: "Gagal Melengkapi Profil, Akun Tidak Ditemukan!",
+      });
+    }
     return res.status(200).json({
       message: "Profil Berhasil Diperbarui",
       userOrangTua: userOrangTua,
@@ -242,8 +286,14 @@ export const ubahNoHp = async (req: Request, res: Response) => {
         otpExpiresAt: true,
       },
     });
+
+    if (!orangTuaNew) {
+      return res.status(404).json({
+        message: "Gagal Mengubah No. HP, Akun Tidak Ditemukan!",
+      });
+    }
     return res.status(200).json({
-      message: "Profil Berhasil Diperbarui",
+      message: "No. HP Berhasil Diperbarui",
       userOrangTua: orangTuaNew,
     });
   } catch (error) {

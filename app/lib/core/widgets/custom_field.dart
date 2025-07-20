@@ -2,19 +2,27 @@
 import 'package:app/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
 
-class AuthField extends StatelessWidget {
+class CustomField extends StatelessWidget {
+  final String? Function(String?)? validator;
   final String label;
   final String hintText;
   final TextEditingController controller;
   final TextInputType keyboardType;
   final bool isObscure;
-  const AuthField({
+  final Color borderColor;
+  final Color labelColor;
+  final Color errorColor;
+  const CustomField({
     super.key,
     required this.label,
     required this.hintText,
     required this.controller,
+    this.validator,
     this.keyboardType = TextInputType.text,
     this.isObscure = false,
+    this.borderColor = Palette.accentColor,
+    this.labelColor = Palette.textPrimaryColor,
+    this.errorColor = Palette.secondaryColor,
   });
 
   @override
@@ -30,30 +38,32 @@ class AuthField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: labelColor,
+          ),
         ),
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
           obscureText: isObscure,
-          validator: (val) {
-            if (val!.trim().isEmpty) {
-              return '$label Harus Diisi!';
-            }
-            return null;
-          },
+          validator: validator,
           style: TextStyle(fontSize: 16),
           decoration: InputDecoration(
+            errorStyle: TextStyle(color: errorColor),
+            filled: true,
             contentPadding: const EdgeInsets.symmetric(
               vertical: 20,
               horizontal: 20,
             ),
             hintText: hintText,
-            enabledBorder: border(Palette.accentColor),
-            focusedBorder: border(Palette.accentColor),
-            errorBorder: border(Palette.accentColor),
-            focusedErrorBorder: border(Palette.accentColor),
-            border: border(Palette.accentColor),
+            enabledBorder: border(borderColor),
+            focusedBorder: border(borderColor),
+            errorBorder: border(borderColor),
+            focusedErrorBorder: border(borderColor),
+            border: border(borderColor),
+            fillColor: Palette.backgroundPrimaryColor,
           ),
         ),
       ],

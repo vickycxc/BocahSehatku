@@ -2,8 +2,8 @@ import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/view/pages/login_page.dart';
 import 'package:app/features/auth/view/pages/otp_page.dart';
-import 'package:app/features/auth/view/widgets/auth_background.dart';
-import 'package:app/features/auth/view/widgets/auth_field.dart';
+import 'package:app/core/widgets/wave_background.dart';
+import 'package:app/core/widgets/custom_field.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,7 +16,7 @@ class RegisterPage extends ConsumerStatefulWidget {
 }
 
 class _RegisterPageState extends ConsumerState<RegisterPage> {
-  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _noHpController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final tujuan = 'DAFTAR';
 
@@ -28,13 +28,13 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     ref.listen(authViewModelProvider, (_, next) {
       next?.when(
         data: (message) {
-          if (message.isNotEmpty) {
-            showSnackBar(context, message);
-          }
-
-          MaterialPageRoute(
-            builder: (context) =>
-                OtpPage(noHp: _phoneController.text, tujuan: tujuan),
+          showSnackBar(context, message);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  OtpPage(noHp: _noHpController.text, tujuan: tujuan),
+            ),
           );
         },
         error: (error, stackTrace) {
@@ -43,7 +43,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
         loading: () {},
       );
     });
-    return AuthBackground(
+    return WaveBackground(
       withBack: true,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 42),
@@ -57,11 +57,17 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 'Mendaftar Akun Baru',
                 style: TextTheme.of(context).titleLarge,
               ),
-              AuthField(
+              CustomField(
                 label: 'No. HP',
                 hintText: 'Masukkan No. HP Anda',
                 keyboardType: TextInputType.phone,
-                controller: _phoneController,
+                controller: _noHpController,
+                validator: (val) {
+                  if (val!.trim().isEmpty) {
+                    return 'No. HP Harus Diisi!';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 4),
               CustomButton(
@@ -70,7 +76,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                   if (_formKey.currentState!.validate()) {
                     await ref
                         .read(authViewModelProvider.notifier)
-                        .kirimOtp(noHp: _phoneController.text, tujuan: tujuan);
+                        .kirimOtp(noHp: _noHpController.text, tujuan: tujuan);
                   }
                 },
                 text: 'Kirim Kode OTP',
@@ -113,7 +119,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   @override
   void dispose() {
-    _phoneController.dispose();
+    _noHpController.dispose();
     super.dispose();
   }
 }
