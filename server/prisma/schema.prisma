@@ -83,6 +83,12 @@ model Pengukuran {
   kategoriIMTU      kategorIMTU
 }
 
+model RiwayatOtp {
+  id        Int      @id @default(autoincrement())
+  noHp      String
+  createdAt DateTime @default(now())
+}
+
 enum jenisKelamin {
   LAKI_LAKI
   PEREMPUAN

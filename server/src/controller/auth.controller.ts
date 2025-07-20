@@ -26,6 +26,32 @@ export const kirimOtp = async (req: Request, res: Response) => {
     const cekNik = await prisma.orangTua.findUnique({
       where: { nik },
     });
+
+    // Logika pembatasan OTP - maksimal 5 OTP dalam 15 menit
+    const sekarang = new Date();
+    const batas15Menit = new Date(sekarang.getTime() - 15 * 60 * 1000); // 15 menit yang lalu
+
+    // Cek jumlah OTP yang dikirim dalam 15 menit terakhir
+    const jumlahOtpRecent = await prisma.riwayatOtp.count({
+      where: {
+        noHp, // untuk DAFTAR dan MASUK
+        createdAt: {
+          gte: batas15Menit,
+        },
+      },
+    });
+
+    if (jumlahOtpRecent >= 5) {
+      const sisaWaktu = Math.ceil(
+        (batas15Menit.getTime() + 15 * 60 * 1000 - sekarang.getTime()) /
+          1000 /
+          60
+      );
+      return res.status(429).json({
+        message: `Terlalu banyak permintaan OTP. Silakan tunggu ${sisaWaktu} menit lagi.`,
+      });
+    }
+
     if (tujuan === "DAFTAR" || tujuan === "UBAH_NO_HP") {
       if (tujuan === "UBAH_NO_HP" && !cekNik) {
         return res
@@ -42,13 +68,13 @@ export const kirimOtp = async (req: Request, res: Response) => {
         message: "Gagal Mengirim OTP, Tujuan Tidak Valid!",
       });
     }
-    const data = {
-      phone: noHp,
-      gateway_key: process.env.GATEWAY_KEY!,
-    };
+
     // const response = await axios.post(
     //   "https://api.fazpass.com/v1/otp/generate",
-    //   data,
+    //   {
+    //   phone: noHp,
+    //   gateway_key: process.env.GATEWAY_KEY!,
+    // },
     //   {
     //     headers: {
     //       Authorization: "Bearer " + process.env.MERCHANT_KEY!,
@@ -76,6 +102,11 @@ export const kirimOtp = async (req: Request, res: Response) => {
       }
 
       if (tujuan === "DAFTAR") {
+        // Hapus OTP lama jika ada
+        await prisma.verifikasiOtp.deleteMany({
+          where: { noHp },
+        });
+
         await prisma.verifikasiOtp.create({
           data: {
             noHp,
@@ -95,6 +126,12 @@ export const kirimOtp = async (req: Request, res: Response) => {
           },
         });
       }
+
+      // Simpan riwayat pengiriman OTP
+      await prisma.riwayatOtp.create({
+        data: { noHp },
+      });
+
       return res.status(200).json({
         message: "OTP berhasil Dikirim!",
       });
@@ -102,7 +139,8 @@ export const kirimOtp = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Gagal Mengirim OTP, Error di kirimOtp Controller", error);
     return res.status(500).json({
-      message: "Gagal Mengirim OTP, Pastikan No. HP Valid!",
+      message:
+        "Gagal Mengirim OTP, Terjadi Kesalahan Di Server. Pastikan No. HP Valid!",
     });
   }
 };
@@ -168,15 +206,16 @@ export const daftar = async (req: Request, res: Response) => {
 };
 
 export const perbaruiProfil = async (req: Request, res: Response) => {
+  const id = req.orangTua.id; // Ambil ID dari request yang sudah di-protect
   if (!req.body) {
     return res.status(400).json({
       message: "Gagal Memperbarui Profil, Semua Field Harus Diisi!",
     });
   }
   console.log(req.body);
-  const { id, nama, nik, jenisKelamin, alamat, posyanduId } = req.body;
+  const { nama, nik, jenisKelamin, alamat, posyanduId } = req.body;
   try {
-    if (!id || !nama || !nik || !jenisKelamin || !alamat || !posyanduId) {
+    if (!nama || !nik || !jenisKelamin || !alamat || !posyanduId) {
       return res.status(400).json({
         message: "Gagal Memperbarui Profil, Semua Field Harus Diisi!",
       });
@@ -188,8 +227,23 @@ export const perbaruiProfil = async (req: Request, res: Response) => {
       });
     }
 
-    const cekNik = await prisma.orangTua.findUnique({
-      where: { nik },
+    // Cek apakah user exists
+    const existingUser = await prisma.orangTua.findUnique({
+      where: { id: id }, // Pastikan ID adalah integer
+    });
+
+    if (!existingUser) {
+      return res.status(404).json({
+        message: "Gagal Memperbarui Profil, Akun Tidak Ditemukan!",
+      });
+    }
+
+    // Cek NIK duplikat (kecuali NIK user sendiri)
+    const cekNik = await prisma.orangTua.findFirst({
+      where: {
+        nik,
+        NOT: { id: id }, // Exclude current user
+      },
     });
 
     if (cekNik) {
@@ -198,14 +252,25 @@ export const perbaruiProfil = async (req: Request, res: Response) => {
       });
     }
 
+    // Cek apakah posyandu exists
+    const existingPosyandu = await prisma.posyandu.findUnique({
+      where: { id: parseInt(posyanduId) },
+    });
+
+    if (!existingPosyandu) {
+      return res.status(404).json({
+        message: "Gagal Memperbarui Profil, Posyandu Tidak Ditemukan!",
+      });
+    }
+
     const userOrangTua = await prisma.orangTua.update({
-      where: { id },
+      where: { id: id }, // Pastikan ID adalah integer
       data: {
         nama,
         nik,
         jenisKelamin,
         alamat,
-        posyandu: { connect: { id: posyanduId } },
+        posyandu: { connect: { id: parseInt(posyanduId) } },
       },
       omit: {
         kodeOtp: true,
@@ -213,11 +278,6 @@ export const perbaruiProfil = async (req: Request, res: Response) => {
       },
     });
 
-    if (!userOrangTua) {
-      return res.status(404).json({
-        message: "Gagal Melengkapi Profil, Akun Tidak Ditemukan!",
-      });
-    }
     return res.status(200).json({
       message: "Profil Berhasil Diperbarui",
       userOrangTua: userOrangTua,
