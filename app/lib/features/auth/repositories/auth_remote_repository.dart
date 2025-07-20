@@ -27,8 +27,6 @@ class AuthRemoteRepository {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'noHp': noHp, 'tujuan': tujuan, 'nik': nik}),
       );
-
-      print(response.body);
       if (response.statusCode == 200) {
         return AuthResponse.fromJson(
           response.body,
@@ -75,7 +73,22 @@ class AuthRemoteRepository {
     }
   }
 
-  Future<void> masukPosyandu() async {}
+  Future<AuthResponse> masukPosyandu({
+    required String kodePosyandu,
+    required String password,
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse('${Constants.serverUrl}/auth/masuk-posyandu'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'kodePosyandu': kodePosyandu, 'password': password}),
+      );
+      return AuthResponse.fromJson(response.body);
+    } catch (error) {
+      return AuthResponse(message: error.toString());
+    }
+  }
+
   Future<void> ubahNoHp() async {}
   Future<AuthResponse> ambilDataPenggunaSaatIni(String token) async {
     try {

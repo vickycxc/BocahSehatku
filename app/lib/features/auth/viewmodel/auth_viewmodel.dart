@@ -119,6 +119,22 @@ class AuthViewModel extends _$AuthViewModel {
     }
   }
 
+  Future<void> masukPosyandu({
+    required String kodePosyandu,
+    required String password,
+  }) async {
+    state = const AsyncLoading();
+    final res = await _authRemoteRepository.masukPosyandu(
+      kodePosyandu: kodePosyandu,
+      password: password,
+    );
+    if (res.token != null) {
+      _berhasilMasuk(res);
+    } else {
+      state = AsyncError(res.message, StackTrace.current);
+    }
+  }
+
   void keluar() {
     _authLocalRepository.removeToken();
     _currentUserNotifier.removeUser();

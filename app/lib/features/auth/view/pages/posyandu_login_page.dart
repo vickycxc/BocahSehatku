@@ -1,22 +1,47 @@
+import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/core/widgets/wave_background.dart';
 import 'package:app/core/widgets/custom_field.dart';
+import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:app/features/user_posyandu/view/pages/posyandu_dashboard_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PosyanduLoginPage extends StatefulWidget {
+class PosyanduLoginPage extends ConsumerStatefulWidget {
   const PosyanduLoginPage({super.key});
 
   @override
-  State<PosyanduLoginPage> createState() => _PosyanduLoginPageState();
+  ConsumerState<PosyanduLoginPage> createState() => _PosyanduLoginPageState();
 }
 
-class _PosyanduLoginPageState extends State<PosyanduLoginPage> {
-  final TextEditingController _usernameController = TextEditingController();
+class _PosyanduLoginPageState extends ConsumerState<PosyanduLoginPage> {
+  final TextEditingController _kodePosyanduController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(
+      authViewModelProvider.select((val) => val?.isLoading == true),
+    );
+    ref.listen(authViewModelProvider, (_, next) {
+      next?.when(
+        data: (message) {
+          showSnackBar(context, message);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const PosyanduDashboardPage(),
+            ),
+            (_) => false,
+          );
+        },
+        error: (error, stackTrace) {
+          showSnackBar(context, error.toString());
+        },
+        loading: () {},
+      );
+    });
     return WaveBackground(
       withBack: true,
       child: Padding(
@@ -35,7 +60,7 @@ class _PosyanduLoginPageState extends State<PosyanduLoginPage> {
                 label: 'Kode Posyandu',
                 hintText: 'Kode Posyandu',
                 keyboardType: TextInputType.text,
-                controller: _usernameController,
+                controller: _kodePosyanduController,
                 validator: (val) {
                   if (val!.trim().isEmpty) {
                     return 'Kode Posyandu Harus Diisi!';
@@ -58,10 +83,15 @@ class _PosyanduLoginPageState extends State<PosyanduLoginPage> {
               ),
               SizedBox(height: 4),
               CustomButton(
-                onPressed: () {
+                isLoading: isLoading,
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    // Handle login logic here
-                    // For example, call a login function with the username and password
+                    await ref
+                        .read(authViewModelProvider.notifier)
+                        .masukPosyandu(
+                          kodePosyandu: _kodePosyanduController.text,
+                          password: _passwordController.text,
+                        );
                   }
                 },
                 text: 'Masuk',
@@ -76,7 +106,7 @@ class _PosyanduLoginPageState extends State<PosyanduLoginPage> {
 
   @override
   void dispose() {
-    _usernameController.dispose();
+    _kodePosyanduController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
