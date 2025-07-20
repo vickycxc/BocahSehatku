@@ -2,30 +2,37 @@ import bcryptjs from "bcryptjs";
 import generateToken from "../lib/jwt.ts";
 import prisma from "../lib/prisma.ts";
 import type { Request, Response } from "express";
+import type { OrangTuaType } from "../types/prisma.ts";
 import axios from "axios";
 
 export const kirimOtp = async (req: Request, res: Response) => {
   if (!req.body) {
-    return res.status(400).json({ error: "No. HP dan Tujuan Harus Diisi!" });
+    return res.status(400).json({ message: "No. HP dan Tujuan Harus Diisi!" });
   }
   const { noHp, tujuan, nik } = req.body;
   try {
     if (!noHp || !tujuan) {
-      return res.status(400).json({ error: "No. HP dan Tujuan Harus Diisi!" });
+      return res
+        .status(400)
+        .json({ message: "No. HP dan Tujuan Harus Diisi!" });
     }
 
     if (tujuan === "UBAH_NO_HP" && !nik) {
       return res
         .status(400)
-        .json({ error: "NIK Harus Diisi untuk Mengubah No. HP!" });
+        .json({ message: "NIK Harus Diisi untuk Mengubah No. HP!" });
     }
 
     const cekNoHp = await prisma.orangTua.findUnique({
       where: { noHp },
     });
-    const cekNik = await prisma.orangTua.findUnique({
-      where: { nik },
-    });
+
+    let cekNik: OrangTuaType | null = null;
+    if (tujuan === "UBAH_NO_HP") {
+      cekNik = await prisma.orangTua.findUnique({
+        where: { nik },
+      });
+    }
 
     // Logika pembatasan OTP - maksimal 5 OTP dalam 15 menit
     const sekarang = new Date();
@@ -50,6 +57,18 @@ export const kirimOtp = async (req: Request, res: Response) => {
       return res.status(429).json({
         message: `Terlalu banyak permintaan OTP. Silakan tunggu ${sisaWaktu} menit lagi.`,
       });
+    }
+
+    if (tujuan !== "DAFTAR" && tujuan !== "MASUK" && tujuan !== "UBAH_NO_HP") {
+      return res.status(400).json({
+        message: "Gagal Mengirim OTP, Tujuan Tidak Valid!",
+      });
+    }
+
+    if (tujuan === "MASUK" && !cekNoHp) {
+      return res
+        .status(400)
+        .json({ message: "Gagal Mengirim OTP, Akun Tidak Ditemukan!" });
     }
 
     if (tujuan === "DAFTAR" || tujuan === "UBAH_NO_HP") {
@@ -148,7 +167,7 @@ export const kirimOtp = async (req: Request, res: Response) => {
 export const daftar = async (req: Request, res: Response) => {
   if (!req.body) {
     return res.status(400).json({
-      error: "Gagal Membuat Akun, No. HP dan Kode OTP Harus Diisi! 1",
+      message: "Gagal Membuat Akun, No. HP dan Kode OTP Harus Diisi!",
     });
   }
   const { noHp, kodeOtp } = req.body;
@@ -156,7 +175,7 @@ export const daftar = async (req: Request, res: Response) => {
     if (!noHp || !kodeOtp) {
       console.log(req.body);
       return res.status(400).json({
-        error: "Gagal Membuat Akun, No. HP dan Kode OTP Harus Diisi! 2",
+        message: "Gagal Membuat Akun, No. HP dan Kode OTP Harus Diisi! 2",
       });
     }
     const existingUser = await prisma.orangTua.findUnique({
@@ -297,14 +316,14 @@ export const ubahNoHp = async (req: Request, res: Response) => {
   if (!req.body) {
     return res
       .status(400)
-      .json({ error: "Gagal Mengubah No. HP, Semua Field Harus Diisi!" });
+      .json({ message: "Gagal Mengubah No. HP, Semua Field Harus Diisi!" });
   }
   const { id, noHpBaru, kodeOtp } = req.body;
   try {
     if (!id || !noHpBaru || !kodeOtp) {
       return res
         .status(400)
-        .json({ error: "Gagal Mengubah No. Semua Field Harus Diisi!" });
+        .json({ message: "Gagal Mengubah No. Semua Field Harus Diisi!" });
     }
 
     const existingUser = await prisma.orangTua.findUnique({
@@ -366,14 +385,16 @@ export const ubahNoHp = async (req: Request, res: Response) => {
 
 export const masuk = async (req: Request, res: Response) => {
   if (!req.body) {
-    return res.status(400).json({ error: "No. HP dan Kode OTP Harus Diisi!" });
+    return res
+      .status(400)
+      .json({ message: "No. HP dan Kode OTP Harus Diisi!" });
   }
   const { noHp, kodeOtp } = req.body;
   try {
     if (!noHp) {
       return res
         .status(400)
-        .json({ error: "No. HP dan Kode OTP Harus Diisi!" });
+        .json({ message: "No. HP dan Kode OTP Harus Diisi!" });
     }
 
     const userOrangTua = await prisma.orangTua.findUnique({

@@ -97,7 +97,11 @@ class _EditPhonePageState extends ConsumerState<EditPhonePage> {
                   if (_formKey.currentState!.validate()) {
                     await ref
                         .read(authViewModelProvider.notifier)
-                        .kirimOtp(noHp: _noHpController.text, tujuan: tujuan);
+                        .kirimOtp(
+                          noHp: _noHpController.text,
+                          tujuan: tujuan,
+                          nik: _nikController.text,
+                        );
                   }
                 },
                 text: 'Kirim Kode OTP',

@@ -19,14 +19,16 @@ class AuthRemoteRepository {
   Future<AuthResponse> kirimOtp({
     required String noHp,
     required String tujuan,
+    String? nik,
   }) async {
     try {
       final response = await http.post(
         Uri.parse('${Constants.serverUrl}/auth/kirim-otp'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'noHp': noHp, 'tujuan': tujuan}),
+        body: jsonEncode({'noHp': noHp, 'tujuan': tujuan, 'nik': nik}),
       );
 
+      print(response.body);
       if (response.statusCode == 200) {
         return AuthResponse.fromJson(
           response.body,

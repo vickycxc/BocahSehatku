@@ -38,11 +38,16 @@ class AuthViewModel extends _$AuthViewModel {
     }
   }
 
-  Future<void> kirimOtp({required String noHp, required String tujuan}) async {
+  Future<void> kirimOtp({
+    required String noHp,
+    required String tujuan,
+    String? nik,
+  }) async {
     state = const AsyncLoading();
     final res = await _authRemoteRepository.kirimOtp(
       noHp: noHp,
       tujuan: tujuan,
+      nik: nik,
     );
     if (res.suksesMengirimOtp == true) {
       state = AsyncData(res.message);

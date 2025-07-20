@@ -19,7 +19,7 @@ class Constants {
     },
   ];
 
-  static const String serverUrl = 'http://192.168.155.36:3000/api';
+  static const String serverUrl = 'http://192.168.30.36:3000/api';
 
   static const List<String> daftarKecamatan = ['Gresik', 'Kebomas'];
   static const Map<String, List<String>> daftarPuskesmas = {
