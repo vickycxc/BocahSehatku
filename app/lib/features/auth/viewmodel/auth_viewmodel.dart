@@ -1,7 +1,8 @@
-import 'package:app/core/model/user_model.dart';
+import 'package:app/features/auth/model/user_model.dart';
 import 'package:app/core/providers/current_user_notifier.dart';
-import 'package:app/core/model/orang_tua_model.dart';
-import 'package:app/features/auth/model/auth_response.dart';
+import 'package:app/features/auth/model/orang_tua_model.dart';
+import 'package:app/features/auth/model/auth_response_model.dart';
+import 'package:app/features/auth/model/verifikasi_akun_model.dart';
 import 'package:app/features/auth/repositories/auth_local_repository.dart';
 import 'package:app/features/auth/repositories/auth_remote_repository.dart';
 import 'package:fpdart/fpdart.dart';
@@ -14,13 +15,15 @@ class AuthViewModel extends _$AuthViewModel {
   late AuthRemoteRepository _authRemoteRepository;
   late AuthLocalRepository _authLocalRepository;
   late CurrentUserNotifier _currentUserNotifier;
+  String? nik;
+  String? noHpBaru;
+  String? kodeOtp;
 
   @override
   AsyncValue<String>? build() {
     _authRemoteRepository = ref.watch(authRemoteRepositoryProvider);
     _authLocalRepository = ref.watch(authLocalRepositoryProvider);
     _currentUserNotifier = ref.watch(currentUserNotifierProvider.notifier);
-
     return null;
   }
 
@@ -49,8 +52,12 @@ class AuthViewModel extends _$AuthViewModel {
       tujuan: tujuan,
       nik: nik,
     );
-    if (res.suksesMengirimOtp == true) {
+    if (res.sukses == true) {
       state = AsyncData(res.message);
+      if (nik != null) {
+        this.nik = nik;
+        noHpBaru = noHp;
+      }
     } else {
       state = AsyncError(res.message, StackTrace.current);
     }
@@ -109,6 +116,95 @@ class AuthViewModel extends _$AuthViewModel {
     }
   }
 
+  Future<void> ubahNoHp({
+    required String noHpBaru,
+    required String kodeOtp,
+  }) async {
+    state = const AsyncLoading();
+    final res = await _authRemoteRepository.ubahNoHp(
+      noHpBaru: noHpBaru,
+      kodeOtp: kodeOtp,
+    );
+
+    if (res.userOrangTua != null) {
+      _berhasilPerbaruiProfil(res);
+    } else {
+      state = AsyncError(res.message, StackTrace.current);
+    }
+  }
+
+  Future<void> verifikasiOtp({
+    required String noHp,
+    required String kodeOtp,
+  }) async {
+    state = const AsyncLoading();
+    final res = await _authRemoteRepository.verifikasiOtp(
+      noHp: noHp,
+      kodeOtp: kodeOtp,
+    );
+
+    if (res.sukses == true) {
+      this.kodeOtp = kodeOtp;
+      state = AsyncData(res.message);
+    } else {
+      state = AsyncError(res.message, StackTrace.current);
+    }
+  }
+
+  Future<void> ajukanUbahNoHp({required int posyanduId}) async {
+    if (nik == null || noHpBaru == null || kodeOtp == null) {
+      state = AsyncError(
+        'Gagal Mengajukan Pengubahan No. HP, NIK, No. HP Baru & Kode OTP Tidak Ditemukan!',
+        StackTrace.current,
+      );
+      return;
+    }
+    state = const AsyncLoading();
+    final res = await _authRemoteRepository.ajukanUbahNoHp(
+      noHpBaru: noHpBaru!,
+      kodeOtp: kodeOtp!,
+      nik: nik!,
+      posyanduId: posyanduId,
+    );
+
+    if (res.sukses == true) {
+      nik = null;
+      noHpBaru = null;
+      kodeOtp = null;
+      state = AsyncData(res.message);
+    } else {
+      state = AsyncError(res.message, StackTrace.current);
+    }
+  }
+
+  Future<List<VerifikasiAkunModel>> cekVerifikasiAkun(String token) async {
+    state = const AsyncLoading();
+    final res = await _authRemoteRepository.cekVerifikasiAkun(token);
+    if (res.verifikasiAkun != null) {
+      state = AsyncData(res.message);
+      return res.verifikasiAkun!;
+    } else {
+      state = AsyncError(res.message, StackTrace.current);
+      return [];
+    }
+  }
+
+  Future<void> verifikasiAkun({
+    required String token,
+    required String nik,
+  }) async {
+    state = const AsyncLoading();
+    final res = await _authRemoteRepository.verifikasiAkun(
+      token: token,
+      nik: nik,
+    );
+    if (res.sukses == true) {
+      state = AsyncData(res.message);
+    } else {
+      state = AsyncError(res.message, StackTrace.current);
+    }
+  }
+
   Future<void> masuk({required String noHp, required String kodeOtp}) async {
     state = const AsyncLoading();
     final res = await _authRemoteRepository.masuk(noHp: noHp, kodeOtp: kodeOtp);
@@ -140,7 +236,7 @@ class AuthViewModel extends _$AuthViewModel {
     _currentUserNotifier.removeUser();
   }
 
-  void _berhasilMasuk(AuthResponse res) {
+  void _berhasilMasuk(AuthResponseModel res) {
     final token = res.token!;
     _authLocalRepository.setToken(token);
     final UserModel user = res.userOrangTua != null
@@ -150,7 +246,7 @@ class AuthViewModel extends _$AuthViewModel {
     state = AsyncData(res.message);
   }
 
-  void _berhasilPerbaruiProfil(AuthResponse res) {
+  void _berhasilPerbaruiProfil(AuthResponseModel res) {
     final user = _currentUserNotifier.state;
     final UserModel newUser = res.userOrangTua != null
         ? UserModel(token: user!.token, data: Left(res.userOrangTua!))
@@ -159,7 +255,7 @@ class AuthViewModel extends _$AuthViewModel {
     state = AsyncData(res.message);
   }
 
-  void _berhasilAmbilDataPengguna(AuthResponse res, String token) {
+  void _berhasilAmbilDataPengguna(AuthResponseModel res, String token) {
     final UserModel user = res.userOrangTua != null
         ? UserModel(token: token, data: Left(res.userOrangTua!))
         : UserModel(token: token, data: Right(res.userPosyandu!));

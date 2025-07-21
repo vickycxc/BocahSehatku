@@ -15,7 +15,7 @@ class CustomBackButton extends StatelessWidget {
             shape: const CircleBorder(),
             padding: const EdgeInsets.all(8),
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => {Navigator.pop(context)},
           child: Icon(LucideIcons.chevronLeft, color: Palette.textPrimaryColor),
         ),
       ),

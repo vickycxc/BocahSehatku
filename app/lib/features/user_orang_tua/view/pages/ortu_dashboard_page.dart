@@ -1,3 +1,4 @@
+import 'package:app/core/providers/current_user_notifier.dart';
 import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/view/pages/onboarding_screen_page.dart';
@@ -10,14 +11,14 @@ class OrtuDashboardPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final user = ref.watch(currentUserNotifierProvider);
-    // print(user);
+    final user = ref.watch(currentUserNotifierProvider);
+    print('user: ${user?.data}');
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Halo nona nona'),
+            Text('Halo nona noni'),
             CustomButton(
               onPressed: () {
                 ref.read(authViewModelProvider.notifier).keluar();

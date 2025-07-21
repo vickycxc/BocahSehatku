@@ -45,9 +45,10 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
           if (message.isNotEmpty) {
             showSnackBar(context, message);
           }
-          Navigator.push(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => OrtuDashboardPage()),
+            (_) => false,
           );
         },
         error: (error, stackTrace) {

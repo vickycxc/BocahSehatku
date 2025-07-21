@@ -1,3 +1,4 @@
+import 'package:app/core/theme/app_palette.dart';
 import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/view/pages/edit_phone_page.dart';
@@ -105,6 +106,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     child: Text(
                       'Daftar',
                       style: TextStyle(
+                        color: Palette.accentColor,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline,
@@ -138,6 +140,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         child: Text(
                           'Ganti No. HP',
                           style: TextStyle(
+                            color: Palette.accentColor,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline,

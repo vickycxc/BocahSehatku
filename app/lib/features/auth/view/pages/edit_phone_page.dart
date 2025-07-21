@@ -15,7 +15,7 @@ class EditPhonePage extends ConsumerStatefulWidget {
 }
 
 class _EditPhonePageState extends ConsumerState<EditPhonePage> {
-  final String tujuan = "UBAH_NO_HP";
+  final String tujuan = "AJUKAN_UBAH_NO_HP";
   final TextEditingController _nikController = TextEditingController();
   final TextEditingController _noHpController = TextEditingController();
   final _formKey = GlobalKey<FormState>();

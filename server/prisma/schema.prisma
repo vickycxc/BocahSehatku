@@ -14,41 +14,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model VerifikasiOtp {
-  id           Int      @id @default(autoincrement())
-  noHp         String   @unique
-  kodeOtp      String
-  otpExpiresAt DateTime
-}
-
 model OrangTua {
-  id           Int           @id @default(autoincrement())
-  noHp         String        @unique
-  nama         String?
-  nik          String?       @unique
-  jenisKelamin jenisKelamin?
-  alamat       String?
-  posyandu     Posyandu?     @relation(fields: [posyanduId], references: [id])
-  posyanduId   Int?
-  anak         Anak[]
-  kodeOtp      String?
-  otpExpiresAt DateTime?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id             Int             @id @default(autoincrement())
+  noHp           String          @unique
+  nama           String?
+  nik            String?         @unique
+  jenisKelamin   jenisKelamin?
+  alamat         String?
+  posyandu       Posyandu?       @relation(fields: [posyanduId], references: [id])
+  posyanduId     Int?
+  anak           Anak[]
+  verifikasiAkun verifikasiAkun?
+  kodeOtp        String?
+  otpExpiresAt   DateTime?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }
 
 model Posyandu {
-  id            Int        @id @default(autoincrement())
-  kodePosyandu  String     @unique
-  password      String
-  namaPosyandu  String
-  kecamatan     String
-  puskesmas     String
-  desaKelurahan String
-  alamat        String
-  orangTua      OrangTua[]
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  id             Int              @id @default(autoincrement())
+  kodePosyandu   String           @unique
+  password       String
+  namaPosyandu   String
+  kecamatan      String
+  puskesmas      String
+  desaKelurahan  String
+  alamat         String
+  orangTua       OrangTua[]
+  verifikasiAkun verifikasiAkun[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
 }
 
 model Anak {
@@ -81,6 +76,24 @@ model Pengukuran {
   kategoriTBU       kategoriTBU
   kategoriBBTB      kategoriBBTB
   kategoriIMTU      kategorIMTU
+}
+
+model verifikasiAkun {
+  id         Int      @id @default(autoincrement())
+  nik        String   @unique
+  orangTua   OrangTua @relation(fields: [nik], references: [nik])
+  posyandu   Posyandu @relation(fields: [posyanduId], references: [id])
+  posyanduId Int
+  noHpBaru   String   @unique
+  createdAt  DateTime @default(now())
+}
+
+model VerifikasiOtp {
+  id           Int      @id @default(autoincrement())
+  noHp         String   @unique
+  kodeOtp      String
+  otpExpiresAt DateTime
+  createdAt    DateTime @default(now())
 }
 
 model RiwayatOtp {

@@ -1,3 +1,4 @@
+import 'package:app/core/theme/app_palette.dart';
 import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/view/pages/login_page.dart';
@@ -102,6 +103,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                       'Masuk',
                       style: TextStyle(
                         fontSize: 16,
+                        color: Palette.accentColor,
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline,
                       ),

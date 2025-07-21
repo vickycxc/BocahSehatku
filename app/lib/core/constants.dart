@@ -1,4 +1,4 @@
-import 'package:app/core/model/posyandu_model.dart';
+import 'package:app/features/auth/model/posyandu_model.dart';
 
 class Constants {
   static const List<Map<String, String>> splashMessages = [
@@ -19,7 +19,7 @@ class Constants {
     },
   ];
 
-  static const String serverUrl = 'http://192.168.30.36:3000/api';
+  static const String serverUrl = 'http://192.168.88.83:3000/api';
 
   static const List<String> daftarKecamatan = ['Gresik', 'Kebomas'];
   static const Map<String, List<String>> daftarPuskesmas = {

@@ -17,7 +17,7 @@ export const kirimOtp = async (req: Request, res: Response) => {
         .json({ message: "No. HP dan Tujuan Harus Diisi!" });
     }
 
-    if (tujuan === "UBAH_NO_HP" && !nik) {
+    if (tujuan === "AJUKAN_UBAH_NO_HP" && !nik) {
       return res
         .status(400)
         .json({ message: "NIK Harus Diisi untuk Mengubah No. HP!" });
@@ -28,7 +28,7 @@ export const kirimOtp = async (req: Request, res: Response) => {
     });
 
     let cekNik: OrangTuaType | null = null;
-    if (tujuan === "UBAH_NO_HP") {
+    if (tujuan === "AJUKAN_UBAH_NO_HP") {
       cekNik = await prisma.orangTua.findUnique({
         where: { nik },
       });
@@ -59,7 +59,11 @@ export const kirimOtp = async (req: Request, res: Response) => {
       });
     }
 
-    if (tujuan !== "DAFTAR" && tujuan !== "MASUK" && tujuan !== "UBAH_NO_HP") {
+    if (
+      tujuan !== "DAFTAR" &&
+      tujuan !== "MASUK" &&
+      tujuan !== "AJUKAN_UBAH_NO_HP"
+    ) {
       return res.status(400).json({
         message: "Gagal Mengirim OTP, Tujuan Tidak Valid!",
       });
@@ -71,8 +75,8 @@ export const kirimOtp = async (req: Request, res: Response) => {
         .json({ message: "Gagal Mengirim OTP, Akun Tidak Ditemukan!" });
     }
 
-    if (tujuan === "DAFTAR" || tujuan === "UBAH_NO_HP") {
-      if (tujuan === "UBAH_NO_HP" && !cekNik) {
+    if (tujuan === "DAFTAR" || tujuan === "AJUKAN_UBAH_NO_HP") {
+      if (tujuan === "AJUKAN_UBAH_NO_HP" && !cekNik) {
         return res
           .status(400)
           .json({ message: "Gagal Mengirim OTP, Akun Tidak Ditemukan!" });
@@ -120,7 +124,7 @@ export const kirimOtp = async (req: Request, res: Response) => {
         });
       }
 
-      if (tujuan === "DAFTAR") {
+      if (tujuan === "DAFTAR" || tujuan === "AJUKAN_UBAH_NO_HP") {
         // Hapus OTP lama jika ada
         await prisma.verifikasiOtp.deleteMany({
           where: { noHp },
@@ -135,24 +139,13 @@ export const kirimOtp = async (req: Request, res: Response) => {
         });
       }
 
-      if (tujuan === "UBAH_NO_HP") {
-        await prisma.orangTua.update({
-          where: { nik },
-          data: {
-            noHp,
-            kodeOtp,
-            otpExpiresAt,
-          },
-        });
-      }
-
       // Simpan riwayat pengiriman OTP
       await prisma.riwayatOtp.create({
         data: { noHp },
       });
 
       return res.status(200).json({
-        message: "OTP berhasil Dikirim!",
+        message: "OTP berhasil Dikirim",
       });
     }
   } catch (error) {
@@ -313,14 +306,15 @@ export const perbaruiProfil = async (req: Request, res: Response) => {
 };
 
 export const ubahNoHp = async (req: Request, res: Response) => {
+  const id = req.orangTua.id;
   if (!req.body) {
     return res
       .status(400)
       .json({ message: "Gagal Mengubah No. HP, Semua Field Harus Diisi!" });
   }
-  const { id, noHpBaru, kodeOtp } = req.body;
+  const { noHpBaru, kodeOtp } = req.body;
   try {
-    if (!id || !noHpBaru || !kodeOtp) {
+    if (!noHpBaru || !kodeOtp) {
       return res
         .status(400)
         .json({ message: "Gagal Mengubah No. Semua Field Harus Diisi!" });
@@ -339,12 +333,12 @@ export const ubahNoHp = async (req: Request, res: Response) => {
     const userOrangTua = await prisma.orangTua.findUnique({
       where: { id },
     });
-
-    if (
-      !userOrangTua ||
-      kodeOtp !== userOrangTua?.kodeOtp ||
-      !userOrangTua.otpExpiresAt
-    ) {
+    if (!userOrangTua) {
+      return res.status(404).json({
+        message: "Gagal Mengubah No. HP, Akun Tidak Ditemukan!",
+      });
+    }
+    if (kodeOtp !== userOrangTua?.kodeOtp || !userOrangTua.otpExpiresAt) {
       return res.status(400).json({
         message: "Gagal Mengubah No. HP, Kode OTP Tidak Valid!",
       });
@@ -365,12 +359,6 @@ export const ubahNoHp = async (req: Request, res: Response) => {
         otpExpiresAt: true,
       },
     });
-
-    if (!orangTuaNew) {
-      return res.status(404).json({
-        message: "Gagal Mengubah No. HP, Akun Tidak Ditemukan!",
-      });
-    }
     return res.status(200).json({
       message: "No. HP Berhasil Diperbarui",
       userOrangTua: orangTuaNew,
@@ -379,6 +367,217 @@ export const ubahNoHp = async (req: Request, res: Response) => {
     console.error("Gagal Mengubah No. HP, Error di ubahNoHp Controller", error);
     return res.status(500).json({
       message: "Gagal Mengubah No. HP, Terjadi Kesalahan Pada Server!",
+    });
+  }
+};
+
+export const verifikasiOtp = async (req: Request, res: Response) => {
+  if (!req.body) {
+    return res.status(400).json({
+      message: "Gagal Verifikasi OTP, No. HP dan Kode OTP Harus Diisi!",
+    });
+  }
+
+  const { noHp, kodeOtp } = req.body;
+  try {
+    if (!noHp || !kodeOtp) {
+      return res.status(400).json({
+        message: "Gagal Verifikasi OTP, No. HP dan Kode OTP Harus Diisi!",
+      });
+    }
+
+    const verifikasiOtp = await prisma.verifikasiOtp.findUnique({
+      where: { noHp },
+    });
+
+    if (!verifikasiOtp || kodeOtp !== verifikasiOtp?.kodeOtp) {
+      return res.status(400).json({
+        message: "Gagal Memverifikasi OTP, Kode OTP Tidak Valid!",
+      });
+    }
+    if (verifikasiOtp.otpExpiresAt < new Date()) {
+      return res.status(400).json({
+        message: "Gagal Memverifikasi OTP, Kode OTP Sudah Kadaluarsa!",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Verifikasi OTP Berhasil",
+    });
+  } catch (error) {
+    console.error("Gagal Mengubah No. HP, Error di ubahNoHp Controller", error);
+    return res.status(500).json({
+      message: "Gagal Mengubah No. HP, Terjadi Kesalahan Pada Server!",
+    });
+  }
+};
+
+export const ajukanUbahNoHp = async (req: Request, res: Response) => {
+  if (!req.body) {
+    return res.status(400).json({
+      message: "Gagal Mengajukan Ubah No. HP, Semua Field Harus Diisi!",
+    });
+  }
+  const { noHpBaru, kodeOtp, nik, posyanduId } = req.body;
+  try {
+    if (!noHpBaru || !kodeOtp || !nik || !posyanduId) {
+      return res.status(400).json({
+        message: "Gagal Mengajukan Ubah No. Semua Field Harus Diisi!",
+      });
+    }
+
+    const verifikasiOtp = await prisma.verifikasiOtp.findUnique({
+      where: { noHp: noHpBaru },
+    });
+
+    if (!verifikasiOtp || kodeOtp !== verifikasiOtp?.kodeOtp) {
+      return res.status(400).json({
+        message: "Gagal Memverifikasi OTP, Kode OTP Tidak Valid!",
+      });
+    }
+    if (verifikasiOtp.otpExpiresAt < new Date()) {
+      return res.status(400).json({
+        message: "Gagal Memverifikasi OTP, Kode OTP Sudah Kadaluarsa!",
+      });
+    }
+
+    if (!verifikasiOtp || kodeOtp !== verifikasiOtp?.kodeOtp) {
+      return res.status(400).json({
+        message: "Gagal Memverifikasi OTP, Kode OTP Tidak Valid!",
+      });
+    }
+    if (verifikasiOtp.otpExpiresAt < new Date()) {
+      return res.status(400).json({
+        message: "Gagal Memverifikasi OTP, Kode OTP Sudah Kadaluarsa!",
+      });
+    }
+
+    await prisma.verifikasiOtp.delete({
+      where: { noHp: noHpBaru },
+    });
+
+    const cekPosyandu = await prisma.posyandu.findUnique({
+      where: { id: posyanduId },
+    });
+
+    if (!cekPosyandu) {
+      return res.status(404).json({
+        message: "Gagal Mengajukan Ubah No. HP, Posyandu Tidak Ditemukan!",
+      });
+    }
+
+    const userOrangTua = await prisma.orangTua.findUnique({
+      where: { nik },
+    });
+    if (!userOrangTua) {
+      return res.status(400).json({
+        message: "Gagal Mengajukan Ubah No. HP, Akun Tidak Ditemukan!",
+      });
+    }
+
+    const verifikasiAkun = await prisma.verifikasiAkun.create({
+      data: {
+        noHpBaru: noHpBaru,
+        orangTua: { connect: { nik: nik } },
+        posyandu: { connect: { id: posyanduId } },
+      },
+    });
+
+    if (!verifikasiAkun) {
+      return res
+        .status(400)
+        .json({ message: "Gagal Mengajukan Ubah No. HP, Silakan Coba Lagi!" });
+    }
+
+    return res.status(200).json({
+      message:
+        "Pengajuan Ubah No. HP Berhasil Diajukan, Silakan Menuju Ke Posyandu Untuk Verifikasi",
+    });
+  } catch (error) {
+    console.error("Gagal Mengubah No. HP, Error di ubahNoHp Controller", error);
+    return res.status(500).json({
+      message: "Gagal Mengubah No. HP, Terjadi Kesalahan Pada Server!",
+    });
+  }
+};
+
+export const cekVerifikasiAkun = async (req: Request, res: Response) => {
+  const { id } = req.posyandu;
+  try {
+    const verifikasiAkun = await prisma.verifikasiAkun.findMany({
+      where: { posyanduId: id },
+      include: {
+        orangTua: true,
+      },
+    });
+    return res.status(200).json({
+      message: "Berhasil Mengecek Verifikasi Akun",
+      verifikasiAkun: verifikasiAkun,
+    });
+  } catch (error) {
+    console.error(
+      "Gagal Mengecek Verifikasi Akun, Error di cekVerifikasiAkun Controller",
+      error
+    );
+    return res.status(500).json({
+      message: "Gagal Mengecek Verifikasi Akun, Terjadi Kesalahan Pada Server!",
+    });
+  }
+};
+
+export const verifikasiAkun = async (req: Request, res: Response) => {
+  const { id: posyanduId } = req.posyandu;
+  if (!req.body) {
+    return res.status(400).json({
+      message: "Gagal Memverifikasi Akun, Semua Field Harus Diisi!",
+    });
+  }
+  const { nik } = req.body;
+  try {
+    if (!nik) {
+      return res.status(400).json({
+        message: "Gagal Memverifikasi Akun, NIK Harus Diisi!",
+      });
+    }
+
+    const verifikasiAkun = await prisma.verifikasiAkun.findUnique({
+      where: { nik: nik, posyanduId: posyanduId },
+    });
+
+    if (!verifikasiAkun) {
+      return res.status(404).json({
+        message:
+          "Gagal Memverifikasi Akun, Pengajuan Verifikasi Akun Tidak Ditemukan!",
+      });
+    }
+
+    const orangTua = await prisma.orangTua.update({
+      where: { nik: nik },
+      data: {
+        noHp: verifikasiAkun.noHpBaru,
+        posyandu: { connect: { id: posyanduId } },
+      },
+    });
+    if (orangTua) {
+      await prisma.verifikasiAkun.delete({
+        where: { id: verifikasiAkun.id },
+      });
+      return res.status(200).json({
+        message:
+          "Akun Berhasil Diverifikasi, Silakan Sampaikan Kepada Orang Tua Untuk Masuk Dengan No. HP Baru",
+      });
+    } else {
+      return res.status(400).json({
+        message: "Gagal Memverifikasi Akun, Silakan Coba Lagi!",
+      });
+    }
+  } catch (error) {
+    console.error(
+      "Gagal Memverifikasi Akun, Error di verifikasiAkun Controller",
+      error
+    );
+    return res.status(500).json({
+      message: "Gagal Memverifikasi Akun, Terjadi Kesalahan Pada Server!",
     });
   }
 };
@@ -491,13 +690,13 @@ export const checkAuth = (req: Request, res: Response) => {
   try {
     if (req.orangTua) {
       return res.status(200).json({
-        message: "Token Valid.",
+        message: "Token Valid",
         userOrangTua: req.orangTua,
       });
     }
     if (req.posyandu) {
       return res.status(200).json({
-        message: "Token Valid.",
+        message: "Token Valid",
         userPosyandu: req.posyandu,
       });
     }
