@@ -1,7 +1,9 @@
+import 'package:app/core/providers/verification_notifier.dart';
 import 'package:app/features/auth/model/user_model.dart';
 import 'package:app/core/providers/current_user_notifier.dart';
 import 'package:app/features/auth/model/orang_tua_model.dart';
 import 'package:app/features/auth/model/auth_response_model.dart';
+import 'package:app/features/auth/model/verification_model.dart';
 import 'package:app/features/auth/model/verifikasi_akun_model.dart';
 import 'package:app/features/auth/repositories/auth_local_repository.dart';
 import 'package:app/features/auth/repositories/auth_remote_repository.dart';
@@ -15,14 +17,13 @@ class AuthViewModel extends _$AuthViewModel {
   late AuthRemoteRepository _authRemoteRepository;
   late AuthLocalRepository _authLocalRepository;
   late CurrentUserNotifier _currentUserNotifier;
-  String? nik;
-  String? noHpBaru;
-  String? kodeOtp;
+  late VerificationNotifier _verificationNotifier;
 
   @override
   AsyncValue<String>? build() {
     _authRemoteRepository = ref.watch(authRemoteRepositoryProvider);
     _authLocalRepository = ref.watch(authLocalRepositoryProvider);
+    _verificationNotifier = ref.watch(verificationNotifierProvider.notifier);
     _currentUserNotifier = ref.watch(currentUserNotifierProvider.notifier);
     return null;
   }
@@ -55,8 +56,9 @@ class AuthViewModel extends _$AuthViewModel {
     if (res.sukses == true) {
       state = AsyncData(res.message);
       if (nik != null) {
-        this.nik = nik;
-        noHpBaru = noHp;
+        _verificationNotifier.setVerification(
+          VerificationModel(noHpBaru: noHp, nik: nik, kodeOtp: null),
+        );
       }
     } else {
       state = AsyncError(res.message, StackTrace.current);
@@ -144,7 +146,10 @@ class AuthViewModel extends _$AuthViewModel {
     );
 
     if (res.sukses == true) {
-      this.kodeOtp = kodeOtp;
+      final nik = _verificationNotifier.state?.nik;
+      _verificationNotifier.setVerification(
+        VerificationModel(nik: nik, noHpBaru: noHp, kodeOtp: kodeOtp),
+      );
       state = AsyncData(res.message);
     } else {
       state = AsyncError(res.message, StackTrace.current);
@@ -152,6 +157,11 @@ class AuthViewModel extends _$AuthViewModel {
   }
 
   Future<void> ajukanUbahNoHp({required int posyanduId}) async {
+    final verifikasi = _verificationNotifier.state;
+    final nik = verifikasi?.nik;
+    final noHpBaru = verifikasi?.noHpBaru;
+    final kodeOtp = verifikasi?.kodeOtp;
+
     if (nik == null || noHpBaru == null || kodeOtp == null) {
       state = AsyncError(
         'Gagal Mengajukan Pengubahan No. HP, NIK, No. HP Baru & Kode OTP Tidak Ditemukan!',
@@ -161,16 +171,14 @@ class AuthViewModel extends _$AuthViewModel {
     }
     state = const AsyncLoading();
     final res = await _authRemoteRepository.ajukanUbahNoHp(
-      noHpBaru: noHpBaru!,
-      kodeOtp: kodeOtp!,
-      nik: nik!,
+      noHpBaru: noHpBaru,
+      kodeOtp: kodeOtp,
+      nik: nik,
       posyanduId: posyanduId,
     );
 
     if (res.sukses == true) {
-      nik = null;
-      noHpBaru = null;
-      kodeOtp = null;
+      _verificationNotifier.removeVerification();
       state = AsyncData(res.message);
     } else {
       state = AsyncError(res.message, StackTrace.current);
