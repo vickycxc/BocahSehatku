@@ -9,7 +9,7 @@
   "scripts": {
     "build": "prisma generate",
     "dev": "nodemon src/index.ts",
-    "start": "node src/index3.ts",
+    "start": "node src/index.ts",
     "postinstall": "npm run build"
   },
   "keywords": [],
