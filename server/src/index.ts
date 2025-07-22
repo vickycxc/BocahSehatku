@@ -1,4 +1,4 @@
-import authRoutes from "./routes/auth.route.js";
+import authRoutes from "./routes/auth.route.ts";
 import express from "express";
 import { config } from "dotenv";
 

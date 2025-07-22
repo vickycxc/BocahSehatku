@@ -4,9 +4,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "prisma generate && tsc",
+    "build": "prisma generate",
     "dev": "nodemon src/index.ts",
-    "start": "node dist/src/index.js",
+    "start": "node src/index.ts",
     "postinstall": "npm run build"
   },
   "keywords": [],

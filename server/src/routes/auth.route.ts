@@ -11,8 +11,8 @@ import {
   verifikasiAkun,
   cekVerifikasiAkun,
   verifikasiOtp,
-} from "../controller/auth.controller.js";
-import { protectRoute } from "../middleware/auth.middleware.js";
+} from "../controller/auth.controller.ts";
+import { protectRoute } from "../middleware/auth.middleware.ts";
 
 const router = express.Router();
 

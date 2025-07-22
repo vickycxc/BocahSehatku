@@ -1,4 +1,4 @@
-import type { OrangTuaType, PosyanduType } from "../prisma.js";
+import type { OrangTuaType, PosyanduType } from "../prisma.ts";
 
 declare global {
   declare namespace Express {
