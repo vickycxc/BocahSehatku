@@ -1,8 +1,8 @@
 import bcryptjs from "bcryptjs";
-import generateToken from "../lib/jwt.ts";
-import prisma from "../lib/prisma.ts";
+import generateToken from "../lib/jwt.js";
+import prisma from "../lib/prisma.js";
 import type { Request, Response } from "express";
-import type { OrangTuaType } from "../types/prisma.ts";
+import type { OrangTuaType } from "../types/prisma.js";
 import axios from "axios";
 
 export const kirimOtp = async (req: Request, res: Response) => {
