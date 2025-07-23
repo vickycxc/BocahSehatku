@@ -1,10 +1,12 @@
-import 'package:app/core/providers/verification_notifier.dart';
+import 'package:app/core/providers/pengajuan_otp_notifier.dart';
+import 'package:app/core/providers/pengajuan_verifikasi_notifier.dart';
+import 'package:app/features/auth/model/pengajuan_otp_model.dart';
 import 'package:app/features/auth/model/user_model.dart';
-import 'package:app/core/providers/current_user_notifier.dart';
+import 'package:app/core/providers/pengguna_aktif_notifier.dart';
 import 'package:app/features/auth/model/orang_tua_model.dart';
 import 'package:app/features/auth/model/auth_response_model.dart';
-import 'package:app/features/auth/model/verification_model.dart';
 import 'package:app/features/auth/model/verifikasi_akun_model.dart';
+import 'package:app/features/auth/model/pengajuan_verifikasi_model.dart';
 import 'package:app/features/auth/repositories/auth_local_repository.dart';
 import 'package:app/features/auth/repositories/auth_remote_repository.dart';
 import 'package:fpdart/fpdart.dart';
@@ -16,15 +18,19 @@ part 'auth_viewmodel.g.dart';
 class AuthViewModel extends _$AuthViewModel {
   late AuthRemoteRepository _authRemoteRepository;
   late AuthLocalRepository _authLocalRepository;
-  late CurrentUserNotifier _currentUserNotifier;
-  late VerificationNotifier _verificationNotifier;
+  late PenggunaAktifNotifier _penggunaAktifNotifier;
+  late PengajuanVerifikasiNotifier _pengajuanVerifikasiNotifier;
+  late PengajuanOtpNotifier _pengajuanOtpNotifier;
 
   @override
   AsyncValue<String>? build() {
     _authRemoteRepository = ref.watch(authRemoteRepositoryProvider);
     _authLocalRepository = ref.watch(authLocalRepositoryProvider);
-    _verificationNotifier = ref.watch(verificationNotifierProvider.notifier);
-    _currentUserNotifier = ref.watch(currentUserNotifierProvider.notifier);
+    _pengajuanVerifikasiNotifier = ref.watch(
+      pengajuanVerifikasiNotifierProvider.notifier,
+    );
+    _penggunaAktifNotifier = ref.watch(penggunaAktifNotifierProvider.notifier);
+    _pengajuanOtpNotifier = ref.watch(pengajuanOtpNotifierProvider.notifier);
     return null;
   }
 
@@ -53,11 +59,15 @@ class AuthViewModel extends _$AuthViewModel {
       tujuan: tujuan,
       nik: nik,
     );
+    print('🚀 ~ AuthViewModel ~ res: $res');
     if (res.sukses == true) {
       state = AsyncData(res.message);
+      _pengajuanOtpNotifier.aturPengajuanOtp(
+        PengajuanOtpModel(noHp: noHp, tujuan: tujuan),
+      );
       if (nik != null) {
-        _verificationNotifier.setVerification(
-          VerificationModel(noHpBaru: noHp, nik: nik, kodeOtp: null),
+        _pengajuanVerifikasiNotifier.aturPengajuanVerifikasi(
+          VerifikasiPenggunaModel(noHp: noHp, nik: nik, kodeOtp: null),
         );
       }
     } else {
@@ -86,7 +96,7 @@ class AuthViewModel extends _$AuthViewModel {
     required int posyanduId,
   }) async {
     state = const AsyncLoading();
-    final user = _currentUserNotifier.state;
+    final user = _penggunaAktifNotifier.state;
     if (user == null) {
       state = AsyncError('Pengguna Tidak Ditemukan!', StackTrace.current);
       return;
@@ -146,9 +156,9 @@ class AuthViewModel extends _$AuthViewModel {
     );
 
     if (res.sukses == true) {
-      final nik = _verificationNotifier.state?.nik;
-      _verificationNotifier.setVerification(
-        VerificationModel(nik: nik, noHpBaru: noHp, kodeOtp: kodeOtp),
+      final nik = _pengajuanVerifikasiNotifier.state?.nik;
+      _pengajuanVerifikasiNotifier.aturPengajuanVerifikasi(
+        VerifikasiPenggunaModel(nik: nik, noHp: noHp, kodeOtp: kodeOtp),
       );
       state = AsyncData(res.message);
     } else {
@@ -157,9 +167,9 @@ class AuthViewModel extends _$AuthViewModel {
   }
 
   Future<void> ajukanUbahNoHp({required int posyanduId}) async {
-    final verifikasi = _verificationNotifier.state;
+    final verifikasi = _pengajuanVerifikasiNotifier.state;
     final nik = verifikasi?.nik;
-    final noHpBaru = verifikasi?.noHpBaru;
+    final noHpBaru = verifikasi?.noHp;
     final kodeOtp = verifikasi?.kodeOtp;
 
     if (nik == null || noHpBaru == null || kodeOtp == null) {
@@ -178,14 +188,14 @@ class AuthViewModel extends _$AuthViewModel {
     );
 
     if (res.sukses == true) {
-      _verificationNotifier.removeVerification();
+      _pengajuanVerifikasiNotifier.hapusPengajuanVerifikasi();
       state = AsyncData(res.message);
     } else {
       state = AsyncError(res.message, StackTrace.current);
     }
   }
 
-  Future<List<VerifikasiAkunModel>> cekVerifikasiAkun(String token) async {
+  Future<List<PengajuanVerifikasiModel>> cekVerifikasiAkun(String token) async {
     state = const AsyncLoading();
     final res = await _authRemoteRepository.cekVerifikasiAkun(token);
     if (res.verifikasiAkun != null) {
@@ -241,7 +251,7 @@ class AuthViewModel extends _$AuthViewModel {
 
   void keluar() {
     _authLocalRepository.removeToken();
-    _currentUserNotifier.removeUser();
+    _penggunaAktifNotifier.hapusPenggunaAktif();
   }
 
   void _berhasilMasuk(AuthResponseModel res) {
@@ -250,16 +260,16 @@ class AuthViewModel extends _$AuthViewModel {
     final UserModel user = res.userOrangTua != null
         ? UserModel(token: token, data: Left(res.userOrangTua!))
         : UserModel(token: token, data: Right(res.userPosyandu!));
-    _currentUserNotifier.setUser(user);
+    _penggunaAktifNotifier.aturPenggunaAktif(user);
     state = AsyncData(res.message);
   }
 
   void _berhasilPerbaruiProfil(AuthResponseModel res) {
-    final user = _currentUserNotifier.state;
+    final user = _penggunaAktifNotifier.state;
     final UserModel newUser = res.userOrangTua != null
         ? UserModel(token: user!.token, data: Left(res.userOrangTua!))
         : UserModel(token: user!.token, data: Right(res.userPosyandu!));
-    _currentUserNotifier.setUser(newUser);
+    _penggunaAktifNotifier.aturPenggunaAktif(newUser);
     state = AsyncData(res.message);
   }
 
@@ -267,6 +277,6 @@ class AuthViewModel extends _$AuthViewModel {
     final UserModel user = res.userOrangTua != null
         ? UserModel(token: token, data: Left(res.userOrangTua!))
         : UserModel(token: token, data: Right(res.userPosyandu!));
-    _currentUserNotifier.setUser(user);
+    _penggunaAktifNotifier.aturPenggunaAktif(user);
   }
 }

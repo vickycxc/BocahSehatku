@@ -1,5 +1,7 @@
+import 'package:app/core/providers/pengajuan_verifikasi_notifier.dart';
 import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
+import 'package:app/features/auth/model/verifikasi_akun_model.dart';
 import 'package:app/features/auth/view/pages/otp_page.dart';
 import 'package:app/core/widgets/wave_background.dart';
 import 'package:app/core/widgets/custom_field.dart';
@@ -33,10 +35,7 @@ class _EditPhonePageState extends ConsumerState<EditPhonePage> {
           }
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  OtpPage(noHp: _noHpController.text, tujuan: tujuan),
-            ),
+            MaterialPageRoute(builder: (context) => OtpPage()),
           );
         },
         error: (error, stackTrace) {
@@ -101,6 +100,15 @@ class _EditPhonePageState extends ConsumerState<EditPhonePage> {
                           noHp: _noHpController.text,
                           tujuan: tujuan,
                           nik: _nikController.text,
+                        );
+                    ref
+                        .read(pengajuanVerifikasiNotifierProvider.notifier)
+                        .aturPengajuanVerifikasi(
+                          VerifikasiPenggunaModel(
+                            noHp: _noHpController.text,
+                            nik: _nikController.text,
+                            kodeOtp: null,
+                          ),
                         );
                   }
                 },

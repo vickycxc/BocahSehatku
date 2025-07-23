@@ -1,86 +1,55 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:app/features/auth/model/orang_tua_model.dart';
-import 'package:app/features/auth/model/posyandu_model.dart';
+class VerifikasiPenggunaModel {
+  final String? nik;
+  final String? noHp;
+  final String? kodeOtp;
 
-class VerifikasiAkunModel {
-  final int id;
-  final OrangTuaModel orangTua;
-  final PosyanduModel posyandu;
-  final String noHpBaru;
-  final DateTime createdAt;
-  VerifikasiAkunModel({
-    required this.id,
-    required this.orangTua,
-    required this.posyandu,
-    required this.noHpBaru,
-    required this.createdAt,
-  });
+  VerifikasiPenggunaModel({this.nik, this.noHp, this.kodeOtp});
 
-  VerifikasiAkunModel copyWith({
-    int? id,
-    OrangTuaModel? orangTua,
-    PosyanduModel? posyandu,
-    String? noHpBaru,
-    DateTime? createdAt,
+  VerifikasiPenggunaModel copyWith({
+    String? nik,
+    String? noHp,
+    String? kodeOtp,
   }) {
-    return VerifikasiAkunModel(
-      id: id ?? this.id,
-      orangTua: orangTua ?? this.orangTua,
-      posyandu: posyandu ?? this.posyandu,
-      noHpBaru: noHpBaru ?? this.noHpBaru,
-      createdAt: createdAt ?? this.createdAt,
+    return VerifikasiPenggunaModel(
+      nik: nik ?? this.nik,
+      noHp: noHp ?? this.noHp,
+      kodeOtp: kodeOtp ?? this.kodeOtp,
     );
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'orangTua': orangTua.toMap(),
-      'posyandu': posyandu.toMap(),
-      'noHpBaru': noHpBaru,
-      'createdAt': createdAt.toIso8601String(),
-    };
+    return <String, dynamic>{'nik': nik, 'noHp': noHp, 'kodeOtp': kodeOtp};
   }
 
-  factory VerifikasiAkunModel.fromMap(Map<String, dynamic> map) {
-    return VerifikasiAkunModel(
-      id: map['id'] as int,
-      orangTua: OrangTuaModel.fromMap(map['orangTua'] as Map<String, dynamic>),
-      posyandu: PosyanduModel.fromMap(map['posyandu'] as Map<String, dynamic>),
-      noHpBaru: map['noHpBaru'] as String,
-      createdAt: DateTime.tryParse(map['createdAt'] as String)!,
+  factory VerifikasiPenggunaModel.fromMap(Map<String, dynamic> map) {
+    return VerifikasiPenggunaModel(
+      nik: map['nik'] != null ? map['nik'] as String : null,
+      noHp: map['noHp'] != null ? map['noHp'] as String : null,
+      kodeOtp: map['kodeOtp'] != null ? map['kodeOtp'] as String : null,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory VerifikasiAkunModel.fromJson(String source) =>
-      VerifikasiAkunModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory VerifikasiPenggunaModel.fromJson(String source) =>
+      VerifikasiPenggunaModel.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   @override
-  String toString() {
-    return 'VerifikasiAkunModel(id: $id, orangTua: $orangTua, posyandu: $posyandu, noHpBaru: $noHpBaru, createdAt: $createdAt)';
-  }
+  String toString() =>
+      'VerifikasiPenggunaModel(nik: $nik, noHp: $noHp, kodeOtp: $kodeOtp)';
 
   @override
-  bool operator ==(covariant VerifikasiAkunModel other) {
+  bool operator ==(covariant VerifikasiPenggunaModel other) {
     if (identical(this, other)) return true;
 
-    return other.id == id &&
-        other.orangTua == orangTua &&
-        other.posyandu == posyandu &&
-        other.noHpBaru == noHpBaru &&
-        other.createdAt == createdAt;
+    return other.nik == nik && other.noHp == noHp && other.kodeOtp == kodeOtp;
   }
 
   @override
-  int get hashCode {
-    return id.hashCode ^
-        orangTua.hashCode ^
-        posyandu.hashCode ^
-        noHpBaru.hashCode ^
-        createdAt.hashCode;
-  }
+  int get hashCode => nik.hashCode ^ noHp.hashCode ^ kodeOtp.hashCode;
 }

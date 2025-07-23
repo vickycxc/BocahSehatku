@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:app/features/auth/model/orang_tua_model.dart';
 import 'package:app/features/auth/model/posyandu_model.dart';
-import 'package:app/features/auth/model/verifikasi_akun_model.dart';
+import 'package:app/features/auth/model/pengajuan_verifikasi_model.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class AuthResponseModel {
@@ -11,7 +11,7 @@ class AuthResponseModel {
   final String? token;
   final OrangTuaModel? userOrangTua;
   final PosyanduModel? userPosyandu;
-  final List<VerifikasiAkunModel>? verifikasiAkun;
+  final List<PengajuanVerifikasiModel>? verifikasiAkun;
   AuthResponseModel({
     required this.message,
     this.sukses,
@@ -27,7 +27,7 @@ class AuthResponseModel {
     String? token,
     OrangTuaModel? userOrangTua,
     PosyanduModel? userPosyandu,
-    List<VerifikasiAkunModel>? verifikasiAkun,
+    List<PengajuanVerifikasiModel>? verifikasiAkun,
   }) {
     return AuthResponseModel(
       message: message ?? this.message,
@@ -62,10 +62,13 @@ class AuthResponseModel {
           ? PosyanduModel.fromMap(map['userPosyandu'] as Map<String, dynamic>)
           : null,
       verifikasiAkun: map['verifikasiAkun'] != null
-          ? List<VerifikasiAkunModel>.from(
-              (map['verifikasiAkun'] as List<int>).map<VerifikasiAkunModel>(
-                (x) => VerifikasiAkunModel.fromMap(x as Map<String, dynamic>),
-              ),
+          ? List<PengajuanVerifikasiModel>.from(
+              (map['verifikasiAkun'] as List<int>)
+                  .map<PengajuanVerifikasiModel>(
+                    (x) => PengajuanVerifikasiModel.fromMap(
+                      x as Map<String, dynamic>,
+                    ),
+                  ),
             )
           : null,
     );

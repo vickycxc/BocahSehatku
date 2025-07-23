@@ -1,30 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'verification_notifier.dart';
+part of 'pengguna_aktif_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$verificationNotifierHash() =>
-    r'6ec43a5de167fc3a420fad284cfaf61edc6f79d6';
+String _$penggunaAktifNotifierHash() =>
+    r'c5c16e447946674d2dda2bb0b104fc87b628ee0c';
 
-/// See also [VerificationNotifier].
-@ProviderFor(VerificationNotifier)
-final verificationNotifierProvider =
-    AutoDisposeNotifierProvider<
-      VerificationNotifier,
-      VerificationModel?
-    >.internal(
-      VerificationNotifier.new,
-      name: r'verificationNotifierProvider',
+/// See also [PenggunaAktifNotifier].
+@ProviderFor(PenggunaAktifNotifier)
+final penggunaAktifNotifierProvider =
+    NotifierProvider<PenggunaAktifNotifier, UserModel?>.internal(
+      PenggunaAktifNotifier.new,
+      name: r'penggunaAktifNotifierProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
           ? null
-          : _$verificationNotifierHash,
+          : _$penggunaAktifNotifierHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );
 
-typedef _$VerificationNotifier = AutoDisposeNotifier<VerificationModel?>;
+typedef _$PenggunaAktifNotifier = Notifier<UserModel?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

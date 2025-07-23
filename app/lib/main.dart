@@ -1,10 +1,10 @@
-import 'package:app/core/providers/current_user_notifier.dart';
+import 'package:app/core/providers/pengguna_aktif_notifier.dart';
 import 'package:app/core/size_config.dart';
 import 'package:app/core/theme/theme.dart';
 import 'package:app/features/auth/view/pages/onboarding_screen_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
-import 'package:app/features/user_orang_tua/view/pages/complete_profile_page.dart';
-import 'package:app/features/user_orang_tua/view/pages/ortu_dashboard_page.dart';
+import 'package:app/features/auth/view/pages/complete_profile_page.dart';
+import 'package:app/features/user_orang_tua/view/pages/ortu_page.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,7 +24,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     SizeConfig().init(context);
-    final currentUser = ref.watch(currentUserNotifierProvider);
+    final currentUser = ref.watch(penggunaAktifNotifierProvider);
     print('currentUser: $currentUser');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -38,7 +38,7 @@ class MyApp extends ConsumerWidget {
                         l.jenisKelamin != null &&
                         l.alamat != null &&
                         l.posyanduId != null)
-                    ? const OrtuDashboardPage()
+                    ? const OrtuPage()
                     : const CompleteProfilePage(),
               Right() => const PosyanduDashboardPage(),
             }

@@ -32,10 +32,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
           showSnackBar(context, message);
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  OtpPage(noHp: _noHpController.text, tujuan: tujuan),
-            ),
+            MaterialPageRoute(builder: (context) => OtpPage()),
           );
         },
         error: (error, stackTrace) {
