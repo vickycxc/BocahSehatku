@@ -1,11 +1,9 @@
 import 'package:app/core/constants.dart';
-import 'package:app/core/theme/app_palette.dart';
-import 'package:app/core/utils.dart';
+import 'package:app/core/theme/palette.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/core/widgets/custom_dropdown.dart';
 import 'package:app/core/widgets/wave_background.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
-import 'package:app/features/user_orang_tua/view/pages/ortu_dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,24 +27,6 @@ class _CompleteProfilePageState extends ConsumerState<PosyanduPickPage> {
     final isLoading = ref.watch(
       authViewModelProvider.select((val) => val?.isLoading == true),
     );
-    ref.listen(authViewModelProvider, (_, next) {
-      next?.when(
-        data: (message) {
-          if (message.isNotEmpty) {
-            print('ini dalangnya');
-            showSnackBar(context, message);
-          }
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => OrtuDashboardPage()),
-          );
-        },
-        error: (error, stackTrace) {
-          showSnackBar(context, error.toString());
-        },
-        loading: () {},
-      );
-    });
     return WaveBackground(
       withBack: true,
       backgroundColor: Palette.secondaryColor,

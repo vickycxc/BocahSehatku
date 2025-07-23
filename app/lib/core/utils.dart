@@ -1,4 +1,4 @@
-import 'package:app/core/theme/app_palette.dart';
+import 'package:app/core/theme/palette.dart';
 import 'package:flutter/material.dart';
 
 void showSnackBar(BuildContext context, String message) {

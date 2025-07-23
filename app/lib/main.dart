@@ -1,20 +1,23 @@
 import 'package:app/core/providers/pengguna_aktif_notifier.dart';
 import 'package:app/core/size_config.dart';
 import 'package:app/core/theme/theme.dart';
-import 'package:app/features/auth/view/pages/onboarding_screen_page.dart';
+import 'package:app/features/auth/view/pages/onboarding_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:app/features/auth/view/pages/complete_profile_page.dart';
 import 'package:app/features/user_orang_tua/view/pages/ortu_page.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_dashboard_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  final binding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: binding);
   final container = ProviderContainer();
   await container.read(authViewModelProvider.notifier).initSharedPreferences();
   await container.read(authViewModelProvider.notifier).ambilDataPengguna();
+  FlutterNativeSplash.remove();
   runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
 }
 
@@ -42,7 +45,7 @@ class MyApp extends ConsumerWidget {
                     : const CompleteProfilePage(),
               Right() => const PosyanduDashboardPage(),
             }
-          : const OnboardingScreenPage(),
+          : const OnboardingPage(),
     );
   }
 }

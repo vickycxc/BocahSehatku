@@ -1,5 +1,5 @@
 import 'package:app/core/constants.dart';
-import 'package:app/core/theme/app_palette.dart';
+import 'package:app/core/theme/palette.dart';
 import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/core/widgets/custom_dropdown.dart';
@@ -41,9 +41,10 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
     );
     ref.listen(authViewModelProvider, (_, next) {
       next?.when(
-        data: (message) {
-          if (message.isNotEmpty) {
-            showSnackBar(context, message);
+        data: (nav) {
+          print('Data received from complete profile page: ${nav.message}.');
+          if (nav.message.isNotEmpty) {
+            showSnackBar(context, nav.message);
           }
           Navigator.pushAndRemoveUntil(
             context,

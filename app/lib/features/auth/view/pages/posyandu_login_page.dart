@@ -24,24 +24,6 @@ class _PosyanduLoginPageState extends ConsumerState<PosyanduLoginPage> {
     final isLoading = ref.watch(
       authViewModelProvider.select((val) => val?.isLoading == true),
     );
-    ref.listen(authViewModelProvider, (_, next) {
-      next?.when(
-        data: (message) {
-          showSnackBar(context, message);
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const PosyanduDashboardPage(),
-            ),
-            (_) => false,
-          );
-        },
-        error: (error, stackTrace) {
-          showSnackBar(context, error.toString());
-        },
-        loading: () {},
-      );
-    });
     return WaveBackground(
       withBack: true,
       child: Padding(

@@ -1,5 +1,5 @@
 import 'package:app/core/providers/pengajuan_verifikasi_notifier.dart';
-import 'package:app/core/theme/app_palette.dart';
+import 'package:app/core/theme/palette.dart';
 import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/model/verifikasi_akun_model.dart';
@@ -29,24 +29,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     final isLoading = ref.watch(
       authViewModelProvider.select((val) => val?.isLoading == true),
     );
-    ref.listen(authViewModelProvider, (_, next) {
-      next?.when(
-        data: (message) {
-          if (message.isNotEmpty) {
-            showSnackBar(context, message);
-          }
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => OtpPage()),
-          );
-        },
-        error: (error, stackTrace) {
-          showSnackBar(context, error.toString());
-        },
-        loading: () {},
-      );
-    });
-
     return WaveBackground(
       withBack: true,
       child: Padding(
@@ -164,11 +146,5 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _noHpController.dispose();
-    super.dispose();
   }
 }

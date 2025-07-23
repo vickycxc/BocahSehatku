@@ -17,33 +17,16 @@ class EditPhonePage extends ConsumerStatefulWidget {
 }
 
 class _EditPhonePageState extends ConsumerState<EditPhonePage> {
-  final String tujuan = "AJUKAN_UBAH_NO_HP";
   final TextEditingController _nikController = TextEditingController();
   final TextEditingController _noHpController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final String tujuan = "AJUKAN_UBAH_NO_HP";
 
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(
       authViewModelProvider.select((val) => val?.isLoading == true),
     );
-    ref.listen(authViewModelProvider, (_, next) {
-      next?.when(
-        data: (message) {
-          if (message.isNotEmpty) {
-            showSnackBar(context, message);
-          }
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => OtpPage()),
-          );
-        },
-        error: (error, stackTrace) {
-          showSnackBar(context, error.toString());
-        },
-        loading: () {},
-      );
-    });
     return WaveBackground(
       withBack: true,
       child: Padding(
@@ -125,12 +108,5 @@ class _EditPhonePageState extends ConsumerState<EditPhonePage> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _nikController.dispose();
-    _noHpController.dispose();
-    super.dispose();
   }
 }

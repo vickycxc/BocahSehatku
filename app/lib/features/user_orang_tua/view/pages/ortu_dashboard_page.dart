@@ -1,7 +1,7 @@
 import 'package:app/core/providers/pengguna_aktif_notifier.dart';
 import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
-import 'package:app/features/auth/view/pages/onboarding_screen_page.dart';
+import 'package:app/features/auth/view/pages/onboarding_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +26,7 @@ class OrtuDashboardPage extends ConsumerWidget {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const OnboardingScreenPage(),
+                    builder: (context) => const OnboardingPage(),
                   ),
                   (_) => false,
                 );

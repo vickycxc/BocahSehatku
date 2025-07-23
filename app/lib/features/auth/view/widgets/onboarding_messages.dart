@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:app/core/constants.dart';
-import 'package:app/core/theme/app_palette.dart';
+import 'package:app/core/theme/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 

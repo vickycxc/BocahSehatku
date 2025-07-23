@@ -1,5 +1,6 @@
 import 'package:app/core/providers/pengajuan_otp_notifier.dart';
 import 'package:app/core/providers/pengajuan_verifikasi_notifier.dart';
+import 'package:app/features/auth/model/navigasi_auth_model.dart';
 import 'package:app/features/auth/model/pengajuan_otp_model.dart';
 import 'package:app/features/auth/model/user_model.dart';
 import 'package:app/core/providers/pengguna_aktif_notifier.dart';
@@ -23,7 +24,7 @@ class AuthViewModel extends _$AuthViewModel {
   late PengajuanOtpNotifier _pengajuanOtpNotifier;
 
   @override
-  AsyncValue<String>? build() {
+  AsyncValue<NavigasiAuthModel>? build() {
     _authRemoteRepository = ref.watch(authRemoteRepositoryProvider);
     _authLocalRepository = ref.watch(authLocalRepositoryProvider);
     _pengajuanVerifikasiNotifier = ref.watch(
@@ -61,7 +62,9 @@ class AuthViewModel extends _$AuthViewModel {
     );
     print('🚀 ~ AuthViewModel ~ res: $res');
     if (res.sukses == true) {
-      state = AsyncData(res.message);
+      state = AsyncData(
+        NavigasiAuthModel(tujuan: 'OTP_PAGE', noHp: noHp, message: res.message),
+      );
       _pengajuanOtpNotifier.aturPengajuanOtp(
         PengajuanOtpModel(noHp: noHp, tujuan: tujuan),
       );
@@ -82,7 +85,7 @@ class AuthViewModel extends _$AuthViewModel {
       kodeOtp: kodeOtp,
     );
     if (res.token != null) {
-      _berhasilMasuk(res);
+      _berhasilMasuk(res: res, tujuan: 'ORTU_PAGE');
     } else {
       state = AsyncError(res.message, StackTrace.current);
     }
@@ -122,7 +125,7 @@ class AuthViewModel extends _$AuthViewModel {
       posyanduId: posyanduId,
     );
     if (res.userOrangTua != null) {
-      _berhasilPerbaruiProfil(res);
+      _berhasilPerbaruiProfil(res: res, tujuan: '');
     } else {
       state = AsyncError(res.message, StackTrace.current);
     }
@@ -139,7 +142,7 @@ class AuthViewModel extends _$AuthViewModel {
     );
 
     if (res.userOrangTua != null) {
-      _berhasilPerbaruiProfil(res);
+      _berhasilPerbaruiProfil(res: res, tujuan: '');
     } else {
       state = AsyncError(res.message, StackTrace.current);
     }
@@ -148,6 +151,7 @@ class AuthViewModel extends _$AuthViewModel {
   Future<void> verifikasiOtp({
     required String noHp,
     required String kodeOtp,
+    required String tujuan,
   }) async {
     state = const AsyncLoading();
     final res = await _authRemoteRepository.verifikasiOtp(
@@ -160,7 +164,13 @@ class AuthViewModel extends _$AuthViewModel {
       _pengajuanVerifikasiNotifier.aturPengajuanVerifikasi(
         VerifikasiPenggunaModel(nik: nik, noHp: noHp, kodeOtp: kodeOtp),
       );
-      state = AsyncData(res.message);
+      state = AsyncData(
+        NavigasiAuthModel(
+          message: res.message,
+          tujuan: 'PILIH_POSYANDU',
+          noHp: noHp,
+        ),
+      );
     } else {
       state = AsyncError(res.message, StackTrace.current);
     }
@@ -189,7 +199,9 @@ class AuthViewModel extends _$AuthViewModel {
 
     if (res.sukses == true) {
       _pengajuanVerifikasiNotifier.hapusPengajuanVerifikasi();
-      state = AsyncData(res.message);
+      state = AsyncData(
+        NavigasiAuthModel(tujuan: 'ONBOARDING_PAGE', message: res.message),
+      );
     } else {
       state = AsyncError(res.message, StackTrace.current);
     }
@@ -199,7 +211,7 @@ class AuthViewModel extends _$AuthViewModel {
     state = const AsyncLoading();
     final res = await _authRemoteRepository.cekVerifikasiAkun(token);
     if (res.verifikasiAkun != null) {
-      state = AsyncData(res.message);
+      state = AsyncData(NavigasiAuthModel(tujuan: '', message: res.message));
       return res.verifikasiAkun!;
     } else {
       state = AsyncError(res.message, StackTrace.current);
@@ -217,7 +229,7 @@ class AuthViewModel extends _$AuthViewModel {
       nik: nik,
     );
     if (res.sukses == true) {
-      state = AsyncData(res.message);
+      state = AsyncData(NavigasiAuthModel(tujuan: '', message: res.message));
     } else {
       state = AsyncError(res.message, StackTrace.current);
     }
@@ -227,7 +239,7 @@ class AuthViewModel extends _$AuthViewModel {
     state = const AsyncLoading();
     final res = await _authRemoteRepository.masuk(noHp: noHp, kodeOtp: kodeOtp);
     if (res.token != null) {
-      _berhasilMasuk(res);
+      _berhasilMasuk(res: res, tujuan: 'ORTU_PAGE');
     } else {
       state = AsyncError(res.message, StackTrace.current);
     }
@@ -243,7 +255,7 @@ class AuthViewModel extends _$AuthViewModel {
       password: password,
     );
     if (res.token != null) {
-      _berhasilMasuk(res);
+      _berhasilMasuk(res: res, tujuan: 'POSYANDU_PAGE');
     } else {
       state = AsyncError(res.message, StackTrace.current);
     }
@@ -254,23 +266,29 @@ class AuthViewModel extends _$AuthViewModel {
     _penggunaAktifNotifier.hapusPenggunaAktif();
   }
 
-  void _berhasilMasuk(AuthResponseModel res) {
+  void _berhasilMasuk({
+    required AuthResponseModel res,
+    required String tujuan,
+  }) {
     final token = res.token!;
     _authLocalRepository.setToken(token);
     final UserModel user = res.userOrangTua != null
         ? UserModel(token: token, data: Left(res.userOrangTua!))
         : UserModel(token: token, data: Right(res.userPosyandu!));
     _penggunaAktifNotifier.aturPenggunaAktif(user);
-    state = AsyncData(res.message);
+    state = AsyncData(NavigasiAuthModel(tujuan: tujuan, message: res.message));
   }
 
-  void _berhasilPerbaruiProfil(AuthResponseModel res) {
+  void _berhasilPerbaruiProfil({
+    required AuthResponseModel res,
+    required String tujuan,
+  }) {
     final user = _penggunaAktifNotifier.state;
     final UserModel newUser = res.userOrangTua != null
         ? UserModel(token: user!.token, data: Left(res.userOrangTua!))
         : UserModel(token: user!.token, data: Right(res.userPosyandu!));
     _penggunaAktifNotifier.aturPenggunaAktif(newUser);
-    state = AsyncData(res.message);
+    state = AsyncData(NavigasiAuthModel(tujuan: tujuan, message: res.message));
   }
 
   void _berhasilAmbilDataPengguna(AuthResponseModel res, String token) {

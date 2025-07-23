@@ -1,4 +1,4 @@
-import 'package:app/core/theme/app_palette.dart';
+import 'package:app/core/theme/palette.dart';
 import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/view/pages/login_page.dart';
@@ -26,21 +26,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     final isLoading = ref.watch(
       authViewModelProvider.select((val) => val?.isLoading == true),
     );
-    ref.listen(authViewModelProvider, (_, next) {
-      next?.when(
-        data: (message) {
-          showSnackBar(context, message);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => OtpPage()),
-          );
-        },
-        error: (error, stackTrace) {
-          showSnackBar(context, error.toString());
-        },
-        loading: () {},
-      );
-    });
+
     return WaveBackground(
       withBack: true,
       child: Padding(
