@@ -62,9 +62,6 @@ class AuthViewModel extends _$AuthViewModel {
     );
     print('🚀 ~ AuthViewModel ~ res: $res');
     if (res.sukses == true) {
-      state = AsyncData(
-        NavigasiAuthModel(tujuan: 'OTP_PAGE', noHp: noHp, message: res.message),
-      );
       _pengajuanOtpNotifier.aturPengajuanOtp(
         PengajuanOtpModel(noHp: noHp, tujuan: tujuan),
       );
@@ -73,8 +70,23 @@ class AuthViewModel extends _$AuthViewModel {
           VerifikasiPenggunaModel(noHp: noHp, nik: nik, kodeOtp: null),
         );
       }
+      state = AsyncData(
+        NavigasiAuthModel(tujuan: 'OTP_PAGE', noHp: noHp, message: res.message),
+      );
     } else {
-      state = AsyncError(res.message, StackTrace.current);
+      if (res.noHpBaru != null) {
+        state = AsyncError(
+          NavigasiAuthModel(
+            tujuan: 'SUDAH_MENGAJUKAN',
+            message: res.message,
+            noHp: res.noHpBaru,
+            posyandu: res.posyandu,
+          ),
+          StackTrace.current,
+        );
+      } else {
+        state = AsyncError(res.message, StackTrace.current);
+      }
     }
   }
 
@@ -85,7 +97,7 @@ class AuthViewModel extends _$AuthViewModel {
       kodeOtp: kodeOtp,
     );
     if (res.token != null) {
-      _berhasilMasuk(res: res, tujuan: 'ORTU_PAGE');
+      _berhasilMasuk(res: res, tujuan: 'COMPLETE_PROFILE_PAGE');
     } else {
       state = AsyncError(res.message, StackTrace.current);
     }
@@ -125,7 +137,48 @@ class AuthViewModel extends _$AuthViewModel {
       posyanduId: posyanduId,
     );
     if (res.userOrangTua != null) {
-      _berhasilPerbaruiProfil(res: res, tujuan: '');
+      _berhasilPerbaruiProfil(res: res, tujuan: 'ORTU_PAGE');
+    } else {
+      if (res.noHpBaru != null) {
+        state = AsyncError(
+          NavigasiAuthModel(
+            tujuan: 'NIK_SUDAH_TERDAFTAR',
+            message: res.message,
+            noHp: res.noHpBaru,
+          ),
+          StackTrace.current,
+        );
+      } else {
+        state = AsyncError(res.message, StackTrace.current);
+      }
+    }
+  }
+
+  Future<void> hapusAkun() async {
+    state = const AsyncLoading();
+    final user = _penggunaAktifNotifier.state;
+    if (user == null) {
+      state = AsyncError('Pengguna Tidak Ditemukan!', StackTrace.current);
+      return;
+    }
+    OrangTuaModel? userOrangTua;
+    switch (user.data) {
+      case Left(value: final l):
+        userOrangTua = l;
+      case Right():
+        state = AsyncError('Pengguna Bukan Orang Tua!', StackTrace.current);
+    }
+    if (userOrangTua == null) {
+      state = AsyncError('Pengguna Tidak Ditemukan!', StackTrace.current);
+      return;
+    }
+    final res = await _authRemoteRepository.hapusAkun(token: user.token);
+    if (res.sukses == true) {
+      _penggunaAktifNotifier.hapusPenggunaAktif();
+      _authLocalRepository.removeToken();
+      state = AsyncData(
+        NavigasiAuthModel(tujuan: 'ONBOARDING_PAGE', message: res.message),
+      );
     } else {
       state = AsyncError(res.message, StackTrace.current);
     }
@@ -172,7 +225,15 @@ class AuthViewModel extends _$AuthViewModel {
         ),
       );
     } else {
-      state = AsyncError(res.message, StackTrace.current);
+      state = AsyncError(
+        NavigasiAuthModel(
+          tujuan: 'SUDAH_MENGAJUKAN',
+          message: res.message,
+          noHp: res.noHpBaru,
+          posyandu: res.posyandu,
+        ),
+        StackTrace.current,
+      );
     }
   }
 
@@ -197,6 +258,37 @@ class AuthViewModel extends _$AuthViewModel {
       posyanduId: posyanduId,
     );
 
+    if (res.sukses == true) {
+      _pengajuanVerifikasiNotifier.hapusPengajuanVerifikasi();
+      state = AsyncData(
+        NavigasiAuthModel(tujuan: 'ONBOARDING_PAGE', message: res.message),
+      );
+    } else {
+      state = AsyncError(
+        NavigasiAuthModel(
+          tujuan: 'SUDAH_MENGAJUKAN',
+          message: res.message,
+          noHp: res.noHpBaru,
+          posyandu: res.posyandu,
+        ),
+        StackTrace.current,
+      );
+    }
+  }
+
+  Future<void> batalkanPengajuanUbahNoHp() async {
+    state = const AsyncLoading();
+    final verifikasi = _pengajuanVerifikasiNotifier.state;
+    final nik = verifikasi?.nik;
+
+    if (nik == null) {
+      state = AsyncError(
+        'Gagal Membatalkan Pengajuan Ubah No. HP, NIK Tidak Ditemukan!',
+        StackTrace.current,
+      );
+      return;
+    }
+    final res = await _authRemoteRepository.batalkanPengajuanUbahNoHp(nik);
     if (res.sukses == true) {
       _pengajuanVerifikasiNotifier.hapusPengajuanVerifikasi();
       state = AsyncData(

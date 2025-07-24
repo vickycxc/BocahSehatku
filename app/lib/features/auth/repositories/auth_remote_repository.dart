@@ -83,6 +83,24 @@ class AuthRemoteRepository {
     }
   }
 
+  Future<AuthResponseModel> hapusAkun({required String token}) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('${Constants.serverUrl}/auth/hapus-akun'),
+        headers: {'Content-Type': 'application/json', 'x-auth-token': token},
+      );
+      if (response.statusCode == 200) {
+        return AuthResponseModel.fromJson(response.body).copyWith(sukses: true);
+      } else {
+        return AuthResponseModel.fromJson(
+          response.body,
+        ).copyWith(sukses: false);
+      }
+    } catch (error) {
+      return AuthResponseModel(message: error.toString());
+    }
+  }
+
   Future<AuthResponseModel> ubahNoHp({
     required String noHpBaru,
     required String kodeOtp,
@@ -137,6 +155,25 @@ class AuthRemoteRepository {
           'nik': nik,
           'posyanduId': posyanduId,
         }),
+      );
+      if (response.statusCode == 200) {
+        return AuthResponseModel.fromJson(response.body).copyWith(sukses: true);
+      } else {
+        return AuthResponseModel.fromJson(
+          response.body,
+        ).copyWith(sukses: false);
+      }
+    } catch (error) {
+      return AuthResponseModel(message: error.toString());
+    }
+  }
+
+  Future<AuthResponseModel> batalkanPengajuanUbahNoHp(String nik) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('${Constants.serverUrl}/auth/batalkan-ubah-no-hp'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'nik': nik}),
       );
       if (response.statusCode == 200) {
         return AuthResponseModel.fromJson(response.body).copyWith(sukses: true);

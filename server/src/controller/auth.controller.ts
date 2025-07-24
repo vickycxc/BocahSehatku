@@ -32,6 +32,20 @@ export const kirimOtp = async (req: Request, res: Response) => {
       cekNik = await prisma.orangTua.findUnique({
         where: { nik },
       });
+      const cekVerifikasiAkun = await prisma.verifikasiAkun.findUnique({
+        where: { nik: nik },
+        select: {
+          noHpBaru: true,
+          posyandu: { select: { namaPosyandu: true } },
+        },
+      });
+      if (cekVerifikasiAkun) {
+        return res.status(400).json({
+          message: "Pengajuan Ubah No. HP Sudah Diajukan!",
+          noHpBaru: cekVerifikasiAkun.noHpBaru,
+          posyandu: cekVerifikasiAkun.posyandu.namaPosyandu,
+        });
+      }
     }
 
     // Logika pembatasan OTP - maksimal 5 OTP dalam 15 menit
@@ -166,7 +180,6 @@ export const daftar = async (req: Request, res: Response) => {
   const { noHp, kodeOtp } = req.body;
   try {
     if (!noHp || !kodeOtp) {
-      console.log(req.body);
       return res.status(400).json({
         message: "Gagal Membuat Akun, No. HP dan Kode OTP Harus Diisi! 2",
       });
@@ -224,7 +237,6 @@ export const perbaruiProfil = async (req: Request, res: Response) => {
       message: "Gagal Memperbarui Profil, Semua Field Harus Diisi!",
     });
   }
-  console.log(req.body);
   const { nama, nik, jenisKelamin, alamat, posyanduId } = req.body;
   try {
     if (!nama || !nik || !jenisKelamin || !alamat || !posyanduId) {
@@ -261,6 +273,7 @@ export const perbaruiProfil = async (req: Request, res: Response) => {
     if (cekNik) {
       return res.status(400).json({
         message: "Gagal Memperbarui Profil, NIK Sudah Terdaftar!",
+        noHpBaru: cekNik.noHp,
       });
     }
 
@@ -301,6 +314,36 @@ export const perbaruiProfil = async (req: Request, res: Response) => {
     );
     return res.status(500).json({
       message: "Gagal Memperbarui Profil, Terjadi Kesalahan Pada Server!",
+    });
+  }
+};
+
+export const hapusAkun = async (req: Request, res: Response) => {
+  const { id } = req.orangTua; // Ambil ID dari request yang sudah di-protect
+  try {
+    // Cek apakah user exists
+    const existingUser = await prisma.orangTua.findUnique({
+      where: { id: id }, // Pastikan ID adalah integer
+    });
+
+    if (!existingUser) {
+      return res.status(404).json({
+        message: "Gagal Menghapus Akun, Akun Tidak Ditemukan!",
+      });
+    }
+
+    // Hapus akun
+    await prisma.orangTua.delete({
+      where: { id: id },
+    });
+
+    return res.status(200).json({
+      message: "Akun Berhasil Dihapus",
+    });
+  } catch (error) {
+    console.error("Gagal Menghapus Akun, Error di hapusAkun Controller", error);
+    return res.status(500).json({
+      message: "Gagal Menghapus Akun, Terjadi Kesalahan Pada Server!",
     });
   }
 };
@@ -452,9 +495,21 @@ export const ajukanUbahNoHp = async (req: Request, res: Response) => {
       });
     }
 
-    await prisma.verifikasiOtp.delete({
-      where: { noHp: noHpBaru },
+    const cekPengajuanUbahNoHp = await prisma.verifikasiAkun.findUnique({
+      where: { nik: nik },
+      select: {
+        noHpBaru: true,
+        posyandu: { select: { namaPosyandu: true } },
+      },
     });
+
+    if (cekPengajuanUbahNoHp) {
+      return res.status(400).json({
+        message: "Pengajuan Ubah No. HP Sudah Diajukan!",
+        noHpBaru: cekPengajuanUbahNoHp.noHpBaru,
+        posyandu: cekPengajuanUbahNoHp.posyandu.namaPosyandu,
+      });
+    }
 
     const cekPosyandu = await prisma.posyandu.findUnique({
       where: { id: posyanduId },
@@ -470,7 +525,7 @@ export const ajukanUbahNoHp = async (req: Request, res: Response) => {
       where: { nik },
     });
     if (!userOrangTua) {
-      return res.status(400).json({
+      return res.status(404).json({
         message: "Gagal Mengajukan Ubah No. HP, Akun Tidak Ditemukan!",
       });
     }
@@ -489,14 +544,61 @@ export const ajukanUbahNoHp = async (req: Request, res: Response) => {
         .json({ message: "Gagal Mengajukan Ubah No. HP, Silakan Coba Lagi!" });
     }
 
+    await prisma.verifikasiOtp.delete({
+      where: { noHp: noHpBaru },
+    });
+
     return res.status(200).json({
       message:
         "Pengajuan Ubah No. HP Berhasil Diajukan, Silakan Menuju Ke Posyandu Untuk Verifikasi",
     });
   } catch (error) {
-    console.error("Gagal Mengubah No. HP, Error di ubahNoHp Controller", error);
+    console.error(
+      "Gagal Mengubah No. HP, Error di ajukanUbahNoHp Controller",
+      error
+    );
     return res.status(500).json({
       message: "Gagal Mengubah No. HP, Terjadi Kesalahan Pada Server!",
+    });
+  }
+};
+
+export const batalkanPengajuanUbahNoHp = async (
+  req: Request,
+  res: Response
+) => {
+  if (!req.body) {
+    return res.status(400).json({
+      message: "Gagal Membatalkan Pengajuan Ubah No. HP, NIK Harus Diisi!",
+    });
+  }
+  const { nik } = req.body;
+
+  try {
+    const cekPengajuanUbahNoHp = await prisma.verifikasiAkun.findUnique({
+      where: { nik: nik },
+    });
+    if (!cekPengajuanUbahNoHp) {
+      return res.status(404).json({
+        message:
+          "Gagal Membatalkan Pengajuan Ubah No. HP, Pengajuan Tidak Ditemukan!",
+      });
+    }
+    await prisma.verifikasiAkun.delete({
+      where: { nik: nik },
+    });
+
+    return res.status(200).json({
+      message: "Pengajuan Ubah No. HP Berhasil Dibatalkan",
+    });
+  } catch (error) {
+    console.error(
+      "Gagal Membatalkan Pengajuan No. HP, Error di batalkanPengajuanUbahNoHp Controller",
+      error
+    );
+    return res.status(500).json({
+      message:
+        "Gagal Membatalkan Pengajuan No. HP, Terjadi Kesalahan Pada Server!",
     });
   }
 };

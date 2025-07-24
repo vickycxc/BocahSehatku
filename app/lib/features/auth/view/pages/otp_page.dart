@@ -3,11 +3,8 @@ import 'package:app/core/theme/palette.dart';
 import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/core/widgets/wave_background.dart';
-import 'package:app/features/auth/model/pengajuan_otp_model.dart';
-import 'package:app/features/auth/view/pages/posyandu_pick_page.dart';
+import 'package:app/features/auth/view/pages/onboarding_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
-import 'package:app/features/auth/view/pages/complete_profile_page.dart';
-import 'package:app/features/user_orang_tua/view/pages/ortu_dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pinput/pinput.dart';
@@ -22,40 +19,46 @@ class OtpPage extends ConsumerStatefulWidget {
 class _OtpPageState extends ConsumerState<OtpPage> {
   final TextEditingController _otpController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  late final ProviderSubscription<AsyncValue<String>?> _listener;
-  late final PengajuanOtpModel _pengajuanOtp;
 
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(
       authViewModelProvider.select((val) => val?.isLoading == true),
     );
+    final pengajuanOtp = ref.watch(pengajuanOtpNotifierProvider);
+    if (pengajuanOtp == null) {
+      showSnackBar(context, 'Pengajuan OTP tidak ditemukan!');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => OnboardingPage()),
+        (_) => false,
+      );
+      return Container();
+    }
     void onSubmitted({String? kodeOtp}) async {
-      switch (_pengajuanOtp.tujuan) {
+      switch (pengajuanOtp.tujuan) {
         case 'MASUK':
           await ref
               .read(authViewModelProvider.notifier)
               .masuk(
-                noHp: _pengajuanOtp.noHp,
+                noHp: pengajuanOtp.noHp,
                 kodeOtp: kodeOtp ?? _otpController.text,
               );
         case 'DAFTAR':
           await ref
               .read(authViewModelProvider.notifier)
               .daftar(
-                noHp: _pengajuanOtp.noHp,
+                noHp: pengajuanOtp.noHp,
                 kodeOtp: kodeOtp ?? _otpController.text,
               );
         case 'AJUKAN_UBAH_NO_HP':
           await ref
               .read(authViewModelProvider.notifier)
               .verifikasiOtp(
-                tujuan: _pengajuanOtp.tujuan,
-                noHp: _pengajuanOtp.noHp,
+                tujuan: pengajuanOtp.tujuan,
+                noHp: pengajuanOtp.noHp,
                 kodeOtp: kodeOtp ?? _otpController.text,
               );
-        default:
-          throw Exception('Origin tidak diketahui!: ${_pengajuanOtp.tujuan}');
       }
     }
 
@@ -111,13 +114,11 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                     showSnackBar(context, 'Kode OTP Tidak Valid!');
                   }
                 },
-                text: switch (_pengajuanOtp.tujuan) {
+                text: switch (pengajuanOtp.tujuan) {
                   'MASUK' => 'Masuk',
                   'DAFTAR' => 'Daftar',
                   'AJUKAN_UBAH_NO_HP' => 'Konfirmasi',
-                  _ => throw Exception(
-                    'Origin tidak diketahui!: ${_pengajuanOtp.tujuan}',
-                  ),
+                  _ => '',
                 },
               ),
               SizedBox(height: 4),
@@ -152,7 +153,6 @@ class _OtpPageState extends ConsumerState<OtpPage> {
 
   @override
   void dispose() {
-    _listener.close();
     _otpController.dispose();
     super.dispose();
   }

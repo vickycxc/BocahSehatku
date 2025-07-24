@@ -11,6 +11,8 @@ import {
   verifikasiAkun,
   cekVerifikasiAkun,
   verifikasiOtp,
+  hapusAkun,
+  batalkanPengajuanUbahNoHp,
 } from "../controller/auth.controller.ts";
 import { protectRoute } from "../middleware/auth.middleware.ts";
 
@@ -19,9 +21,11 @@ const router = express.Router();
 router.post("/kirim-otp", kirimOtp);
 router.post("/daftar", daftar);
 router.put("/perbarui-profil", protectRoute, perbaruiProfil);
+router.delete("/hapus-akun", protectRoute, hapusAkun);
 router.post("/ubah-no-hp", protectRoute, ubahNoHp);
 router.post("/verifikasi-otp", verifikasiOtp);
 router.post("/ajukan-ubah-no-hp", ajukanUbahNoHp);
+router.delete("/batalkan-ubah-no-hp", batalkanPengajuanUbahNoHp);
 router.get("/cek-verifikasi-akun", protectRoute, cekVerifikasiAkun);
 router.put("/verifikasi-akun", protectRoute, verifikasiAkun);
 router.post("/masuk", masuk);

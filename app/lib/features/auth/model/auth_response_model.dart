@@ -1,14 +1,16 @@
 import 'dart:convert';
 
 import 'package:app/features/auth/model/orang_tua_model.dart';
-import 'package:app/features/auth/model/posyandu_model.dart';
 import 'package:app/features/auth/model/pengajuan_verifikasi_model.dart';
+import 'package:app/features/auth/model/posyandu_model.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class AuthResponseModel {
   final String message;
   final bool? sukses;
   final String? token;
+  final String? noHpBaru;
+  final String? posyandu;
   final OrangTuaModel? userOrangTua;
   final PosyanduModel? userPosyandu;
   final List<PengajuanVerifikasiModel>? verifikasiAkun;
@@ -16,6 +18,8 @@ class AuthResponseModel {
     required this.message,
     this.sukses,
     this.token,
+    this.noHpBaru,
+    this.posyandu,
     this.userOrangTua,
     this.userPosyandu,
     this.verifikasiAkun,
@@ -25,6 +29,8 @@ class AuthResponseModel {
     String? message,
     bool? sukses,
     String? token,
+    String? noHpBaru,
+    String? posyandu,
     OrangTuaModel? userOrangTua,
     PosyanduModel? userPosyandu,
     List<PengajuanVerifikasiModel>? verifikasiAkun,
@@ -33,6 +39,8 @@ class AuthResponseModel {
       message: message ?? this.message,
       sukses: sukses ?? this.sukses,
       token: token ?? this.token,
+      posyandu: posyandu ?? this.posyandu,
+      noHpBaru: noHpBaru ?? this.noHpBaru,
       userOrangTua: userOrangTua ?? this.userOrangTua,
       userPosyandu: userPosyandu ?? this.userPosyandu,
       verifikasiAkun: verifikasiAkun ?? this.verifikasiAkun,
@@ -44,6 +52,8 @@ class AuthResponseModel {
       'message': message,
       'sukses': sukses,
       'token': token,
+      'noHpBaru': noHpBaru,
+      'posyandu': posyandu,
       'userOrangTua': userOrangTua?.toMap(),
       'userPosyandu': userPosyandu?.toMap(),
       'verifikasiAkun': verifikasiAkun?.map((x) => x.toMap()).toList(),
@@ -55,6 +65,8 @@ class AuthResponseModel {
       message: map['message'] as String,
       sukses: map['sukses'] != null ? map['sukses'] as bool : null,
       token: map['token'] != null ? map['token'] as String : null,
+      noHpBaru: map['noHpBaru'] != null ? map['noHpBaru'] as String : null,
+      posyandu: map['posyandu'] != null ? map['posyandu'] as String : null,
       userOrangTua: map['userOrangTua'] != null
           ? OrangTuaModel.fromMap(map['userOrangTua'] as Map<String, dynamic>)
           : null,
@@ -81,7 +93,7 @@ class AuthResponseModel {
 
   @override
   String toString() {
-    return 'AuthResponse(message: $message, sukses: $sukses, token: $token, userOrangTua: $userOrangTua, userPosyandu: $userPosyandu, verifikasiAkun: $verifikasiAkun)';
+    return 'AuthResponse(message: $message, sukses: $sukses, token: $token, noHpBaru: $noHpBaru, posyandu:$posyandu, userOrangTua: $userOrangTua, userPosyandu: $userPosyandu, verifikasiAkun: $verifikasiAkun)';
   }
 
   @override
@@ -91,6 +103,8 @@ class AuthResponseModel {
     return other.message == message &&
         other.sukses == sukses &&
         other.token == token &&
+        other.noHpBaru == noHpBaru &&
+        other.posyandu == posyandu &&
         other.userOrangTua == userOrangTua &&
         other.userPosyandu == userPosyandu &&
         other.verifikasiAkun == verifikasiAkun;
@@ -101,6 +115,8 @@ class AuthResponseModel {
     return message.hashCode ^
         sukses.hashCode ^
         token.hashCode ^
+        noHpBaru.hashCode ^
+        posyandu.hashCode ^
         userOrangTua.hashCode ^
         userPosyandu.hashCode ^
         verifikasiAkun.hashCode;

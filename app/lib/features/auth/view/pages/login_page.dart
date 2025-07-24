@@ -1,10 +1,8 @@
 import 'package:app/core/providers/pengajuan_verifikasi_notifier.dart';
 import 'package:app/core/theme/palette.dart';
-import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/model/verifikasi_akun_model.dart';
 import 'package:app/features/auth/view/pages/edit_phone_page.dart';
-import 'package:app/features/auth/view/pages/otp_page.dart';
 import 'package:app/features/auth/view/pages/register_page.dart';
 import 'package:app/core/widgets/wave_background.dart';
 import 'package:app/core/widgets/custom_field.dart';

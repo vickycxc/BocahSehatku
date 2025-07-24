@@ -1,8 +1,6 @@
 import 'package:app/core/providers/pengajuan_verifikasi_notifier.dart';
-import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/model/verifikasi_akun_model.dart';
-import 'package:app/features/auth/view/pages/otp_page.dart';
 import 'package:app/core/widgets/wave_background.dart';
 import 'package:app/core/widgets/custom_field.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
@@ -77,13 +75,6 @@ class _EditPhonePageState extends ConsumerState<EditPhonePage> {
                 isLoading: isLoading,
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    await ref
-                        .read(authViewModelProvider.notifier)
-                        .kirimOtp(
-                          noHp: _noHpController.text,
-                          tujuan: tujuan,
-                          nik: _nikController.text,
-                        );
                     ref
                         .read(pengajuanVerifikasiNotifierProvider.notifier)
                         .aturPengajuanVerifikasi(
@@ -92,6 +83,13 @@ class _EditPhonePageState extends ConsumerState<EditPhonePage> {
                             nik: _nikController.text,
                             kodeOtp: null,
                           ),
+                        );
+                    await ref
+                        .read(authViewModelProvider.notifier)
+                        .kirimOtp(
+                          noHp: _noHpController.text,
+                          tujuan: tujuan,
+                          nik: _nikController.text,
                         );
                   }
                 },

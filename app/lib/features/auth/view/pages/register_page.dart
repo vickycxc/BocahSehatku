@@ -1,8 +1,6 @@
 import 'package:app/core/theme/palette.dart';
-import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/view/pages/login_page.dart';
-import 'package:app/features/auth/view/pages/otp_page.dart';
 import 'package:app/core/widgets/wave_background.dart';
 import 'package:app/core/widgets/custom_field.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';

@@ -1,16 +1,21 @@
 import 'package:app/core/constants.dart';
+import 'package:app/core/providers/pengguna_aktif_notifier.dart';
 import 'package:app/core/theme/palette.dart';
 import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/core/widgets/custom_dropdown.dart';
 import 'package:app/core/widgets/custom_field.dart';
 import 'package:app/core/widgets/wave_background.dart';
+import 'package:app/features/auth/model/navigasi_auth_model.dart';
+import 'package:app/features/auth/view/pages/onboarding_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:app/features/user_orang_tua/view/pages/ortu_dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:quickalert/quickalert.dart';
 
 class CompleteProfilePage extends ConsumerStatefulWidget {
   const CompleteProfilePage({super.key});
@@ -39,6 +44,12 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
     final isLoading = ref.watch(
       authViewModelProvider.select((val) => val?.isLoading == true),
     );
+    final currentUser = ref.watch(penggunaAktifNotifierProvider);
+    final noHp = switch (currentUser?.data) {
+      Left(value: final l) => l.noHp,
+      Right() => null,
+      _ => null,
+    };
     ref.listen(authViewModelProvider, (_, next) {
       next?.when(
         data: (nav) {
@@ -46,14 +57,44 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
           if (nav.message.isNotEmpty) {
             showSnackBar(context, nav.message);
           }
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => OrtuDashboardPage()),
-            (_) => false,
-          );
+          switch (nav.tujuan) {
+            case 'ORTU_PAGE':
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const OrtuDashboardPage(),
+                ),
+                (_) => false,
+              );
+            case 'ONBOARDING_PAGE':
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const OnboardingPage()),
+                (_) => false,
+              );
+          }
         },
         error: (error, stackTrace) {
-          showSnackBar(context, error.toString());
+          print("🚀 ~ _CompleteProfilePageState ~ ref.listen ~ error:$error");
+          if (error is NavigasiAuthModel) {
+            QuickAlert.show(
+              context: context,
+              type: QuickAlertType.confirm,
+              title: error.message,
+              text:
+                  'No. HP Yang Tersambung Ke NIK: ${error.noHp}\nApakah Anda ingin keluar dan menghapus akun sekarang dengan No HP: $noHp?',
+              confirmBtnText: 'Ya',
+              cancelBtnText: 'Tidak',
+              onConfirmBtnTap: () {
+                ref.read(authViewModelProvider.notifier).hapusAkun();
+              },
+              confirmBtnColor: Palette.accentColor,
+              barrierDismissible: false,
+              customAsset: 'assets/info.gif',
+            );
+          } else {
+            showSnackBar(context, error.toString());
+          }
         },
         loading: () {},
       );

@@ -24,7 +24,7 @@ model OrangTua {
   posyandu       Posyandu?       @relation(fields: [posyanduId], references: [id])
   posyanduId     Int?
   anak           Anak[]
-  verifikasiAkun verifikasiAkun?
+  verifikasiAkun VerifikasiAkun?
   kodeOtp        String?
   otpExpiresAt   DateTime?
   createdAt      DateTime        @default(now())
@@ -41,7 +41,7 @@ model Posyandu {
   desaKelurahan  String
   alamat         String
   orangTua       OrangTua[]
-  verifikasiAkun verifikasiAkun[]
+  verifikasiAkun VerifikasiAkun[]
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
 }
@@ -78,7 +78,7 @@ model Pengukuran {
   kategoriIMTU      kategorIMTU
 }
 
-model verifikasiAkun {
+model VerifikasiAkun {
   id         Int      @id @default(autoincrement())
   nik        String   @unique
   orangTua   OrangTua @relation(fields: [nik], references: [nik])

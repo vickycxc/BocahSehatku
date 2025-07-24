@@ -5,14 +5,21 @@ class NavigasiAuthModel {
   final String tujuan;
   final String message;
   final String? noHp;
+  final String? posyandu;
 
-  NavigasiAuthModel({required this.tujuan, required this.message, this.noHp});
+  NavigasiAuthModel({
+    required this.tujuan,
+    required this.message,
+    this.noHp,
+    this.posyandu,
+  });
 
   NavigasiAuthModel copyWith({String? tujuan, String? message, String? noHp}) {
     return NavigasiAuthModel(
       tujuan: tujuan ?? this.tujuan,
       message: message ?? this.message,
       noHp: noHp ?? this.noHp,
+      posyandu: posyandu ?? posyandu,
     );
   }
 
@@ -21,6 +28,7 @@ class NavigasiAuthModel {
       'tujuan': tujuan,
       'message': message,
       'noHp': noHp,
+      'posyandu': posyandu,
     };
   }
 
@@ -29,6 +37,7 @@ class NavigasiAuthModel {
       tujuan: map['tujuan'] as String,
       message: map['message'] as String,
       noHp: map['noHp'] != null ? map['noHp'] as String : null,
+      posyandu: map['posyandu'] != null ? map['posyandu'] as String : null,
     );
   }
 
@@ -39,7 +48,7 @@ class NavigasiAuthModel {
 
   @override
   String toString() =>
-      'NavigasiAuthModel(tujuan: $tujuan, message: $message, noHp: $noHp)';
+      'NavigasiAuthModel(tujuan: $tujuan, message: $message, noHp: $noHp, posyandu: $posyandu)';
 
   @override
   bool operator ==(covariant NavigasiAuthModel other) {
@@ -47,9 +56,11 @@ class NavigasiAuthModel {
 
     return other.tujuan == tujuan &&
         other.message == message &&
-        other.noHp == noHp;
+        other.noHp == noHp &&
+        other.posyandu == posyandu;
   }
 
   @override
-  int get hashCode => tujuan.hashCode ^ message.hashCode ^ noHp.hashCode;
+  int get hashCode =>
+      tujuan.hashCode ^ message.hashCode ^ noHp.hashCode ^ posyandu.hashCode;
 }
