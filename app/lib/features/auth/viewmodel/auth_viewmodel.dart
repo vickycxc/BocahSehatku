@@ -245,7 +245,7 @@ class AuthViewModel extends _$AuthViewModel {
 
     if (nik == null || noHpBaru == null || kodeOtp == null) {
       state = AsyncError(
-        'Gagal Mengajukan Pengubahan No. HP, NIK, No. HP Baru & Kode OTP Tidak Ditemukan!',
+        'Gagal Mengajukan Pengajuan Ubah No. HP, NIK, No. HP Baru & Kode OTP Tidak Ditemukan!',
         StackTrace.current,
       );
       return;
