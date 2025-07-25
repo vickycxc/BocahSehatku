@@ -6,7 +6,6 @@ import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:app/features/auth/view/pages/complete_profile_page.dart';
 import 'package:app/features/user_orang_tua/view/pages/ortu_page.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_dashboard_page.dart';
-import 'package:app/features/user_posyandu/view/pages/posyandu_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,7 +41,7 @@ class MyApp extends ConsumerWidget {
                         l.jenisKelamin != null &&
                         l.alamat != null &&
                         l.posyanduId != null)
-                    ? const PosyanduPage()
+                    ? const OrtuPage()
                     : const CompleteProfilePage(),
               Right() => const PosyanduDashboardPage(),
             }

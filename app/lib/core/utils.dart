@@ -14,3 +14,5 @@ void showSnackBar(BuildContext context, String message) {
       ),
     );
 }
+
+enum JenisKelamin { lakiLaki, perempuan }

@@ -17,6 +17,7 @@ class OrtuNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     // Data navigasi;
     return BottomAppBar(
+      height: 60,
       color: Palette.backgroundPrimaryColor,
       elevation: 0,
       child: Row(
@@ -49,11 +50,14 @@ Widget navItem({
         children: [
           Icon(
             icon,
+            size: 24,
             color: isSelected ? Palette.accentColor : Palette.textPrimaryColor,
           ),
           Text(
             label,
             style: TextStyle(
+              fontSize: 8,
+              fontWeight: FontWeight.bold,
               color: isSelected
                   ? Palette.accentColor
                   : Palette.textPrimaryColor,
