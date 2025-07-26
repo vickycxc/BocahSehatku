@@ -18,8 +18,11 @@ class AnakCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32)),
         ),
-        child: SizedBox(
-          height: 600,
+        child: InkWell(
+          borderRadius: BorderRadius.all(Radius.circular(32)),
+          // focusColor: Palette.textPrimaryColor,
+          // hoverColor: Palette.textPrimaryColor,
+          onTap: () {},
           child: Column(
             children: [
               Row(
@@ -171,67 +174,71 @@ class AnakCard extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 24),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Status Pertumbuhan',
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.bold),
+              Padding(
+                padding: const EdgeInsets.only(left: 18, right: 18, bottom: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Status Pertumbuhan',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(height: 12),
-                      Container(
-                        // width: double.infinity,
-                        height: 72,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: Palette.healthyBackgroundColor,
+                    ),
+                    SizedBox(height: 12),
+                    Container(
+                      // width: double.infinity,
+                      height: 72,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: Palette.healthyBackgroundColor,
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Normal, Gizi Baik',
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Text(
+                      'Rekomendasi',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Container(
+                      // width: double.infinity,
+                      // height: 180,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: Palette.backgroundPrimaryColor,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsetsGeometry.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
                         ),
                         child: Center(
                           child: Text(
-                            'Normal, Gizi Baik',
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 12),
-                      Text(
-                        'Rekomendasi',
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 12),
-                      Container(
-                        // width: double.infinity,
-                        height: 180,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: Palette.backgroundPrimaryColor,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsetsGeometry.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Hebat sekali, Bunda! Terus tingkatkan pengetahuan seputar gizi dan stimulasi anak sesuai usianya. Jangan ragu untuk bertanya kepada kader Posyandu atau tenaga kesehatan jika ada yang ingin didiskusikan. Peran aktif Bunda sangat penting untuk masa depan si kecil!',
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Palette.textPrimaryColor,
-                              ),
-                              textAlign: TextAlign.center,
+                            'Hebat sekali, Bunda! Terus tingkatkan pengetahuan seputar gizi dan stimulasi anak sesuai usianya. Jangan ragu untuk bertanya kepada kader Posyandu atau tenaga kesehatan jika ada yang ingin didiskusikan. Peran aktif Bunda sangat penting untuk masa depan si kecil!',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Palette.textPrimaryColor,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       ),
-                      // Expanded(child: Container(color: Colors.blue)),
-                    ],
-                  ),
+                    ),
+                    // Expanded(child: Container(color: Colors.blue)),
+                  ],
                 ),
               ),
             ],

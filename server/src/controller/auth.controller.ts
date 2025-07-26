@@ -122,7 +122,7 @@ export const kirimOtp = async (req: Request, res: Response) => {
 
     // if (response.data.status === true) {
     if (true) {
-      const kodeOtp = "9817";
+      const kodeOtp = "0000";
       // const kodeOtp = response.data.data.otp;
       const otpExpiresAt = new Date(Date.now() + 5 * 60 * 1000);
 

@@ -11,8 +11,8 @@ import 'package:app/features/auth/view/pages/register_page.dart';
 import 'package:app/core/widgets/wave_background.dart';
 import 'package:app/features/auth/view/widgets/onboarding_messages.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
-import 'package:app/features/user_orang_tua/view/pages/ortu_dashboard_page.dart';
-import 'package:app/features/user_posyandu/view/pages/posyandu_dashboard_page.dart';
+import 'package:app/features/user_orang_tua/view/pages/ortu_page.dart';
+import 'package:app/features/user_posyandu/view/pages/posyandu_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quickalert/quickalert.dart';
@@ -34,9 +34,7 @@ class OnboardingPage extends ConsumerWidget {
               case 'MASUK':
                 Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const OrtuDashboardPage(),
-                  ),
+                  MaterialPageRoute(builder: (context) => const OrtuPage()),
                   (_) => false,
                 );
               case 'DAFTAR':
@@ -68,17 +66,13 @@ class OnboardingPage extends ConsumerWidget {
               case 'ORTU_PAGE':
                 Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const OrtuDashboardPage(),
-                  ),
+                  MaterialPageRoute(builder: (context) => const OrtuPage()),
                   (_) => false,
                 );
               case 'POSYANDU_PAGE':
                 Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const PosyanduDashboardPage(),
-                  ),
+                  MaterialPageRoute(builder: (context) => const PosyanduPage()),
                   (_) => false,
                 );
               default:
