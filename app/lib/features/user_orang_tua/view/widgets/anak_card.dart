@@ -1,0 +1,243 @@
+import 'package:app/core/model/anak_model.dart';
+import 'package:app/core/theme/palette.dart';
+import 'package:app/core/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+
+class AnakCard extends StatelessWidget {
+  final AnakModel anak;
+  const AnakCard(this.anak, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: Card(
+        elevation: 4,
+        color: Palette.maleColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(32)),
+        ),
+        child: SizedBox(
+          height: 600,
+          child: Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    'assets/baby_male.svg',
+                    width: 100,
+                    height: 100,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
+                            maxLines: 2,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Palette.textPrimaryColor,
+                            ),
+                          ),
+                          Text(
+                            '2 Bulan 12 Hari',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Palette.textPrimaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Palette.healthyBackgroundColor,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    height: 110,
+                    width: 75,
+                    child: Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Palette.healthyColor,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          height: 60,
+                          width: 75,
+                          padding: EdgeInsets.all(14),
+                          child: SvgPicture.asset('assets/baby_weight.svg'),
+                        ),
+                        Expanded(
+                          child: Center(
+                            child: RichText(
+                              text: TextSpan(
+                                text: 'Berat\n',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Palette.textPrimaryColor,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: formatAngka(anak.bbSekarang),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Palette.textPrimaryColor,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: ' kg',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Palette.textPrimaryColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 30),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Palette.healthyBackgroundColor,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    height: 110,
+                    width: 75,
+                    child: Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Palette.healthyColor,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          height: 60,
+                          width: 75,
+                          padding: EdgeInsets.all(14),
+                          child: SvgPicture.asset('assets/baby_height.svg'),
+                        ),
+                        Expanded(
+                          child: Center(
+                            child: RichText(
+                              text: TextSpan(
+                                text: 'Tinggi\n',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Palette.textPrimaryColor,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: formatAngka(anak.tbSekarang),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Palette.textPrimaryColor,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: ' cm',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Palette.textPrimaryColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 24),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Status Pertumbuhan',
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 12),
+                      Container(
+                        // width: double.infinity,
+                        height: 72,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Palette.healthyBackgroundColor,
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Normal, Gizi Baik',
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 12),
+                      Text(
+                        'Rekomendasi',
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 12),
+                      Container(
+                        // width: double.infinity,
+                        height: 180,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Palette.backgroundPrimaryColor,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsetsGeometry.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Hebat sekali, Bunda! Terus tingkatkan pengetahuan seputar gizi dan stimulasi anak sesuai usianya. Jangan ragu untuk bertanya kepada kader Posyandu atau tenaga kesehatan jika ada yang ingin didiskusikan. Peran aktif Bunda sangat penting untuk masa depan si kecil!',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Palette.textPrimaryColor,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                      // Expanded(child: Container(color: Colors.blue)),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

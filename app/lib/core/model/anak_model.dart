@@ -14,6 +14,8 @@ class AnakModel {
   final double? bbLahir;
   final double? tbLahir;
   final int? mingguLahir;
+  final double? bbSekarang;
+  final double? tbSekarang;
   final int? orangTuaId;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -27,6 +29,8 @@ class AnakModel {
     this.bbLahir,
     this.tbLahir,
     this.mingguLahir,
+    this.bbSekarang,
+    this.tbSekarang,
     required this.orangTuaId,
     required this.createdAt,
     required this.updatedAt,
@@ -46,6 +50,8 @@ class AnakModel {
     double? bbLahir,
     double? tbLahir,
     int? mingguLahir,
+    double? bbSekarang,
+    double? tbSekarang,
     int? orangTuaId,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -58,6 +64,8 @@ class AnakModel {
       nik: nik ?? this.nik,
       bbLahir: bbLahir ?? this.bbLahir,
       tbLahir: tbLahir ?? this.tbLahir,
+      bbSekarang: bbSekarang ?? this.bbSekarang,
+      tbSekarang: tbSekarang ?? this.tbSekarang,
       mingguLahir: mingguLahir ?? this.mingguLahir,
       orangTuaId: orangTuaId ?? this.orangTuaId,
       createdAt: createdAt ?? this.createdAt,
@@ -77,6 +85,8 @@ class AnakModel {
       'bbLahir': bbLahir,
       'tbLahir': tbLahir,
       'mingguLahir': mingguLahir,
+      'bbSekarang': bbSekarang,
+      'tbSekarang': tbSekarang,
       'orangTuaId': orangTuaId,
       'createdAt': createdAt.millisecondsSinceEpoch,
       'updatedAt': updatedAt.millisecondsSinceEpoch,
@@ -99,6 +109,12 @@ class AnakModel {
       mingguLahir: map['mingguLahir'] != null
           ? map['mingguLahir'] as int
           : null,
+      bbSekarang: map['bbSekarang'] != null
+          ? map['bbSekarang'] as double
+          : null,
+      tbSekarang: map['tbSekarang'] != null
+          ? map['tbSekarang'] as double
+          : null,
       orangTuaId: map['orangTuaId'] != null ? map['orangTuaId'] as int : null,
       createdAt: DateTime.tryParse(map['createdAt'] as String)!,
       updatedAt: DateTime.tryParse(map['updatedAt'] as String)!,
@@ -112,7 +128,7 @@ class AnakModel {
 
   @override
   String toString() {
-    return 'BayiModel(id: $id, nama: $nama, tanggalLahir: $tanggalLahir, usia: $usia, $jenisKelamin, nik: $nik, bbLahir: $bbLahir, tbLahir: $tbLahir, mingguLahir: $mingguLahir, orangTuaId: $orangTuaId, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'BayiModel(id: $id, nama: $nama, tanggalLahir: $tanggalLahir, usia: $usia, $jenisKelamin, nik: $nik, bbLahir: $bbLahir, tbLahir: $tbLahir, mingguLahir: $mingguLahir, bbSekarang: $bbSekarang, tbSekarang: $tbSekarang, orangTuaId: $orangTuaId, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -128,6 +144,8 @@ class AnakModel {
         other.bbLahir == bbLahir &&
         other.tbLahir == tbLahir &&
         other.mingguLahir == mingguLahir &&
+        other.bbSekarang == bbSekarang &&
+        other.tbSekarang == tbSekarang &&
         other.orangTuaId == orangTuaId &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt;
@@ -144,6 +162,8 @@ class AnakModel {
         bbLahir.hashCode ^
         tbLahir.hashCode ^
         mingguLahir.hashCode ^
+        bbSekarang.hashCode ^
+        tbSekarang.hashCode ^
         orangTuaId.hashCode ^
         createdAt.hashCode ^
         updatedAt.hashCode;

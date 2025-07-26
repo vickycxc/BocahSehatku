@@ -1,41 +1,58 @@
-import 'package:app/core/providers/pengguna_aktif_notifier.dart';
+import 'package:app/core/model/anak_model.dart';
 import 'package:app/core/utils.dart';
-import 'package:app/core/widgets/custom_button.dart';
-import 'package:app/features/auth/view/pages/onboarding_page.dart';
-import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:app/features/user_orang_tua/view/widgets/anak_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class OrtuDashboardPage extends ConsumerWidget {
+class OrtuDashboardPage extends StatelessWidget {
   const OrtuDashboardPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(penggunaAktifNotifierProvider);
-    print('user: ${user?.data}');
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Halo nona noni'),
-            CustomButton(
-              onPressed: () {
-                ref.read(authViewModelProvider.notifier).keluar();
-                showSnackBar(context, 'Berhasil Keluar!');
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const OnboardingPage(),
-                  ),
-                  (_) => false,
-                );
-              },
-              text: 'Keluar',
-            ),
-          ],
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+      children: [
+        AnakCard(
+          AnakModel(
+            id: 0,
+            nama:
+                'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
+            tanggalLahir: DateTime(2025, 2, 3),
+            jenisKelamin: JenisKelamin.lakiLaki,
+            nik: '20000',
+            bbSekarang: 4.55,
+            tbSekarang: 60.0,
+            orangTuaId: 2,
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
         ),
-      ),
+        AnakCard(
+          AnakModel(
+            id: 0,
+            nama:
+                'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
+            tanggalLahir: DateTime(2025, 2, 3),
+            jenisKelamin: JenisKelamin.lakiLaki,
+            nik: '20000',
+            orangTuaId: 2,
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+        ),
+        AnakCard(
+          AnakModel(
+            id: 0,
+            nama:
+                'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
+            tanggalLahir: DateTime(2025, 2, 3),
+            jenisKelamin: JenisKelamin.lakiLaki,
+            nik: '20000',
+            orangTuaId: 2,
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+        ),
+      ],
     );
   }
 }

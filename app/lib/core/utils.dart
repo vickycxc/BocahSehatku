@@ -15,4 +15,16 @@ void showSnackBar(BuildContext context, String message) {
     );
 }
 
+String formatAngka(double? angka) {
+  return angka != null
+      ? (angka % 1 == 0
+            ? angka
+                  .toInt()
+                  .toString() // Tampilkan tanpa koma jika bilangan bulat
+            : angka.toStringAsFixed(
+                1,
+              )) // Tampilkan dengan koma jika ada desimal
+      : '-';
+}
+
 enum JenisKelamin { lakiLaki, perempuan }
