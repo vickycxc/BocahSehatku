@@ -1,5 +1,9 @@
 import 'package:app/core/model/nav_model.dart';
 import 'package:app/core/theme/palette.dart';
+import 'package:app/core/utils.dart';
+import 'package:app/core/widgets/custom_button.dart';
+import 'package:app/features/auth/view/pages/onboarding_page.dart';
+import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:app/features/user_posyandu/view/widgets/posyandu_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -81,9 +85,47 @@ class _OrtuPageState extends ConsumerState<PosyanduPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(color: Palette.backgroundSecondaryColor),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
+      body: Container(
+        color: Palette.backgroundSecondaryColor,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 64),
+                child: Text(
+                  'Halo Nona Nona\nSaat Air mataku mengalir,\nAku tak bisa menggunakan tissue,\nAku butuh 4 Lembar,\n4 Lembar,\n4 Lembar,\nSaat aku menangis :\'(',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(height: 16),
+              CustomButton(
+                onPressed: () {
+                  ref.read(authViewModelProvider.notifier).keluar();
+                  showSnackBar(context, 'Halo!', isFloating: true);
+                },
+                text: 'Show Snackbar',
+              ),
+              SizedBox(height: 25),
+              CustomButton(
+                onPressed: () {
+                  ref.read(authViewModelProvider.notifier).keluar();
+                  showSnackBar(context, 'Berhasil Keluar!');
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const OnboardingPage(),
+                    ),
+                    (_) => false,
+                  );
+                },
+                text: 'Keluar',
+              ),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: SizedBox(
         height: 50,
         width: 50,

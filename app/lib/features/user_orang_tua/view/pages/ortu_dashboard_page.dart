@@ -12,7 +12,12 @@ class OrtuDashboardPage extends StatelessWidget {
     return Container(
       color: Palette.backgroundSecondaryColor,
       child: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+        padding: const EdgeInsets.only(
+          bottom: 12,
+          left: 12,
+          right: 12,
+          top: 210,
+        ),
         children: [
           AnakCard(
             AnakModel(

@@ -29,7 +29,11 @@ class OnboardingPage extends ConsumerWidget {
             'Data received from onboarding page: ${nav.message}. tujuan: ${nav.tujuan}',
           );
           if (nav.tujuan != 'ONBOARDING_PAGE') {
-            showSnackBar(context, nav.message);
+            showSnackBar(
+              context,
+              nav.message,
+              isFloating: nav.tujuan == 'POSYANDU_PAGE',
+            );
             switch (nav.tujuan) {
               case 'MASUK':
                 Navigator.pushAndRemoveUntil(

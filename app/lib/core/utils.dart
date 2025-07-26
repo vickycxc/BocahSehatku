@@ -1,7 +1,11 @@
 import 'package:app/core/theme/palette.dart';
 import 'package:flutter/material.dart';
 
-void showSnackBar(BuildContext context, String message) {
+void showSnackBar(
+  BuildContext context,
+  String message, {
+  bool isFloating = false,
+}) {
   ScaffoldMessenger.of(context)
     ..hideCurrentSnackBar()
     ..showSnackBar(
@@ -11,6 +15,9 @@ void showSnackBar(BuildContext context, String message) {
           style: TextStyle(color: Palette.backgroundPrimaryColor),
         ),
         backgroundColor: Palette.accentColor,
+        behavior: (isFloating)
+            ? SnackBarBehavior.floating
+            : SnackBarBehavior.fixed,
       ),
     );
 }

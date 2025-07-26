@@ -3,6 +3,7 @@ import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/view/pages/onboarding_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:app/features/user_orang_tua/view/pages/history_page.dart';
 import 'package:app/features/user_orang_tua/view/pages/ortu_dashboard_page.dart';
 import 'package:app/features/user_orang_tua/view/widgets/ortu_app_bar.dart';
 import 'package:app/features/user_orang_tua/view/widgets/ortu_nav_bar.dart';
@@ -59,10 +60,11 @@ class _OrtuPageState extends ConsumerState<OrtuPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: _indexHalaman != 2 ? OrtuAppBar() : null,
       body: switch (_indexHalaman) {
         0 => OrtuDashboardPage(),
-        1 => Center(child: Text('Riwayat')),
+        1 => HistoryPage(),
         2 => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
