@@ -28,7 +28,6 @@ class TambahProfilAnakCard extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   shape: CircleBorder(),
-
                   backgroundColor: Palette.accentColor,
                 ),
                 child: Icon(

@@ -40,7 +40,7 @@ class AnakCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
+                            anak.nama,
                             maxLines: 2,
                             style: TextStyle(
                               fontSize: 16,
@@ -49,7 +49,7 @@ class AnakCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '2 Bulan 12 Hari',
+                            anak.usiaInString,
                             style: TextStyle(
                               fontSize: 16,
                               color: Palette.textPrimaryColor,

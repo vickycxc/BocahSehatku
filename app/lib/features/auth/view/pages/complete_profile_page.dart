@@ -9,7 +9,7 @@ import 'package:app/core/widgets/wave_background.dart';
 import 'package:app/features/auth/model/navigasi_auth_model.dart';
 import 'package:app/features/auth/view/pages/onboarding_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
-import 'package:app/features/user_orang_tua/view/pages/ortu_dashboard2_page.dart';
+import 'package:app/features/user_orang_tua/view/pages/ortu_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -61,9 +61,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
             case 'ORTU_PAGE':
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => const OrtuDashboard2Page(),
-                ),
+                MaterialPageRoute(builder: (context) => const OrtuPage()),
                 (_) => false,
               );
             case 'ONBOARDING_PAGE':
