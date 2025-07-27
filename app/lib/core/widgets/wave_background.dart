@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:app/core/size_config.dart';
 import 'package:app/core/theme/palette.dart';
-import 'package:app/core/widgets/bezier_curve_three.dart';
 import 'package:app/core/widgets/bezier_curve_two.dart';
 import 'package:app/core/widgets/custom_back_button.dart';
 import 'package:app/core/widgets/bezier_curve_one.dart';
@@ -27,7 +26,7 @@ class WaveBackground extends StatelessWidget {
     this.children,
     this.waveColor = Palette.primaryColor,
     this.backgroundColor,
-    this.bezierType = 0,
+    this.bezierType = 1,
     this.height = 1,
   });
 

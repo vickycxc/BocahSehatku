@@ -6,7 +6,7 @@ class BezierCurveThree extends CustomClipper<Path> {
   Path getClip(Size size) {
     Path path = Path();
     final double xScaling = size.width / 414;
-    final double yScaling = 0.9;
+    final double yScaling = 0.8;
     path.lineTo(412 * xScaling, 280.135 * yScaling);
     path.cubicTo(
       365.333 * xScaling,

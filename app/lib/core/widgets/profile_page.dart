@@ -18,7 +18,7 @@ class ProfilePage extends StatelessWidget {
         ),
 
         Container(
-          padding: const EdgeInsets.only(top: 45),
+          padding: const EdgeInsets.only(top: 20),
           alignment: Alignment.topCenter,
           child: SvgPicture.asset('assets/logo.svg', width: 220, height: 220),
         ),

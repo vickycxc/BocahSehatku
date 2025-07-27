@@ -1,13 +1,18 @@
+import 'package:app/core/theme/palette.dart';
+import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/profile_button.dart';
 import 'package:app/core/widgets/profile_page.dart';
+import 'package:app/features/auth/view/pages/onboarding_page.dart';
+import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-class OrtuProfilePage extends StatelessWidget {
+class OrtuProfilePage extends ConsumerWidget {
   const OrtuProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ProfilePage(
       child: Center(
         child: Column(
@@ -33,11 +38,30 @@ class OrtuProfilePage extends StatelessWidget {
             ),
             SizedBox(height: 24),
             ProfileButton(
-              onPressed: () {},
+              onPressed: () {
+                ref.read(authViewModelProvider.notifier).keluar();
+                showSnackBar(context, 'Berhasil Keluar!');
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const OnboardingPage(),
+                  ),
+                  (_) => false,
+                );
+              },
               icon: LucideIcons.logOut,
               text: 'Keluar',
             ),
-            SizedBox(height: 72),
+            SizedBox(height: 42),
+            Text(
+              '© 2025 - Isuk Guyon Team',
+              style: TextStyle(
+                fontSize: 14,
+                color: Palette.backgroundPrimaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 48),
           ],
         ),
       ),
