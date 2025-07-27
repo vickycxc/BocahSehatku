@@ -100,7 +100,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
     return WaveBackground(
       backgroundColor: Palette.secondaryColor,
       withLogo: false,
-      withBezierTwo: true,
+      bezierType: 2,
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 40),

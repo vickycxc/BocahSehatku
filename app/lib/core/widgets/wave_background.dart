@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:app/core/size_config.dart';
 import 'package:app/core/theme/palette.dart';
+import 'package:app/core/widgets/bezier_curve_three.dart';
 import 'package:app/core/widgets/bezier_curve_two.dart';
 import 'package:app/core/widgets/custom_back_button.dart';
 import 'package:app/core/widgets/bezier_curve_one.dart';
@@ -15,7 +16,7 @@ class WaveBackground extends StatelessWidget {
   final bool withLogo;
   final Color waveColor;
   final Color? backgroundColor;
-  final bool withBezierTwo;
+  final int bezierType;
   final double height;
   const WaveBackground({
     super.key,
@@ -26,7 +27,7 @@ class WaveBackground extends StatelessWidget {
     this.children,
     this.waveColor = Palette.primaryColor,
     this.backgroundColor,
-    this.withBezierTwo = false,
+    this.bezierType = 0,
     this.height = 1,
   });
 
@@ -45,9 +46,11 @@ class WaveBackground extends StatelessWidget {
             children: [
               if (backgroundColor != null) Container(color: backgroundColor),
               ClipPath(
-                clipper: !withBezierTwo
-                    ? BezierCurveOne(height: waveHeight)
-                    : BezierCurveTwo(height: waveHeight),
+                clipper: switch (bezierType) {
+                  1 => BezierCurveOne(height: waveHeight),
+                  2 => BezierCurveTwo(height: waveHeight),
+                  _ => throw ArgumentError('Invalid bezierType: $bezierType'),
+                },
                 child: Container(color: waveColor),
               ),
               if (withLogo)

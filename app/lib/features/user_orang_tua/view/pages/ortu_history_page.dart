@@ -2,8 +2,8 @@ import 'package:app/core/theme/palette.dart';
 import 'package:app/features/user_orang_tua/view/widgets/posyandu_history_card.dart';
 import 'package:flutter/material.dart';
 
-class HistoryPage extends StatelessWidget {
-  const HistoryPage({super.key});
+class OrtuHistoryPage extends StatelessWidget {
+  const OrtuHistoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {

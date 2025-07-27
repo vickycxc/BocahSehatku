@@ -31,7 +31,7 @@ class _CompleteProfilePageState extends ConsumerState<PosyanduPickPage> {
       withBack: true,
       backgroundColor: Palette.secondaryColor,
       withLogo: false,
-      withBezierTwo: true,
+      bezierType: 2,
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 40, left: 25),
