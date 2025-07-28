@@ -2,9 +2,15 @@ import 'package:app/core/theme/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-class BabyGraphCard extends StatelessWidget {
+class BabyGraphCard extends StatefulWidget {
   const BabyGraphCard({super.key});
 
+  @override
+  State<BabyGraphCard> createState() => _BabyGraphCardState();
+}
+
+class _BabyGraphCardState extends State<BabyGraphCard> {
+  int _currentTab = 0;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -45,7 +51,11 @@ class BabyGraphCard extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                             shape: const CircleBorder(),
                           ),
-                          onPressed: () => {},
+                          onPressed: () => {
+                            setState(() {
+                              _currentTab = (_currentTab - 1) % 4;
+                            }),
+                          },
                           child: Icon(LucideIcons.chevronLeft),
                         ),
                       ),
@@ -53,7 +63,13 @@ class BabyGraphCard extends StatelessWidget {
                     Expanded(
                       child: Text.rich(
                         TextSpan(
-                          text: 'Indeks Massa Tubuh\nMenurut Umur (IMT/U)',
+                          text: switch (_currentTab) {
+                            0 => 'Berat Badan Menurut\nUmur (BB/U)',
+                            1 => 'Tinggi Badan Menurut\nUmur (TB/U)',
+                            2 => 'Berat Badan Menurut\nTinggi Badan (BB/TB)',
+                            3 => 'Indeks Massa Tubuh\nMenurut Umur (IMT/U)',
+                            _ => 'Error',
+                          },
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
@@ -76,7 +92,11 @@ class BabyGraphCard extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                             shape: const CircleBorder(),
                           ),
-                          onPressed: () => {},
+                          onPressed: () => {
+                            setState(() {
+                              _currentTab = (_currentTab + 1) % 4;
+                            }),
+                          },
                           child: Icon(LucideIcons.chevronRight),
                         ),
                       ),
