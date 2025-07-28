@@ -41,45 +41,47 @@ class OrtuAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             centerTitle: false,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 80,
-              bottom: 16,
-              left: 16,
-              right: 16,
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(24)),
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                scrollDirection: Axis.horizontal,
-                children: [
-                  AnakAppBarCard(
-                    AnakModel(
-                      id: 0,
-                      nama: 'Ngatmono Ranu Danaswara',
-                      tanggalLahir: DateTime(2025, 2, 3),
-                      jenisKelamin: JenisKelamin.lakiLaki,
-                      nik: '20000',
-                      orangTuaId: 2,
-                      createdAt: DateTime.now(),
-                      updatedAt: DateTime.now(),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 50,
+                bottom: 16,
+                left: 16,
+                right: 16,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(24)),
+                child: ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    AnakAppBarCard(
+                      AnakModel(
+                        id: 0,
+                        nama: 'Ngatmono Ranu Danaswara',
+                        tanggalLahir: DateTime(2025, 2, 3),
+                        jenisKelamin: JenisKelamin.lakiLaki,
+                        nik: '20000',
+                        orangTuaId: 2,
+                        createdAt: DateTime.now(),
+                        updatedAt: DateTime.now(),
+                      ),
                     ),
-                  ),
-                  AnakAppBarCard(
-                    AnakModel(
-                      id: 0,
-                      nama: 'Ngatwiti Wijianti Widiastuti',
-                      tanggalLahir: DateTime(2025, 2, 3),
-                      jenisKelamin: JenisKelamin.perempuan,
-                      nik: '20000',
-                      orangTuaId: 2,
-                      createdAt: DateTime.now(),
-                      updatedAt: DateTime.now(),
+                    AnakAppBarCard(
+                      AnakModel(
+                        id: 0,
+                        nama: 'Ngatwiti Wijianti Widiastuti',
+                        tanggalLahir: DateTime(2025, 2, 3),
+                        jenisKelamin: JenisKelamin.perempuan,
+                        nik: '20000',
+                        orangTuaId: 2,
+                        createdAt: DateTime.now(),
+                        updatedAt: DateTime.now(),
+                      ),
                     ),
-                  ),
-                  TambahProfilAnakCard(),
-                ],
+                    TambahProfilAnakCard(),
+                  ],
+                ),
               ),
             ),
           ),

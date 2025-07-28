@@ -1,7 +1,7 @@
 import 'package:app/core/model/anak_model.dart';
 import 'package:app/core/theme/palette.dart';
 import 'package:app/core/utils.dart';
-import 'package:app/features/user_orang_tua/view/widgets/anak_card.dart';
+import 'package:app/features/user_orang_tua/view/widgets/ortu_anak_card.dart';
 import 'package:flutter/material.dart';
 
 class OrtuDashboardPage extends StatelessWidget {
@@ -19,7 +19,7 @@ class OrtuDashboardPage extends StatelessWidget {
           top: 210,
         ),
         children: [
-          AnakCard(
+          OrtuAnakCard(
             AnakModel(
               id: 0,
               nama:
@@ -34,7 +34,7 @@ class OrtuDashboardPage extends StatelessWidget {
               updatedAt: DateTime.now(),
             ),
           ),
-          AnakCard(
+          OrtuAnakCard(
             AnakModel(
               id: 0,
               nama:
@@ -47,7 +47,7 @@ class OrtuDashboardPage extends StatelessWidget {
               updatedAt: DateTime.now(),
             ),
           ),
-          AnakCard(
+          OrtuAnakCard(
             AnakModel(
               id: 0,
               nama:

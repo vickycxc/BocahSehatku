@@ -1,12 +1,13 @@
 import 'package:app/core/model/anak_model.dart';
 import 'package:app/core/theme/palette.dart';
 import 'package:app/core/utils.dart';
+import 'package:app/features/user_orang_tua/view/pages/ortu_baby_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class AnakCard extends StatelessWidget {
+class OrtuAnakCard extends StatelessWidget {
   final AnakModel anak;
-  const AnakCard(this.anak, {super.key});
+  const OrtuAnakCard(this.anak, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +21,12 @@ class AnakCard extends StatelessWidget {
         ),
         child: InkWell(
           borderRadius: BorderRadius.all(Radius.circular(32)),
-          // focusColor: Palette.textPrimaryColor,
-          // hoverColor: Palette.textPrimaryColor,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => OrtuBabyDetailPage(anak)),
+            );
+          },
           child: Column(
             children: [
               Row(
@@ -85,18 +89,18 @@ class AnakCard extends StatelessWidget {
                         ),
                         Expanded(
                           child: Center(
-                            child: RichText(
-                              text: TextSpan(
+                            child: Text.rich(
+                              TextSpan(
                                 text: 'Berat\n',
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 13,
                                   color: Palette.textPrimaryColor,
                                 ),
                                 children: [
                                   TextSpan(
                                     text: formatAngka(anak.bbSekarang),
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.bold,
                                       color: Palette.textPrimaryColor,
                                     ),
@@ -104,7 +108,7 @@ class AnakCard extends StatelessWidget {
                                   TextSpan(
                                     text: ' kg',
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 13,
                                       color: Palette.textPrimaryColor,
                                     ),
                                   ),
@@ -139,18 +143,18 @@ class AnakCard extends StatelessWidget {
                         ),
                         Expanded(
                           child: Center(
-                            child: RichText(
-                              text: TextSpan(
+                            child: Text.rich(
+                              TextSpan(
                                 text: 'Tinggi\n',
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 13,
                                   color: Palette.textPrimaryColor,
                                 ),
                                 children: [
                                   TextSpan(
                                     text: formatAngka(anak.tbSekarang),
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.bold,
                                       color: Palette.textPrimaryColor,
                                     ),
@@ -158,7 +162,7 @@ class AnakCard extends StatelessWidget {
                                   TextSpan(
                                     text: ' cm',
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 13,
                                       color: Palette.textPrimaryColor,
                                     ),
                                   ),
@@ -210,15 +214,13 @@ class AnakCard extends StatelessWidget {
                     ),
                     SizedBox(height: 12),
                     Container(
-                      // width: double.infinity,
-                      // height: 180,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 10,
                         vertical: 10,
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
-                        color: Palette.backgroundPrimaryColor,
+                        color: Palette.backgroundPrimaryColor.withAlpha(191),
                       ),
                       child: Padding(
                         padding: EdgeInsetsGeometry.symmetric(
