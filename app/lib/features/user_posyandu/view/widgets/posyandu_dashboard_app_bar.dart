@@ -2,8 +2,7 @@ import 'package:app/core/theme/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class PosyanduDashboardAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
+class PosyanduDashboardAppBar extends StatelessWidget {
   final String nama = 'Posyandu Melati';
   const PosyanduDashboardAppBar({super.key});
 
@@ -13,33 +12,38 @@ class PosyanduDashboardAppBar extends StatelessWidget
     final String namaDuaKata = subNama.length > 1
         ? '${subNama[0]} ${subNama[1]}'
         : subNama[0];
-    return Container(
-      decoration: BoxDecoration(
+    return SliverAppBar(
+      actions: const [],
+      title: Text(
+        'Halo, $namaDuaKata',
+        style: TextStyle(
+          color: Palette.backgroundPrimaryColor,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      centerTitle: true,
+      backgroundColor: Palette.accentColor,
+      pinned: true,
+      floating: true,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(32),
           bottomRight: Radius.circular(32),
         ),
-        color: Palette.accentColor,
       ),
-      child: Stack(
-        children: [
-          AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            title: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                'Halo, $namaDuaKata',
-                style: TextStyle(
-                  color: Palette.backgroundPrimaryColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+      expandedHeight: 170,
+      flexibleSpace: FlexibleSpaceBar(
+        collapseMode: CollapseMode.pin,
+        background: Container(
+          decoration: BoxDecoration(
+            color: Palette.accentColor,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(32),
+              bottomRight: Radius.circular(32),
             ),
-            centerTitle: true,
           ),
-          SafeArea(
+          child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.only(
                 top: 50,
@@ -148,11 +152,9 @@ class PosyanduDashboardAppBar extends StatelessWidget
               ),
             ),
           ),
-        ],
+        ),
+        centerTitle: true,
       ),
     );
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 120);
 }

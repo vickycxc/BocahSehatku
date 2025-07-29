@@ -7,7 +7,6 @@ import 'package:app/features/auth/view/pages/onboarding_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_calendar_page.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_dashboard_page.dart';
-import 'package:app/features/user_posyandu/view/widgets/posyandu_dashboard_app_bar.dart';
 import 'package:app/features/user_posyandu/view/widgets/posyandu_nav_bar.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_profile_page.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +90,7 @@ class _OrtuPageState extends ConsumerState<PosyanduPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: switch (_indexHalaman) {
-        0 => PosyanduDashboardAppBar(),
+        0 => null,
         1 => CustomAppBar(
           height: 0,
           content: SafeArea(
