@@ -17,7 +17,6 @@ class OrtuHistoryPage extends StatelessWidget {
           top: 230,
         ),
         children: [
-          // Placeholder for history items
           Padding(
             padding: const EdgeInsets.only(bottom: 4),
             child: Text(
