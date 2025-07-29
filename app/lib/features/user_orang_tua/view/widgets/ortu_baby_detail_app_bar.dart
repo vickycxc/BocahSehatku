@@ -1,6 +1,7 @@
 import 'package:app/core/model/anak_model.dart';
 import 'package:app/core/theme/palette.dart';
 import 'package:app/core/widgets/custom_back_button.dart';
+import 'package:app/features/user_orang_tua/view/pages/ortu_qr_page.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -48,7 +49,12 @@ class OrtuBabyDetailAppBar extends StatelessWidget {
             padding: const EdgeInsets.only(right: 16),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(shape: const CircleBorder()),
-              onPressed: () => {},
+              onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const OrtuQrPage()),
+                ),
+              },
               child: Icon(
                 LucideIcons.qrCode,
                 color: Palette.textPrimaryColor,

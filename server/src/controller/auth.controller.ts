@@ -106,24 +106,24 @@ export const kirimOtp = async (req: Request, res: Response) => {
       });
     }
 
-    const response = await axios.post(
-      "https://api.fazpass.com/v1/otp/generate",
-      {
-        phone: noHp,
-        gateway_key: process.env.GATEWAY_KEY!,
-      },
-      {
-        headers: {
-          Authorization: "Bearer " + process.env.MERCHANT_KEY!,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    // const response = await axios.post(
+    //   "https://api.fazpass.com/v1/otp/generate",
+    //   {
+    //     phone: noHp,
+    //     gateway_key: process.env.GATEWAY_KEY!,
+    //   },
+    //   {
+    //     headers: {
+    //       Authorization: "Bearer " + process.env.MERCHANT_KEY!,
+    //       "Content-Type": "application/json",
+    //     },
+    //   }
+    // );
 
-    if (response.data.status === true) {
-      // if (true) {
-      // const kodeOtp = "0000";
-      const kodeOtp = response.data.data.otp;
+    // if (response.data.status === true) {
+    if (true) {
+      const kodeOtp = "0000";
+      // const kodeOtp = response.data.data.otp;
       const otpExpiresAt = new Date(Date.now() + 5 * 60 * 1000);
 
       if (tujuan === "MASUK") {

@@ -46,6 +46,7 @@ dependencies:
   flutter_native_splash: ^2.4.6
   quickalert: ^1.1.0
   age_calculator: ^1.0.0
+  qr_flutter: ^4.1.0
 
 dev_dependencies:
   flutter_test:
