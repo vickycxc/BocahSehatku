@@ -49,8 +49,8 @@ class _PosyanduLoginPageState extends ConsumerState<PosyanduLoginPage> {
                 },
               ),
               CustomField(
-                label: 'Password',
-                hintText: 'Password',
+                label: 'Kata Sandi',
+                hintText: 'Kata Sandi',
                 keyboardType: TextInputType.visiblePassword,
                 controller: _passwordController,
                 isObscure: true,

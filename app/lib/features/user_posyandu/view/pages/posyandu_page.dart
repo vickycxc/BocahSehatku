@@ -4,7 +4,9 @@ import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/view/pages/onboarding_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:app/features/user_posyandu/view/widgets/posyandu_dashboard_app_bar.dart';
 import 'package:app/features/user_posyandu/view/widgets/posyandu_nav_bar.dart';
+import 'package:app/features/user_posyandu/view/pages/posyandu_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -85,46 +87,58 @@ class _OrtuPageState extends ConsumerState<PosyanduPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Palette.backgroundSecondaryColor,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 64),
-                child: Text(
-                  'Halo Nona Nona\nSaat Air mataku mengalir,\nAku tak bisa menggunakan tissue,\nAku butuh 4 Lembar,\n4 Lembar,\n4 Lembar,\nSaat aku menangis :\'(',
-                  textAlign: TextAlign.center,
+      appBar: _indexHalaman != 5
+          ? PosyanduDashboardAppBar()
+          : AppBar(
+              toolbarHeight: 0,
+              backgroundColor: Palette.backgroundPrimaryColor,
+              elevation: 0,
+            ),
+      extendBodyBehindAppBar: true,
+      body: switch (_indexHalaman) {
+        0 => Container(
+          color: Palette.backgroundSecondaryColor,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 64),
+                  child: Text(
+                    'Halo Nona Nona\nSaat Air mataku mengalir,\nAku tak bisa menggunakan tissue,\nAku butuh 4 Lembar,\n4 Lembar,\n4 Lembar,\nSaat aku menangis :\'(',
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
-              SizedBox(height: 16),
-              CustomButton(
-                onPressed: () {
-                  ref.read(authViewModelProvider.notifier).keluar();
-                  showSnackBar(context, 'Halo!', isFloating: true);
-                },
-                text: 'Show Snackbar',
-              ),
-              SizedBox(height: 25),
-              CustomButton(
-                onPressed: () {
-                  ref.read(authViewModelProvider.notifier).keluar();
-                  showSnackBar(context, 'Berhasil Keluar!');
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const OnboardingPage(),
-                    ),
-                    (_) => false,
-                  );
-                },
-                text: 'Keluar',
-              ),
-            ],
+                SizedBox(height: 16),
+                CustomButton(
+                  onPressed: () {
+                    ref.read(authViewModelProvider.notifier).keluar();
+                    showSnackBar(context, 'Halo!', isFloating: true);
+                  },
+                  text: 'Show Snackbar',
+                ),
+                SizedBox(height: 25),
+                CustomButton(
+                  onPressed: () {
+                    ref.read(authViewModelProvider.notifier).keluar();
+                    showSnackBar(context, 'Berhasil Keluar!');
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const OnboardingPage(),
+                      ),
+                      (_) => false,
+                    );
+                  },
+                  text: 'Keluar',
+                ),
+              ],
+            ),
           ),
         ),
-      ),
+        5 => PosyanduProfilePage(),
+        _ => Center(child: Text('Halaman tidak ditemukan')),
+      },
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: SizedBox(
         height: 50,

@@ -30,8 +30,8 @@ class PickRolePage extends StatelessWidget {
               items: const [
                 DropdownMenuItem(value: 'ORANG_TUA', child: Text('Orang Tua')),
                 DropdownMenuItem(
-                  value: 'PETUGAS_POSYANDU',
-                  child: Text('Petugas Posyandu'),
+                  value: 'KADER_POSYANDU',
+                  child: Text('Kader Posyandu'),
                 ),
               ],
             ),
@@ -43,7 +43,7 @@ class PickRolePage extends StatelessWidget {
                       context,
                       MaterialPageRoute(builder: (context) => LoginPage()),
                     );
-                  } else if (selectedRole == 'PETUGAS_POSYANDU') {
+                  } else if (selectedRole == 'KADER_POSYANDU') {
                     Navigator.push(
                       context,
                       MaterialPageRoute(

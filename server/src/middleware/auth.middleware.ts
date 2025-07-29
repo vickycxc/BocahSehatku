@@ -41,7 +41,7 @@ export const protectRoute = async (
         req.orangTua = orangTua;
         return next();
 
-      case "PETUGAS_POSYANDU":
+      case "KADER_POSYANDU":
         const posyandu = await prisma.posyandu.findUnique({
           where: { id: decoded.userId },
         });

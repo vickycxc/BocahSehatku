@@ -773,7 +773,7 @@ export const masukPosyandu = async (req: Request, res: Response) => {
     }
     const token = generateToken({
       userId: posyanduTanpaPassword.id,
-      role: "PETUGAS_POSYANDU",
+      role: "KADER_POSYANDU",
     });
     return res.status(200).json({
       message: "Berhasil Masuk Ke Akun Posyandu, Selamat Datang!",
