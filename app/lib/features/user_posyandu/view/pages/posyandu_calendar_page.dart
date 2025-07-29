@@ -4,8 +4,8 @@ import 'package:app/core/utils.dart';
 import 'package:app/features/user_posyandu/view/widgets/posyandu_anak_card.dart';
 import 'package:flutter/material.dart';
 
-class PosyanduDashboardPage extends StatelessWidget {
-  const PosyanduDashboardPage({super.key});
+class PosyanduCalendarPage extends StatelessWidget {
+  const PosyanduCalendarPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,16 +14,27 @@ class PosyanduDashboardPage extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.only(
           bottom: 12,
-          left: 12,
-          right: 12,
-          top: 220,
+          left: 24,
+          right: 24,
+          top: 100,
         ),
         children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.only(bottom: 24),
+            child: Card(
+              color: Palette.backgroundPrimaryColor,
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32)),
+              ),
+              child: SizedBox(height: 350),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4),
             child: Center(
               child: Text(
-                'Pelayanan Hari Ini',
+                '4 Juli',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
@@ -51,6 +62,8 @@ class PosyanduDashboardPage extends StatelessWidget {
               tanggalLahir: DateTime(2025, 2, 3),
               jenisKelamin: JenisKelamin.lakiLaki,
               nik: '20000',
+              bbSekarang: 4.55,
+              tbSekarang: 60.0,
               orangTuaId: 2,
               createdAt: DateTime.now(),
               updatedAt: DateTime.now(),
@@ -64,6 +77,8 @@ class PosyanduDashboardPage extends StatelessWidget {
               tanggalLahir: DateTime(2025, 2, 3),
               jenisKelamin: JenisKelamin.lakiLaki,
               nik: '20000',
+              bbSekarang: 4.55,
+              tbSekarang: 60.0,
               orangTuaId: 2,
               createdAt: DateTime.now(),
               updatedAt: DateTime.now(),

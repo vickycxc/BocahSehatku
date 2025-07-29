@@ -2,8 +2,10 @@ import 'package:app/core/model/nav_model.dart';
 import 'package:app/core/theme/palette.dart';
 import 'package:app/core/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
+import 'package:app/core/widgets/custom_app_bar.dart';
 import 'package:app/features/auth/view/pages/onboarding_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:app/features/user_posyandu/view/pages/posyandu_calendar_page.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_dashboard_page.dart';
 import 'package:app/features/user_posyandu/view/widgets/posyandu_dashboard_app_bar.dart';
 import 'package:app/features/user_posyandu/view/widgets/posyandu_nav_bar.dart';
@@ -88,17 +90,36 @@ class _OrtuPageState extends ConsumerState<PosyanduPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _indexHalaman != 5
-          ? PosyanduDashboardAppBar()
-          : AppBar(
-              toolbarHeight: 0,
-              backgroundColor: Palette.backgroundPrimaryColor,
-              elevation: 0,
+      appBar: switch (_indexHalaman) {
+        0 => PosyanduDashboardAppBar(),
+        1 => CustomAppBar(
+          height: 0,
+          content: SafeArea(
+            child: Center(
+              child: Text(
+                'Tampilkan Menurut Tanggal',
+                textAlign: TextAlign.start,
+                maxLines: 2,
+                style: TextStyle(
+                  color: Palette.backgroundPrimaryColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
+          ),
+        ),
+        _ => AppBar(
+          toolbarHeight: 0,
+          backgroundColor: Palette.backgroundPrimaryColor,
+          elevation: 0,
+        ),
+      },
       extendBodyBehindAppBar: true,
       body: switch (_indexHalaman) {
         0 => PosyanduDashboardPage(),
-        1 => Container(
+        1 => PosyanduCalendarPage(),
+        2 => Container(
           color: Palette.backgroundSecondaryColor,
           child: Center(
             child: Column(
