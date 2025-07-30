@@ -20,8 +20,8 @@ class _PosyanduSearchPageState extends State<PosyanduSearchPage> {
       child: ListView(
         padding: const EdgeInsets.only(
           bottom: 12,
-          left: 24,
-          right: 24,
+          left: 12,
+          right: 12,
           top: 100,
         ),
         children: [

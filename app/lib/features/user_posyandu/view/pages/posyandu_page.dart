@@ -7,6 +7,7 @@ import 'package:app/features/auth/view/pages/onboarding_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_calendar_page.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_search_page.dart';
+import 'package:app/features/user_posyandu/view/pages/posyandu_reminder_page.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_dashboard_page.dart';
 import 'package:app/features/user_posyandu/view/widgets/posyandu_nav_bar.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_profile_page.dart';
@@ -126,18 +127,37 @@ class _OrtuPageState extends ConsumerState<PosyanduPage> {
             ),
           ),
         ),
+        3 => CustomAppBar(
+          height: 10,
+          content: SafeArea(
+            child: Center(
+              child: Text(
+                'Kirim Pesan Pengingat\nUntuk Datang Ke Posyandu',
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                style: TextStyle(
+                  color: Palette.backgroundPrimaryColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ),
         _ => AppBar(
           toolbarHeight: 0,
           backgroundColor: Palette.backgroundPrimaryColor,
           elevation: 0,
         ),
       },
+      resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
       body: switch (_indexHalaman) {
         0 => PosyanduDashboardPage(),
         1 => PosyanduCalendarPage(),
         2 => PosyanduSearchPage(),
-        3 => Container(
+        3 => PosyanduReminderPage(),
+        4 => Container(
           color: Palette.backgroundSecondaryColor,
           child: Center(
             child: Column(

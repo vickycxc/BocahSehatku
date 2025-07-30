@@ -4,9 +4,9 @@ import 'package:app/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class PosyanduAnakCard extends StatelessWidget {
+class PosyanduReminderCard extends StatelessWidget {
   final AnakModel anak;
-  const PosyanduAnakCard(this.anak, {super.key});
+  const PosyanduReminderCard(this.anak, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -104,12 +104,14 @@ class PosyanduAnakCard extends StatelessWidget {
                                             fontWeight: FontWeight.bold,
                                             fontSize: 12,
                                           ),
-                                          textAlign: TextAlign.start,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
+                                          textAlign:
+                                              TextAlign.start, // Teks rata kiri
+                                          overflow: TextOverflow
+                                              .ellipsis, // Potong teks jika terlalu panjang
+                                          maxLines: 1, // Maksimal 1 baris
                                         ),
                                         Text(
-                                          'Mujiati Winarno Kusumabangsa Rini',
+                                          'Mujiati Winarno',
                                           style: const TextStyle(fontSize: 12),
                                           textAlign: TextAlign.start,
                                           overflow: TextOverflow.ellipsis,
@@ -158,6 +160,44 @@ class PosyanduAnakCard extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                              const SizedBox(height: 12),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Image.asset(
+                                    'assets/icons/history.png',
+                                    width: 36,
+                                    height: 36,
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Flexible(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Terakhir Ke Posyandu',
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          textAlign: TextAlign.start,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                        Text(
+                                          '1 Bulan 7 Hari',
+                                          style: const TextStyle(fontSize: 12),
+                                          textAlign: TextAlign.start,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines:
+                                              2, // Maksimal 2 baris untuk teks panjang
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -170,7 +210,7 @@ class PosyanduAnakCard extends StatelessWidget {
                               color: Palette.healthyBackgroundColor,
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            height: 100,
+                            height: 120,
                             width: 60,
                             child: Column(
                               children: [
@@ -179,7 +219,7 @@ class PosyanduAnakCard extends StatelessWidget {
                                     color: Palette.healthyColor,
                                     borderRadius: BorderRadius.circular(16),
                                   ),
-                                  height: 55,
+                                  height: 65,
                                   width: 60,
                                   padding: EdgeInsets.all(14),
                                   child: SvgPicture.asset(
@@ -226,7 +266,7 @@ class PosyanduAnakCard extends StatelessWidget {
                               color: Palette.healthyBackgroundColor,
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            height: 100,
+                            height: 120,
                             width: 60,
                             child: Column(
                               children: [
@@ -235,7 +275,7 @@ class PosyanduAnakCard extends StatelessWidget {
                                     color: Palette.healthyColor,
                                     borderRadius: BorderRadius.circular(16),
                                   ),
-                                  height: 55,
+                                  height: 65,
                                   width: 60,
                                   padding: EdgeInsets.all(14),
                                   child: SvgPicture.asset(
@@ -307,6 +347,40 @@ class PosyanduAnakCard extends StatelessWidget {
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      TextButton(
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(
+                            Palette.backgroundPrimaryColor,
+                          ),
+                          shape: WidgetStatePropertyAll(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          minimumSize: WidgetStatePropertyAll(
+                            Size(double.infinity, 56),
+                          ),
+                        ),
+
+                        onPressed: () {},
+                        child: Container(
+                          // width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Hubungi Orang Tua',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Palette.textPrimaryColor,
+                              ),
                             ),
                           ),
                         ),
