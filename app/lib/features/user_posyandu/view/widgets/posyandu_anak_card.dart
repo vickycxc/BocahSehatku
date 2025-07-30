@@ -288,7 +288,7 @@ class PosyanduAnakCard extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8, left: 16),
+                  padding: const EdgeInsets.only(top: 8, left: 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
