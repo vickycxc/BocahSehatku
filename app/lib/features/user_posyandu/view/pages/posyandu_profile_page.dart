@@ -54,7 +54,7 @@ class PosyanduProfilePage extends ConsumerWidget {
             ),
             SizedBox(height: 42),
             Text(
-              '© 2025 - Isuk Guyon Team',
+              '© 2025 - Isuk Guyon Team ITS',
               style: TextStyle(
                 fontSize: 14,
                 color: Palette.backgroundPrimaryColor,

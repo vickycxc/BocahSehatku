@@ -6,6 +6,7 @@ import 'package:app/core/widgets/custom_app_bar.dart';
 import 'package:app/features/auth/view/pages/onboarding_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_calendar_page.dart';
+import 'package:app/features/user_posyandu/view/pages/posyandu_search_page.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_dashboard_page.dart';
 import 'package:app/features/user_posyandu/view/widgets/posyandu_nav_bar.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_profile_page.dart';
@@ -108,6 +109,23 @@ class _OrtuPageState extends ConsumerState<PosyanduPage> {
             ),
           ),
         ),
+        2 => CustomAppBar(
+          height: 0,
+          content: SafeArea(
+            child: Center(
+              child: Text(
+                'Cari Data Anak',
+                textAlign: TextAlign.start,
+                maxLines: 2,
+                style: TextStyle(
+                  color: Palette.backgroundPrimaryColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ),
         _ => AppBar(
           toolbarHeight: 0,
           backgroundColor: Palette.backgroundPrimaryColor,
@@ -118,7 +136,8 @@ class _OrtuPageState extends ConsumerState<PosyanduPage> {
       body: switch (_indexHalaman) {
         0 => PosyanduDashboardPage(),
         1 => PosyanduCalendarPage(),
-        2 => Container(
+        2 => PosyanduSearchPage(),
+        3 => Container(
           color: Palette.backgroundSecondaryColor,
           child: Center(
             child: Column(
