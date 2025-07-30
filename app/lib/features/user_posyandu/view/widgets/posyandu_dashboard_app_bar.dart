@@ -3,19 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class PosyanduDashboardAppBar extends StatelessWidget {
-  final String nama = 'Posyandu Melati';
   const PosyanduDashboardAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final List<String> subNama = nama.split(' ');
-    final String namaDuaKata = subNama.length > 1
-        ? '${subNama[0]} ${subNama[1]}'
-        : subNama[0];
+    // final List<String> subNama = nama.split(' ');
+    // final String namaDuaKata = subNama.length > 1
+    //     ? '${subNama[0]} ${subNama[1]}'
+    //     : subNama[0];
     return SliverAppBar(
       actions: const [],
       title: Text(
-        'Halo, $namaDuaKata',
+        'Halo, Posyandu Nama Bahagia Kurasa Tidak',
         style: TextStyle(
           color: Palette.backgroundPrimaryColor,
           fontSize: 20,

@@ -56,7 +56,10 @@ class _BabyGraphCardState extends State<BabyGraphCard> {
                               _currentTab = (_currentTab - 1) % 4;
                             }),
                           },
-                          child: Icon(LucideIcons.chevronLeft),
+                          child: Icon(
+                            LucideIcons.chevronLeft,
+                            color: Palette.textPrimaryColor,
+                          ),
                         ),
                       ),
                     ),
@@ -97,7 +100,10 @@ class _BabyGraphCardState extends State<BabyGraphCard> {
                               _currentTab = (_currentTab + 1) % 4;
                             }),
                           },
-                          child: Icon(LucideIcons.chevronRight),
+                          child: Icon(
+                            LucideIcons.chevronRight,
+                            color: Palette.textPrimaryColor,
+                          ),
                         ),
                       ),
                     ),
