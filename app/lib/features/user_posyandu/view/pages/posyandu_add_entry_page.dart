@@ -2,7 +2,6 @@ import 'package:app/core/model/anak_model.dart';
 import 'package:app/core/size_config.dart';
 import 'package:app/core/theme/palette.dart';
 import 'package:app/core/utils.dart';
-import 'package:app/core/widgets/baby_growth_history_card.dart';
 import 'package:app/core/widgets/custom_app_bar.dart';
 import 'package:app/core/widgets/custom_back_button.dart';
 import 'package:app/features/user_posyandu/view/widgets/posyandu_anak_card.dart';
@@ -20,7 +19,8 @@ class PosyanduAddEntryPage extends StatefulWidget {
 }
 
 class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
-  // late MobileScannerController scannerController;
+  final PanelController _panelController = PanelController();
+  late MobileScannerController scannerController;
   bool _panelOpened = false;
   List<PosyanduAnakCard> pos = [
     PosyanduAnakCard(
@@ -87,14 +87,17 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
 
   @override
   void initState() {
-    // scannerController = MobileScannerController();
-    // scannerController.start();
+    scannerController = MobileScannerController(
+      detectionSpeed: DetectionSpeed.noDuplicates,
+    );
+    scannerController.start();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Palette.textPrimaryColor,
       appBar: CustomAppBar(
         content: Row(
           children: [
@@ -102,7 +105,7 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
             Expanded(
               child: SafeArea(
                 child: Text(
-                  'Pindai Kode QR',
+                  'Tambah Entri Baru',
                   textAlign: TextAlign.start,
                   maxLines: 2,
                   style: TextStyle(
@@ -118,17 +121,18 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
       ),
       extendBodyBehindAppBar: true,
       body: SlidingUpPanel(
+        controller: _panelController,
         onPanelOpened: () {
           setState(() {
             _panelOpened = true;
           });
-          // scannerController.stop();
+          scannerController.stop();
         },
         onPanelClosed: () {
           setState(() {
             _panelOpened = false;
           });
-          // scannerController.start();
+          scannerController.start();
         },
         minHeight: 250,
         maxHeight: SizeConfig.screenHeight,
@@ -176,7 +180,9 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
                         vertical: 24,
                       ),
                       child: SearchBar(
-                        onTap: () {},
+                        onTap: () {
+                          _panelController.open();
+                        },
                         textStyle: WidgetStatePropertyAll(
                           TextStyle(
                             fontSize: 14,
@@ -204,6 +210,48 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
                       ),
                     ),
                     Column(children: pos),
+                    const SizedBox(height: 24),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 12,
+                        bottom: 16,
+                        right: 12,
+                      ),
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          // fixedSize: const Size(320, 55),
+                          side: BorderSide(
+                            color: Palette.textPrimaryColor,
+                            width: 2.0,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        onPressed: () {},
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                LucideIcons.userRoundPlus,
+                                color: Palette.textPrimaryColor,
+                              ),
+                              SizedBox(width: 12),
+                              Text(
+                                'Tambah Profil Anak Baru',
+                                style: TextStyle(
+                                  color: Palette.textPrimaryColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -213,8 +261,16 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
         body: Stack(
           fit: StackFit.expand,
           children: [
-            Container(color: Colors.black),
-            // MobileScanner(controller: scannerController),
+            MobileScanner(
+              controller: scannerController,
+              onDetect: (barcodes) {
+                final barcodeValue =
+                    barcodes.barcodes.firstOrNull?.displayValue;
+                if (barcodeValue != null) {
+                  showSnackBar(context, barcodeValue);
+                }
+              },
+            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -242,7 +298,7 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
 
   @override
   Future<void> dispose() async {
-    // await scannerController.dispose();
+    await scannerController.dispose();
     super.dispose();
   }
 }
