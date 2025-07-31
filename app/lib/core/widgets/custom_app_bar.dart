@@ -4,7 +4,13 @@ import 'package:flutter/material.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget content;
   final double height;
-  const CustomAppBar({super.key, required this.content, this.height = 40});
+  final Color backgroundColor;
+  const CustomAppBar({
+    super.key,
+    required this.content,
+    this.height = 40,
+    this.backgroundColor = Palette.accentColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +20,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           bottomLeft: Radius.circular(32),
           bottomRight: Radius.circular(32),
         ),
-        color: Palette.accentColor,
+        color: backgroundColor,
       ),
       child: content,
     );

@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class PosyanduAddEntry2 extends ConsumerStatefulWidget {
-  const PosyanduAddEntry2({super.key});
+class PosyanduAddEntry2Page extends ConsumerStatefulWidget {
+  const PosyanduAddEntry2Page({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
       _CompleteProfilePageState();
 }
 
-class _CompleteProfilePageState extends ConsumerState<PosyanduAddEntry2> {
+class _CompleteProfilePageState extends ConsumerState<PosyanduAddEntry2Page> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _bbSekarangController = TextEditingController();
   final TextEditingController _tbSekarangController = TextEditingController();
@@ -258,10 +258,11 @@ class _CompleteProfilePageState extends ConsumerState<PosyanduAddEntry2> {
                         keyboardType: TextInputType.text,
                         controller: _bbSekarangController,
                         labelColor: Palette.backgroundPrimaryColor,
+                        errorColor: Palette.backgroundPrimaryColor,
                         borderColor: Palette.primaryColor,
                         validator: (val) {
                           if (val!.trim().isEmpty) {
-                            return 'Kode Posyandu Harus Diisi!';
+                            return 'Berat Badan Harus Diisi!';
                           }
                           return null;
                         },
@@ -272,10 +273,11 @@ class _CompleteProfilePageState extends ConsumerState<PosyanduAddEntry2> {
                         keyboardType: TextInputType.visiblePassword,
                         controller: _tbSekarangController,
                         labelColor: Palette.backgroundPrimaryColor,
+                        errorColor: Palette.backgroundPrimaryColor,
                         borderColor: Palette.primaryColor,
                         validator: (val) {
                           if (val!.trim().isEmpty) {
-                            return 'Kode Posyandu Harus Diisi!';
+                            return 'Tinggi Badan Harus Diisi!';
                           }
                           return null;
                         },

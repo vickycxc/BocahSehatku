@@ -4,6 +4,7 @@ import 'package:app/core/widgets/profile_button.dart';
 import 'package:app/core/widgets/profile_page.dart';
 import 'package:app/features/auth/view/pages/onboarding_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:app/features/user_posyandu/view/pages/posyandu_verifikasi_akun_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -20,7 +21,14 @@ class PosyanduProfilePage extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ProfileButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PosyanduVerifikasiAkunPage(),
+                  ),
+                );
+              },
               icon: LucideIcons.shieldCheck,
               text: 'Verifikasi Akun',
             ),

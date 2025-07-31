@@ -56,7 +56,7 @@ class _PosyanduLoginPageState extends ConsumerState<PosyanduLoginPage> {
                 isObscure: true,
                 validator: (val) {
                   if (val!.trim().isEmpty) {
-                    return 'Kode Posyandu Harus Diisi!';
+                    return 'Kata Sandi Harus Diisi!';
                   }
                   return null;
                 },
