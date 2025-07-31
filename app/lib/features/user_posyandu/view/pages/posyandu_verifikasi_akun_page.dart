@@ -1,6 +1,7 @@
 import 'package:app/core/theme/palette.dart';
 import 'package:app/core/widgets/custom_app_bar.dart';
 import 'package:app/core/widgets/custom_back_button.dart';
+import 'package:app/features/user_posyandu/view/widgets/verifikasi_akun_card.dart';
 import 'package:flutter/material.dart';
 
 class PosyanduVerifikasiAkunPage extends StatelessWidget {
@@ -8,7 +9,7 @@ class PosyanduVerifikasiAkunPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Palette.backgroundPrimaryColor,
         content: Row(
@@ -33,6 +34,10 @@ class PosyanduVerifikasiAkunPage extends StatelessWidget {
       ),
       extendBodyBehindAppBar: true,
       backgroundColor: Palette.secondaryColor,
+      body: ListView(
+        padding: EdgeInsets.only(left: 24, right: 24, bottom: 16, top: 120),
+        children: [VerifikasiAkunCard()],
+      ),
     );
   }
 }
