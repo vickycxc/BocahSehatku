@@ -1,4 +1,5 @@
 import 'package:app/core/theme/palette.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -10,7 +11,15 @@ class BabyGraphCard extends StatefulWidget {
 }
 
 class _BabyGraphCardState extends State<BabyGraphCard> {
+  late TransformationController _controller;
   int _currentTab = 0;
+
+  @override
+  void initState() {
+    _controller = TransformationController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -117,6 +126,56 @@ class _BabyGraphCardState extends State<BabyGraphCard> {
                   color: Palette.backgroundPrimaryColor,
                   borderRadius: BorderRadius.circular(24),
                 ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.zoom_in),
+                          onPressed: () {
+                            _controller.value *= Matrix4.diagonal3Values(
+                              1.1,
+                              1.1,
+                              1,
+                            );
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.zoom_out),
+                          onPressed: () {
+                            _controller.value *= Matrix4.diagonal3Values(
+                              0.9,
+                              0.9,
+                              1,
+                            );
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.refresh),
+                          onPressed: () {
+                            _controller.value = Matrix4.identity();
+                          },
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: LineChart(
+                        transformationConfig: FlTransformationConfig(
+                          scaleAxis: FlScaleAxis.horizontal,
+                          transformationController: _controller,
+                        ),
+                        LineChartData(
+                          lineBarsData: [
+                            LineChartBarData(
+                              // spots: AntropometriData.medianData,
+                              dotData: FlDotData(show: false),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 16),
               Text(
@@ -176,5 +235,11 @@ class _BabyGraphCardState extends State<BabyGraphCard> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }

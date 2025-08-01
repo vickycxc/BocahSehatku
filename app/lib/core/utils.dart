@@ -35,3 +35,5 @@ String formatAngka(double? angka) {
 }
 
 enum JenisKelamin { lakiLaki, perempuan }
+
+enum ZScore { minus3, minus2, minus1, median, plus1, plus2, plus3 }
