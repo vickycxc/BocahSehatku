@@ -1,5 +1,5 @@
 import 'package:app/core/theme/palette.dart';
-import 'package:app/core/utils.dart';
+import 'package:app/features/user_orang_tua/view/pages/add_profil_anak_page.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -23,8 +23,12 @@ class TambahProfilAnakCard extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  // Action to add a new child's profile
-                  showSnackBar(context, 'Fitur ini belum tersedia');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AddProfilAnakPage(),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   shape: CircleBorder(),

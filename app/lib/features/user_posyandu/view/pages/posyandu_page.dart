@@ -5,7 +5,6 @@ import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/core/widgets/custom_app_bar.dart';
 import 'package:app/features/auth/view/pages/onboarding_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
-import 'package:app/features/user_posyandu/view/pages/posyandu_add_entry2_page.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_add_entry_page.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_calendar_page.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_search_page.dart';
@@ -212,7 +211,7 @@ class _OrtuPageState extends ConsumerState<PosyanduPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const PosyanduAddEntry2Page(),
+                builder: (context) => const PosyanduAddEntryPage(),
               ),
             );
             // Action for the floating action button

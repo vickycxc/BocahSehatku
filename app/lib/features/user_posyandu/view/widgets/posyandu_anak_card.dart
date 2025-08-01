@@ -1,13 +1,15 @@
 import 'package:app/core/model/anak_model.dart';
 import 'package:app/core/theme/palette.dart';
 import 'package:app/core/utils.dart';
+import 'package:app/features/user_posyandu/view/pages/posyandu_add_entry2_page.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_baby_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class PosyanduAnakCard extends StatelessWidget {
   final AnakModel anak;
-  const PosyanduAnakCard(this.anak, {super.key});
+  final bool addEntry;
+  const PosyanduAnakCard(this.anak, {super.key, this.addEntry = false});
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +24,21 @@ class PosyanduAnakCard extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.all(Radius.circular(32)),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PosyanduBabyDetailPage(anak),
-              ),
-            );
+            if (!addEntry) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PosyanduBabyDetailPage(anak),
+                ),
+              );
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PosyanduAddEntry2Page(),
+                ),
+              );
+            }
           },
           child: Padding(
             padding: EdgeInsets.only(left: 4, top: 4, right: 16, bottom: 24),
