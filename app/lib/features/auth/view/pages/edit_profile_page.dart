@@ -32,16 +32,15 @@ class _CompleteProfilePageState extends ConsumerState<EditProfilePage> {
   String? selectedKecamatan;
   String? selectedPuskesmas;
   String? selectedPosyandu;
-  int _currentPage = 0;
   List<String> opsi = ['LAKI_LAKI', 'PEREMPUAN'];
   String? _selectedGender;
   bool radioError = false;
   @override
   Widget build(BuildContext context) {
     //TODO handle nik sama
-    final isLoading = ref.watch(
-      authViewModelProvider.select((val) => val?.isLoading == true),
-    );
+    // final isLoading = ref.watch(
+    //   authViewModelProvider.select((val) => val?.isLoading == true),
+    // );
     final currentUser = ref.watch(penggunaAktifNotifierProvider);
     final noHp = switch (currentUser?.data) {
       Left(value: final l) => l.noHp,
@@ -344,7 +343,7 @@ class _CompleteProfilePageState extends ConsumerState<EditProfilePage> {
                       });
                     }
                     if (_formKey.currentState!.validate() && !radioError) {
-                      setState(() => _currentPage = 1);
+                      // setState(() => _currentPage = 1);
                     }
                   },
                   text: 'Simpan',
