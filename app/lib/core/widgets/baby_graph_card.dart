@@ -1,4 +1,6 @@
+import 'package:app/core/antropometri/antropometri.dart';
 import 'package:app/core/theme/palette.dart';
+import 'package:app/core/utils.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -11,14 +13,7 @@ class BabyGraphCard extends StatefulWidget {
 }
 
 class _BabyGraphCardState extends State<BabyGraphCard> {
-  late TransformationController _controller;
   int _currentTab = 0;
-
-  @override
-  void initState() {
-    _controller = TransformationController();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,55 +121,92 @@ class _BabyGraphCardState extends State<BabyGraphCard> {
                   color: Palette.backgroundPrimaryColor,
                   borderRadius: BorderRadius.circular(24),
                 ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.zoom_in),
-                          onPressed: () {
-                            _controller.value *= Matrix4.diagonal3Values(
-                              1.1,
-                              1.1,
-                              1,
+                padding: const EdgeInsets.only(
+                  bottom: 2,
+                  left: 2,
+                  right: 16,
+                  top: 16,
+                ),
+                child: LineChart(
+                  transformationConfig: FlTransformationConfig(
+                    scaleAxis: FlScaleAxis.horizontal,
+                  ),
+                  LineChartData(
+                    lineBarsData: [
+                      ...Antropometri.generateGrafik(
+                        jenisKelamin: JenisKelamin.lakiLaki,
+                        usiaAwal: 12,
+                        usiaAkhir: 18,
+                      ),
+                      LineChartBarData(
+                        spots: [
+                          FlSpot(12, 8.6),
+                          FlSpot(13, 8.7),
+                          FlSpot(14, 9),
+                          FlSpot(15, 10),
+                          FlSpot(16, 10),
+                          FlSpot(17, 10),
+                          FlSpot(18, 10),
+                        ],
+                        isCurved: true,
+                        color: Palette.textPrimaryColor,
+                        dotData: FlDotData(show: true),
+                      ),
+                    ],
+                    lineTouchData: LineTouchData(handleBuiltInTouches: false),
+                    titlesData: FlTitlesData(
+                      topTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      rightTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      bottomTitles: AxisTitles(
+                        axisNameWidget: Text(
+                          'Usia (Bulan)',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        sideTitles: SideTitles(
+                          reservedSize: 15,
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            return Text(
+                              value.round().toInt().toString(),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Palette.textPrimaryColor,
+                              ),
                             );
                           },
                         ),
-                        IconButton(
-                          icon: Icon(Icons.zoom_out),
-                          onPressed: () {
-                            _controller.value *= Matrix4.diagonal3Values(
-                              0.9,
-                              0.9,
-                              1,
+                      ),
+                      leftTitles: AxisTitles(
+                        axisNameWidget: Text(
+                          'Berat Badan (kg)',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        sideTitles: SideTitles(
+                          reservedSize: 15,
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            return Text(
+                              value.round().toInt().toString(),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Palette.textPrimaryColor,
+                              ),
                             );
                           },
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.refresh),
-                          onPressed: () {
-                            _controller.value = Matrix4.identity();
-                          },
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: LineChart(
-                        transformationConfig: FlTransformationConfig(
-                          scaleAxis: FlScaleAxis.horizontal,
-                          transformationController: _controller,
-                        ),
-                        LineChartData(
-                          lineBarsData: [
-                            LineChartBarData(
-                              // spots: AntropometriData.medianData,
-                              dotData: FlDotData(show: false),
-                            ),
-                          ],
                         ),
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
               SizedBox(height: 16),
@@ -235,11 +267,5 @@ class _BabyGraphCardState extends State<BabyGraphCard> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 }

@@ -37,3 +37,15 @@ String formatAngka(double? angka) {
 enum JenisKelamin { lakiLaki, perempuan }
 
 enum ZScore { minus3, minus2, minus1, median, plus1, plus2, plus3 }
+
+enum RentangUsia { usia0_24Bulan, usia24_60Bulan }
+
+enum TipeDataGrafik {
+  beratBadanPerUmur,
+  tinggiBadanPerUmur0_24Bulan,
+  tinggiBadanPerUmur24_60Bulan,
+  beratBadanPerTinggiBadan0_24Bulan,
+  beratBadanPerTinggiBadan24_60Bulan,
+  imtPerUmur0_24Bulan,
+  imtPerUmur24_60Bulan,
+}

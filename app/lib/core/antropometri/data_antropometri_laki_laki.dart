@@ -1,7 +1,7 @@
 import 'package:app/core/utils.dart';
 
 class DataAntropometriLakiLaki {
-  static const Map<int, Map<ZScore, double>> beratBadanPerUmurLakiLaki = {
+  static const Map<int, Map<ZScore, double>> beratBadanPerUmur = {
     0: {
       ZScore.minus3: 2.1,
       ZScore.minus2: 2.5,
@@ -553,7 +553,7 @@ class DataAntropometriLakiLaki {
     },
   };
 
-  static const Map<int, Map<ZScore, double>> tinggiBadanPerUmurLakiLaki1 = {
+  static const Map<int, Map<ZScore, double>> tinggiBadanPerUmur1 = {
     0: {
       ZScore.minus3: 44.2,
       ZScore.minus2: 46.1,
@@ -781,7 +781,7 @@ class DataAntropometriLakiLaki {
     },
   };
 
-  static const Map<int, Map<ZScore, double>> tinggiBadanPerUmurLakiLaki2 = {
+  static const Map<int, Map<ZScore, double>> tinggiBadanPerUmur2 = {
     24: {
       ZScore.minus3: 78.0,
       ZScore.minus2: 81.0,
@@ -1117,7 +1117,7 @@ class DataAntropometriLakiLaki {
     },
   };
 
-  static Map<double, Map<ZScore, double>> beratBadanPerTinggiBadanLakiLaki1 = {
+  static Map<double, Map<ZScore, double>> beratBadanPerTinggiBadan1 = {
     45.0: {
       ZScore.minus3: 1.9,
       ZScore.minus2: 2.0,
@@ -2299,7 +2299,7 @@ class DataAntropometriLakiLaki {
     },
   };
 
-  static Map<double, Map<ZScore, double>> beratBadanPerTinggiBadanLakiLaki2 = {
+  static Map<double, Map<ZScore, double>> beratBadanPerTinggiBadan2 = {
     65.0: {
       ZScore.minus3: 5.9,
       ZScore.minus2: 6.3,
@@ -3301,7 +3301,7 @@ class DataAntropometriLakiLaki {
     },
   };
 
-  static const Map<int, Map<ZScore, double>> imtPerUmurLakiLaki1 = {
+  static const Map<int, Map<ZScore, double>> imtPerUmur1 = {
     0: {
       ZScore.minus3: 10.2,
       ZScore.minus2: 11.1,
@@ -3529,7 +3529,7 @@ class DataAntropometriLakiLaki {
     },
   };
 
-  static const Map<int, Map<ZScore, double>> imtPerUmurLakiLaki2 = {
+  static const Map<int, Map<ZScore, double>> imtPerUmur2 = {
     24: {
       ZScore.minus3: 12.9,
       ZScore.minus2: 13.8,

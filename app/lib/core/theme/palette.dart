@@ -19,4 +19,16 @@ class Palette {
   static const lessHealthyBackgroundColor = Color(0xFFFCFFD9);
   static const unhealthyColor = Color(0xFFFD9FB5);
   static const unhealthyBackgroundColor = Color(0xFFFFD9DB);
+
+  static const graphZScore0Color = Colors.green;
+  static const graphZScore1Color = Colors.yellow;
+  static const graphZScore2Color = Colors.red;
+  static const graphZScore3Color = Color.fromARGB(255, 172, 11, 0);
+
+  static final graphZScore0BackgroundColor = Colors.green.shade200;
+  static final graphZScore1BackgroundColor = Colors.yellow.shade300;
+  static final graphZScore2BackgroundColor = Colors.red.shade400;
+  static final graphZScore3BackgroundColor = Color.fromARGB(255, 147, 56, 50);
+
+  static const graphTransparentColor = Colors.transparent;
 }
