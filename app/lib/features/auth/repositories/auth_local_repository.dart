@@ -1,3 +1,4 @@
+import 'package:app/core/model/user_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,17 +17,22 @@ class AuthLocalRepository {
     _sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  void setToken(String? token) {
-    if (token != null) {
-      _sharedPreferences.setString('x-auth-token', token);
+  void setUser(UserModel? user) {
+    if (user != null) {
+      final userJson = user.toJson();
+      _sharedPreferences.setString('user', userJson);
     }
   }
 
-  String? getToken() {
-    return _sharedPreferences.getString('x-auth-token');
+  UserModel? getUser() {
+    final userJson = _sharedPreferences.getString('user');
+    if (userJson != null) {
+      return UserModel.fromJson(userJson);
+    }
+    return null;
   }
 
-  void removeToken() {
-    _sharedPreferences.remove('x-auth-token');
+  void removeUser() {
+    _sharedPreferences.remove('user');
   }
 }

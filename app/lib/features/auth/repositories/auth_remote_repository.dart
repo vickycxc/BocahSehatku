@@ -253,17 +253,4 @@ class AuthRemoteRepository {
       return AuthResponseModel(message: error.toString());
     }
   }
-
-  Future<AuthResponseModel> ambilDataPenggunaSaatIni(String token) async {
-    try {
-      final response = await http.get(
-        Uri.parse('${Constants.serverUrl}/auth'),
-        headers: {'Content-Type': 'application/json', 'x-auth-token': token},
-      );
-
-      return AuthResponseModel.fromJson(response.body);
-    } catch (error) {
-      return AuthResponseModel(message: error.toString());
-    }
-  }
 }

@@ -40,12 +40,9 @@ class AuthViewModel extends _$AuthViewModel {
   }
 
   Future<void> ambilDataPengguna() async {
-    final token = _authLocalRepository.getToken();
-    if (token != null) {
-      final res = await _authRemoteRepository.ambilDataPenggunaSaatIni(token);
-      if (res.userOrangTua != null || res.userPosyandu != null) {
-        _berhasilAmbilDataPengguna(res, token);
-      }
+    final user = _authLocalRepository.getUser();
+    if (user != null) {
+      _penggunaAktifNotifier.aturPenggunaAktif(user);
     }
   }
 
@@ -60,7 +57,6 @@ class AuthViewModel extends _$AuthViewModel {
       tujuan: tujuan,
       nik: nik,
     );
-    print('🚀 ~ AuthViewModel ~ res: $res');
     if (res.sukses == true) {
       _pengajuanOtpNotifier.aturPengajuanOtp(
         PengajuanOtpModel(noHp: noHp, tujuan: tujuan),
@@ -175,7 +171,7 @@ class AuthViewModel extends _$AuthViewModel {
     final res = await _authRemoteRepository.hapusAkun(token: user.token);
     if (res.sukses == true) {
       _penggunaAktifNotifier.hapusPenggunaAktif();
-      _authLocalRepository.removeToken();
+      _authLocalRepository.removeUser();
       state = AsyncData(
         NavigasiAuthModel(tujuan: 'ONBOARDING_PAGE', message: res.message),
       );
@@ -354,7 +350,7 @@ class AuthViewModel extends _$AuthViewModel {
   }
 
   void keluar() {
-    _authLocalRepository.removeToken();
+    _authLocalRepository.removeUser();
     _penggunaAktifNotifier.hapusPenggunaAktif();
   }
 
@@ -363,10 +359,11 @@ class AuthViewModel extends _$AuthViewModel {
     required String tujuan,
   }) {
     final token = res.token!;
-    _authLocalRepository.setToken(token);
     final UserModel user = res.userOrangTua != null
         ? UserModel(token: token, data: Left(res.userOrangTua!))
         : UserModel(token: token, data: Right(res.userPosyandu!));
+
+    _authLocalRepository.setUser(user);
     _penggunaAktifNotifier.aturPenggunaAktif(user);
     state = AsyncData(NavigasiAuthModel(tujuan: tujuan, message: res.message));
   }
@@ -381,12 +378,5 @@ class AuthViewModel extends _$AuthViewModel {
         : UserModel(token: user!.token, data: Right(res.userPosyandu!));
     _penggunaAktifNotifier.aturPenggunaAktif(newUser);
     state = AsyncData(NavigasiAuthModel(tujuan: tujuan, message: res.message));
-  }
-
-  void _berhasilAmbilDataPengguna(AuthResponseModel res, String token) {
-    final UserModel user = res.userOrangTua != null
-        ? UserModel(token: token, data: Left(res.userOrangTua!))
-        : UserModel(token: token, data: Right(res.userPosyandu!));
-    _penggunaAktifNotifier.aturPenggunaAktif(user);
   }
 }
