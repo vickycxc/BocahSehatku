@@ -7,7 +7,7 @@ import 'package:collection/collection.dart';
 
 class AnakModel {
   final int localId;
-  final int serverId;
+  final int? serverId;
   final String nama;
   final DateTime tanggalLahir;
   final JenisKelamin jenisKelamin;
@@ -23,7 +23,7 @@ class AnakModel {
   final DateTime updatedAt;
   AnakModel({
     required this.localId,
-    required this.serverId,
+    this.serverId,
     required this.nama,
     required this.tanggalLahir,
     required this.jenisKelamin,
@@ -104,7 +104,7 @@ class AnakModel {
     };
     return AnakModel(
       localId: map['localId'] as int,
-      serverId: map['serverId'] as int,
+      serverId: map['serverId'] != null ? map['serverId'] as int : null,
       nama: map['nama'] as String,
       tanggalLahir: DateTime.tryParse(map['tanggalLahir'] as String)!,
       jenisKelamin: jenisKelamin,

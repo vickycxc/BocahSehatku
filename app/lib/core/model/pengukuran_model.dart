@@ -5,7 +5,7 @@ import 'package:app/core/utils.dart';
 
 class PengukuranModel {
   final int localId;
-  final int serverId;
+  final int? serverId;
   final int anakId;
   final int posyanduId;
   final DateTime tanggalPengukuran;
@@ -23,7 +23,7 @@ class PengukuranModel {
   final DateTime updatedAt;
   PengukuranModel({
     required this.localId,
-    required this.serverId,
+    this.serverId,
     required this.anakId,
     required this.posyanduId,
     required this.tanggalPengukuran,
@@ -166,7 +166,7 @@ class PengukuranModel {
     };
     return PengukuranModel(
       localId: map['localId'] as int,
-      serverId: map['serverId'] as int,
+      serverId: map['serverId'] != null ? map['serverId'] as int : null,
       anakId: map['anakId'] as int,
       posyanduId: map['posyanduId'] as int,
       tanggalPengukuran: DateTime.tryParse(map['tanggalPengukuran'] as String)!,

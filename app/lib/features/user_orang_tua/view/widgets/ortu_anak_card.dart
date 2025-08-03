@@ -98,7 +98,7 @@ class OrtuAnakCard extends StatelessWidget {
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: formatAngka(anak.bbSekarang),
+                                    text: formatAngka(42),
                                     style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.bold,
@@ -152,7 +152,7 @@ class OrtuAnakCard extends StatelessWidget {
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: formatAngka(anak.tbSekarang),
+                                    text: formatAngka(42),
                                     style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.bold,

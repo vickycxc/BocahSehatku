@@ -37,17 +37,16 @@ class PosyanduDashboardPage extends StatelessWidget {
                 ),
                 child: PosyanduAnakCard(
                   AnakModel(
-                    id: 0,
+                    localId: 0,
                     nama:
                         'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
                     tanggalLahir: DateTime(2025, 2, 3),
                     jenisKelamin: JenisKelamin.lakiLaki,
                     nik: '20000',
-                    bbSekarang: 4.55,
-                    tbSekarang: 60.0,
                     orangTuaId: 2,
                     createdAt: DateTime.now(),
                     updatedAt: DateTime.now(),
+                    listPengukuran: [],
                   ),
                 ),
               );

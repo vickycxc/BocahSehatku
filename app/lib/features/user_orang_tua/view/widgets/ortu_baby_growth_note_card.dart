@@ -78,7 +78,7 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                               ),
                               children: [
                                 TextSpan(
-                                  text: formatAngka(anak.bbSekarang),
+                                  text: formatAngka(21),
                                   style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
@@ -132,7 +132,7 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                               ),
                               children: [
                                 TextSpan(
-                                  text: formatAngka(anak.tbSekarang),
+                                  text: formatAngka(31),
                                   style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,

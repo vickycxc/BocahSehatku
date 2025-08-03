@@ -57,26 +57,30 @@ class OrtuAppBar extends StatelessWidget implements PreferredSizeWidget {
                   children: [
                     AnakAppBarCard(
                       AnakModel(
-                        id: 0,
-                        nama: 'Ngatmono Ranu Danaswara',
+                        localId: 0,
+                        nama:
+                            'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
                         tanggalLahir: DateTime(2025, 2, 3),
                         jenisKelamin: JenisKelamin.lakiLaki,
                         nik: '20000',
                         orangTuaId: 2,
                         createdAt: DateTime.now(),
                         updatedAt: DateTime.now(),
+                        listPengukuran: [],
                       ),
                     ),
                     AnakAppBarCard(
                       AnakModel(
-                        id: 0,
-                        nama: 'Ngatwiti Wijianti Widiastuti',
+                        localId: 0,
+                        nama:
+                            'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
                         tanggalLahir: DateTime(2025, 2, 3),
-                        jenisKelamin: JenisKelamin.perempuan,
+                        jenisKelamin: JenisKelamin.lakiLaki,
                         nik: '20000',
                         orangTuaId: 2,
                         createdAt: DateTime.now(),
                         updatedAt: DateTime.now(),
+                        listPengukuran: [],
                       ),
                     ),
                     TambahProfilAnakCard(),
