@@ -76,10 +76,10 @@ model Pengukuran {
   kategoriBBU       kategoriBBU
   kategoriTBU       kategoriTBU
   kategoriBBTB      kategoriBBTB
+  kategoriIMTU      kategoriIMTU
   statusPertumbuhan String
   rekomendasiOrtu   String
   rekomendasiKader  String
-  kategoriIMTU      kategorIMTU
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
 }
@@ -136,7 +136,7 @@ enum kategoriBBTB {
   OBESITAS
 }
 
-enum kategorIMTU {
+enum kategoriIMTU {
   GIZI_BURUK
   GIZI_KURANG
   GIZI_BAIK

@@ -49,3 +49,25 @@ enum TipeDataGrafik {
   imtPerUmur0_24Bulan,
   imtPerUmur24_60Bulan,
 }
+
+enum KategoriBBU { sangatKurang, kurang, normal, lebih }
+
+enum KategoriTBU { sangatPendek, pendek, normal, tinggi }
+
+enum KategoriBBTB {
+  giziBuruk,
+  giziKurang,
+  giziBaik,
+  berisikoGiziLebih,
+  giziLebih,
+  obesitas,
+}
+
+enum KategoriIMTU {
+  giziBuruk,
+  giziKurang,
+  giziBaik,
+  berisikoGiziLebih,
+  giziLebih,
+  obesitas,
+}

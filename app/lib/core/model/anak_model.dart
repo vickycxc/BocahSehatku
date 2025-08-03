@@ -1,10 +1,13 @@
 import 'dart:convert';
 
 import 'package:age_calculator/age_calculator.dart';
+import 'package:app/core/model/pengukuran_model.dart';
 import 'package:app/core/utils.dart';
+import 'package:collection/collection.dart';
 
 class AnakModel {
-  final int id;
+  final int localId;
+  final int serverId;
   final String nama;
   final DateTime tanggalLahir;
   final JenisKelamin jenisKelamin;
@@ -14,14 +17,13 @@ class AnakModel {
   final double? bbLahir;
   final double? tbLahir;
   final int? mingguLahir;
-  final double? bbSekarang;
-  final double? tbSekarang;
   final int? orangTuaId;
+  final List<PengukuranModel> listPengukuran;
   final DateTime createdAt;
   final DateTime updatedAt;
-
   AnakModel({
-    required this.id,
+    required this.localId,
+    required this.serverId,
     required this.nama,
     required this.tanggalLahir,
     required this.jenisKelamin,
@@ -29,9 +31,8 @@ class AnakModel {
     this.bbLahir,
     this.tbLahir,
     this.mingguLahir,
-    this.bbSekarang,
-    this.tbSekarang,
-    required this.orangTuaId,
+    this.orangTuaId,
+    required this.listPengukuran,
     required this.createdAt,
     required this.updatedAt,
   }) {
@@ -42,7 +43,8 @@ class AnakModel {
   }
 
   AnakModel copyWith({
-    int? id,
+    int? localId,
+    int? serverId,
     String? nama,
     DateTime? tanggalLahir,
     JenisKelamin? jenisKelamin,
@@ -50,72 +52,74 @@ class AnakModel {
     double? bbLahir,
     double? tbLahir,
     int? mingguLahir,
-    double? bbSekarang,
-    double? tbSekarang,
     int? orangTuaId,
+    List<PengukuranModel>? listPengukuran,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
     return AnakModel(
-      id: id ?? this.id,
+      localId: localId ?? this.localId,
+      serverId: serverId ?? this.serverId,
       nama: nama ?? this.nama,
       tanggalLahir: tanggalLahir ?? this.tanggalLahir,
       jenisKelamin: jenisKelamin ?? this.jenisKelamin,
       nik: nik ?? this.nik,
       bbLahir: bbLahir ?? this.bbLahir,
       tbLahir: tbLahir ?? this.tbLahir,
-      bbSekarang: bbSekarang ?? this.bbSekarang,
-      tbSekarang: tbSekarang ?? this.tbSekarang,
       mingguLahir: mingguLahir ?? this.mingguLahir,
       orangTuaId: orangTuaId ?? this.orangTuaId,
+      listPengukuran: listPengukuran ?? this.listPengukuran,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
   Map<String, dynamic> toMap() {
+    final jenisKelaminString = switch (jenisKelamin) {
+      JenisKelamin.lakiLaki => 'LAKI_LAKI',
+      JenisKelamin.perempuan => 'PEREMPUAN',
+    };
     return <String, dynamic>{
-      'id': id,
+      'localId': localId,
+      'serverId': serverId,
       'nama': nama,
-      'tanggalLahir': tanggalLahir.millisecondsSinceEpoch,
-      'jenisKelamin': jenisKelamin == JenisKelamin.lakiLaki
-          ? 'LAKI_LAKI'
-          : 'PEREMPUAN',
+      'tanggalLahir': tanggalLahir.toIso8601String(),
+      'jenisKelamin': jenisKelaminString,
       'nik': nik,
       'bbLahir': bbLahir,
       'tbLahir': tbLahir,
       'mingguLahir': mingguLahir,
-      'bbSekarang': bbSekarang,
-      'tbSekarang': tbSekarang,
       'orangTuaId': orangTuaId,
-      'createdAt': createdAt.millisecondsSinceEpoch,
-      'updatedAt': updatedAt.millisecondsSinceEpoch,
+      'listPengukuran': listPengukuran.map((x) => x.toMap()).toList(),
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
     };
   }
 
   factory AnakModel.fromMap(Map<String, dynamic> map) {
+    final jenisKelamin = switch (map['jenisKelamin']) {
+      'LAKI_LAKI' => JenisKelamin.lakiLaki,
+      'PEREMPUAN' => JenisKelamin.perempuan,
+      _ => throw Exception('Jenis Kelamin tidak valid'),
+    };
     return AnakModel(
-      id: map['id'] as int,
+      localId: map['localId'] as int,
+      serverId: map['serverId'] as int,
       nama: map['nama'] as String,
-      tanggalLahir: DateTime.fromMillisecondsSinceEpoch(
-        map['tanggalLahir'] as int,
-      ),
-      jenisKelamin: map['jenisKelamin'] == 'LAKI_LAKI'
-          ? JenisKelamin.lakiLaki
-          : JenisKelamin.perempuan,
+      tanggalLahir: DateTime.tryParse(map['tanggalLahir'] as String)!,
+      jenisKelamin: jenisKelamin,
       nik: map['nik'] != null ? map['nik'] as String : null,
       bbLahir: map['bbLahir'] != null ? map['bbLahir'] as double : null,
       tbLahir: map['tbLahir'] != null ? map['tbLahir'] as double : null,
       mingguLahir: map['mingguLahir'] != null
           ? map['mingguLahir'] as int
           : null,
-      bbSekarang: map['bbSekarang'] != null
-          ? map['bbSekarang'] as double
-          : null,
-      tbSekarang: map['tbSekarang'] != null
-          ? map['tbSekarang'] as double
-          : null,
       orangTuaId: map['orangTuaId'] != null ? map['orangTuaId'] as int : null,
+      listPengukuran: List<PengukuranModel>.from(
+        (map['listPengukuran'] as List<int>).map<PengukuranModel>(
+          (x) => PengukuranModel.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
       createdAt: DateTime.tryParse(map['createdAt'] as String)!,
       updatedAt: DateTime.tryParse(map['updatedAt'] as String)!,
     );
@@ -128,43 +132,46 @@ class AnakModel {
 
   @override
   String toString() {
-    return 'BayiModel(id: $id, nama: $nama, tanggalLahir: $tanggalLahir, usia: $usia, $jenisKelamin, nik: $nik, bbLahir: $bbLahir, tbLahir: $tbLahir, mingguLahir: $mingguLahir, bbSekarang: $bbSekarang, tbSekarang: $tbSekarang, orangTuaId: $orangTuaId, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'AnakModel(localId: $localId, serverId: $serverId, nama: $nama, tanggalLahir: $tanggalLahir, jenisKelamin: $jenisKelamin, usia: $usia, usiaInString: $usiaInString, nik: $nik, bbLahir: $bbLahir, tbLahir: $tbLahir, mingguLahir: $mingguLahir, orangTuaId: $orangTuaId, listPengukuran: $listPengukuran, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
   bool operator ==(covariant AnakModel other) {
     if (identical(this, other)) return true;
+    final listEquals = const DeepCollectionEquality().equals;
 
-    return other.id == id &&
+    return other.localId == localId &&
+        other.serverId == serverId &&
         other.nama == nama &&
         other.tanggalLahir == tanggalLahir &&
-        other.usia == usia &&
         other.jenisKelamin == jenisKelamin &&
+        other.usia == usia &&
+        other.usiaInString == usiaInString &&
         other.nik == nik &&
         other.bbLahir == bbLahir &&
         other.tbLahir == tbLahir &&
         other.mingguLahir == mingguLahir &&
-        other.bbSekarang == bbSekarang &&
-        other.tbSekarang == tbSekarang &&
         other.orangTuaId == orangTuaId &&
+        listEquals(other.listPengukuran, listPengukuran) &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt;
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^
+    return localId.hashCode ^
+        serverId.hashCode ^
         nama.hashCode ^
         tanggalLahir.hashCode ^
-        usia.hashCode ^
         jenisKelamin.hashCode ^
+        usia.hashCode ^
+        usiaInString.hashCode ^
         nik.hashCode ^
         bbLahir.hashCode ^
         tbLahir.hashCode ^
         mingguLahir.hashCode ^
-        bbSekarang.hashCode ^
-        tbSekarang.hashCode ^
         orangTuaId.hashCode ^
+        listPengukuran.hashCode ^
         createdAt.hashCode ^
         updatedAt.hashCode;
   }
