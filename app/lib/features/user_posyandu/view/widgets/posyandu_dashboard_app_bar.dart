@@ -1,6 +1,7 @@
 import 'package:app/core/theme/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class PosyanduDashboardAppBar extends StatelessWidget {
   const PosyanduDashboardAppBar({super.key});
@@ -12,7 +13,22 @@ class PosyanduDashboardAppBar extends StatelessWidget {
     //     ? '${subNama[0]} ${subNama[1]}'
     //     : subNama[0];
     return SliverAppBar(
-      actions: const [],
+      actions: [
+        InkWell(
+          borderRadius: BorderRadius.circular(24),
+          onTap: () {},
+          child: Padding(
+            padding: const EdgeInsets.all(4),
+            child: Icon(
+              LucideIcons.refreshCwOff600,
+              color: Palette.backgroundPrimaryColor,
+              size: 24,
+            ),
+          ),
+        ),
+      ],
+
+      actionsPadding: EdgeInsets.only(right: 32),
       title: Text(
         'Halo, Posyandu Melati',
         style: TextStyle(

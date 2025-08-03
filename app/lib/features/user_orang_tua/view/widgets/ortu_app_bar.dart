@@ -4,6 +4,7 @@ import 'package:app/core/utils.dart';
 import 'package:app/features/user_orang_tua/view/widgets/anak_app_bar_card.dart';
 import 'package:app/features/user_orang_tua/view/widgets/tambah_profil_anak_card.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class OrtuAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String nama = 'Mujiati Winarno Kusumandari';
@@ -40,6 +41,21 @@ class OrtuAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             centerTitle: false,
+            actions: [
+              InkWell(
+                borderRadius: BorderRadius.circular(24),
+                onTap: () {},
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Icon(
+                    LucideIcons.refreshCwOff600,
+                    color: Palette.backgroundPrimaryColor,
+                    size: 24,
+                  ),
+                ),
+              ),
+            ],
+            actionsPadding: EdgeInsets.only(right: 24),
           ),
           SafeArea(
             child: Padding(
