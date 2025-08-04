@@ -1,4 +1,4 @@
-import 'package:app/core/constants.dart';
+import 'package:app/core/constants/constants.dart';
 import 'package:app/core/theme/palette.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/core/widgets/custom_dropdown.dart';

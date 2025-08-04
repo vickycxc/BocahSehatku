@@ -1,7 +1,7 @@
 import 'package:app/core/model/anak_model.dart';
-import 'package:app/core/size_config.dart';
+import 'package:app/core/utils/size_config.dart';
 import 'package:app/core/theme/palette.dart';
-import 'package:app/core/utils.dart';
+import 'package:app/core/utils/utils.dart';
 import 'package:app/core/widgets/custom_app_bar.dart';
 import 'package:app/core/widgets/custom_back_button.dart';
 import 'package:app/features/user_posyandu/view/widgets/posyandu_anak_card.dart';
@@ -34,7 +34,6 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
         orangTuaId: 2,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-        listPengukuran: [],
       ),
     ),
     PosyanduAnakCard(
@@ -48,7 +47,6 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
         orangTuaId: 2,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-        listPengukuran: [],
       ),
     ),
     PosyanduAnakCard(
@@ -62,7 +60,6 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
         orangTuaId: 2,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-        listPengukuran: [],
       ),
     ),
     PosyanduAnakCard(
@@ -76,7 +73,6 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
         orangTuaId: 2,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-        listPengukuran: [],
       ),
     ),
   ];

@@ -1,5 +1,5 @@
 import 'package:app/core/providers/pengguna_aktif_notifier.dart';
-import 'package:app/core/size_config.dart';
+import 'package:app/core/utils/size_config.dart';
 import 'package:app/core/theme/theme.dart';
 import 'package:app/features/auth/view/pages/onboarding_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';

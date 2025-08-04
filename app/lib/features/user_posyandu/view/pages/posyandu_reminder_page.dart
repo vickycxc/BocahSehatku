@@ -1,6 +1,6 @@
 import 'package:app/core/model/anak_model.dart';
 import 'package:app/core/theme/palette.dart';
-import 'package:app/core/utils.dart';
+import 'package:app/core/utils/utils.dart';
 import 'package:app/features/user_posyandu/view/widgets/posyandu_reminder_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,7 +31,6 @@ class PosyanduReminderPage extends ConsumerWidget {
               orangTuaId: 2,
               createdAt: DateTime.now(),
               updatedAt: DateTime.now(),
-              listPengukuran: [],
             ),
           ),
           PosyanduReminderCard(
@@ -45,7 +44,6 @@ class PosyanduReminderPage extends ConsumerWidget {
               orangTuaId: 2,
               createdAt: DateTime.now(),
               updatedAt: DateTime.now(),
-              listPengukuran: [],
             ),
           ),
           PosyanduReminderCard(
@@ -59,7 +57,6 @@ class PosyanduReminderPage extends ConsumerWidget {
               orangTuaId: 2,
               createdAt: DateTime.now(),
               updatedAt: DateTime.now(),
-              listPengukuran: [],
             ),
           ),
         ],

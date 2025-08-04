@@ -1,6 +1,6 @@
 import 'package:app/core/model/anak_model.dart';
 import 'package:app/core/theme/palette.dart';
-import 'package:app/core/utils.dart';
+import 'package:app/core/utils/utils.dart';
 import 'package:app/features/user_posyandu/view/widgets/posyandu_anak_card.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +50,6 @@ class PosyanduCalendarPage extends StatelessWidget {
               orangTuaId: 2,
               createdAt: DateTime.now(),
               updatedAt: DateTime.now(),
-              listPengukuran: [],
             ),
           ),
           PosyanduAnakCard(
@@ -64,7 +63,6 @@ class PosyanduCalendarPage extends StatelessWidget {
               orangTuaId: 2,
               createdAt: DateTime.now(),
               updatedAt: DateTime.now(),
-              listPengukuran: [],
             ),
           ),
           PosyanduAnakCard(
@@ -78,7 +76,6 @@ class PosyanduCalendarPage extends StatelessWidget {
               orangTuaId: 2,
               createdAt: DateTime.now(),
               updatedAt: DateTime.now(),
-              listPengukuran: [],
             ),
           ),
         ],

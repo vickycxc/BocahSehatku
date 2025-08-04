@@ -1,6 +1,6 @@
 import 'package:app/core/model/anak_model.dart';
 import 'package:app/core/theme/palette.dart';
-import 'package:app/core/utils.dart';
+import 'package:app/core/utils/utils.dart';
 import 'package:app/features/user_orang_tua/view/widgets/anak_app_bar_card.dart';
 import 'package:app/features/user_orang_tua/view/widgets/tambah_profil_anak_card.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +82,6 @@ class OrtuAppBar extends StatelessWidget implements PreferredSizeWidget {
                         orangTuaId: 2,
                         createdAt: DateTime.now(),
                         updatedAt: DateTime.now(),
-                        listPengukuran: [],
                       ),
                     ),
                     AnakAppBarCard(
@@ -96,7 +95,6 @@ class OrtuAppBar extends StatelessWidget implements PreferredSizeWidget {
                         orangTuaId: 2,
                         createdAt: DateTime.now(),
                         updatedAt: DateTime.now(),
-                        listPengukuran: [],
                       ),
                     ),
                     TambahProfilAnakCard(),

@@ -1,6 +1,6 @@
 import 'package:app/core/model/nav_model.dart';
 import 'package:app/core/theme/palette.dart';
-import 'package:app/core/utils.dart';
+import 'package:app/core/utils/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/core/widgets/custom_app_bar.dart';
 import 'package:app/features/auth/view/pages/onboarding_page.dart';

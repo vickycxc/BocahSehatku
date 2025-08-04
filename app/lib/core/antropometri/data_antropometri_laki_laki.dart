@@ -1,4 +1,4 @@
-import 'package:app/core/utils.dart';
+import 'package:app/core/utils/utils.dart';
 
 class DataAntropometriLakiLaki {
   static const Map<int, Map<ZScore, double>> beratBadanPerUmur = {

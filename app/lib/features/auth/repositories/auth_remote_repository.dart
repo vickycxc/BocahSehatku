@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:app/core/constants.dart';
+import 'package:app/core/constants/constants.dart';
 import 'package:app/features/auth/model/auth_response_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;

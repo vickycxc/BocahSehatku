@@ -4,7 +4,7 @@ import 'package:app/features/auth/view/pages/login_page.dart';
 import 'package:app/features/auth/view/pages/posyandu_login_page.dart';
 import 'package:app/core/widgets/wave_background.dart';
 import 'package:flutter/material.dart';
-import 'package:app/core/utils.dart';
+import 'package:app/core/utils/utils.dart';
 
 class PickRolePage extends StatelessWidget {
   const PickRolePage({super.key});

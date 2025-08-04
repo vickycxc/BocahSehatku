@@ -1,6 +1,6 @@
 import 'package:app/core/providers/pengajuan_verifikasi_notifier.dart';
 import 'package:app/core/theme/palette.dart';
-import 'package:app/core/utils.dart';
+import 'package:app/core/utils/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/features/auth/model/navigasi_auth_model.dart';
 import 'package:app/features/auth/view/pages/complete_profile_page.dart';

@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:app/core/utils.dart';
+import 'package:app/core/utils/utils.dart';
 
 class PengukuranModel {
   final int localId;
@@ -21,6 +21,7 @@ class PengukuranModel {
   final String rekomendasiKader;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final DateTime? deletedAt;
   PengukuranModel({
     required this.localId,
     this.serverId,
@@ -39,6 +40,7 @@ class PengukuranModel {
     required this.rekomendasiKader,
     required this.createdAt,
     required this.updatedAt,
+    this.deletedAt,
   });
 
   PengukuranModel copyWith({
@@ -59,6 +61,7 @@ class PengukuranModel {
     String? rekomendasiKader,
     DateTime? createdAt,
     DateTime? updatedAt,
+    DateTime? deletedAt,
   }) {
     return PengukuranModel(
       localId: localId ?? this.localId,
@@ -78,6 +81,7 @@ class PengukuranModel {
       rekomendasiKader: rekomendasiKader ?? this.rekomendasiKader,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
     );
   }
 
@@ -128,6 +132,7 @@ class PengukuranModel {
       'rekomendasiKader': rekomendasiKader,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
+      'deletedAt': deletedAt?.toIso8601String(),
     };
   }
 
@@ -182,6 +187,9 @@ class PengukuranModel {
       rekomendasiKader: map['rekomendasiKader'] as String,
       createdAt: DateTime.tryParse(map['createdAt'] as String)!,
       updatedAt: DateTime.tryParse(map['updatedAt'] as String)!,
+      deletedAt: map['deletedAt'] != null
+          ? DateTime.tryParse(map['deletedAt'] as String)
+          : null,
     );
   }
 
@@ -192,7 +200,7 @@ class PengukuranModel {
 
   @override
   String toString() {
-    return 'PengukuranModel(localId: $localId, serverId: $serverId, anakId: $anakId, posyanduId: $posyanduId, tanggalPengukuran: $tanggalPengukuran, beratBadan: $beratBadan, tinggiBadan: $tinggiBadan, imt: $imt, kategoriBBU: $kategoriBBU, kategoriTBU: $kategoriTBU, kategoriBBTB: $kategoriBBTB, kategoriIMTU: $kategoriIMTU, statusPertumbuhan: $statusPertumbuhan, rekomendasiOrtu: $rekomendasiOrtu, rekomendasiKader: $rekomendasiKader, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'PengukuranModel(localId: $localId, serverId: $serverId, anakId: $anakId, posyanduId: $posyanduId, tanggalPengukuran: $tanggalPengukuran, beratBadan: $beratBadan, tinggiBadan: $tinggiBadan, imt: $imt, kategoriBBU: $kategoriBBU, kategoriTBU: $kategoriTBU, kategoriBBTB: $kategoriBBTB, kategoriIMTU: $kategoriIMTU, statusPertumbuhan: $statusPertumbuhan, rekomendasiOrtu: $rekomendasiOrtu, rekomendasiKader: $rekomendasiKader, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
   @override
@@ -215,7 +223,8 @@ class PengukuranModel {
         other.rekomendasiOrtu == rekomendasiOrtu &&
         other.rekomendasiKader == rekomendasiKader &&
         other.createdAt == createdAt &&
-        other.updatedAt == updatedAt;
+        other.updatedAt == updatedAt &&
+        other.deletedAt == deletedAt;
   }
 
   @override
@@ -236,6 +245,7 @@ class PengukuranModel {
         rekomendasiOrtu.hashCode ^
         rekomendasiKader.hashCode ^
         createdAt.hashCode ^
-        updatedAt.hashCode;
+        updatedAt.hashCode ^
+        deletedAt.hashCode;
   }
 }
