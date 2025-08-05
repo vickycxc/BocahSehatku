@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:age_calculator/age_calculator.dart';
+import 'package:app/core/model/orang_tua_model.dart';
 import 'package:app/core/model/pengukuran_model.dart';
 import 'package:app/core/utils/utils.dart';
 import 'package:collection/collection.dart';
@@ -18,7 +19,7 @@ class AnakModel {
   final double? bbLahir;
   final double? tbLahir;
   final int? mingguLahir;
-  final int? orangTuaId;
+  final OrangTuaModel? orangTua;
   final List<PengukuranModel>? pengukuran;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -33,7 +34,7 @@ class AnakModel {
     this.bbLahir,
     this.tbLahir,
     this.mingguLahir,
-    this.orangTuaId,
+    this.orangTua,
     this.pengukuran,
     required this.createdAt,
     required this.updatedAt,
@@ -55,7 +56,7 @@ class AnakModel {
     double? bbLahir,
     double? tbLahir,
     int? mingguLahir,
-    int? orangTuaId,
+    OrangTuaModel? orangTua,
     List<PengukuranModel>? pengukuran,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -71,7 +72,7 @@ class AnakModel {
       bbLahir: bbLahir ?? this.bbLahir,
       tbLahir: tbLahir ?? this.tbLahir,
       mingguLahir: mingguLahir ?? this.mingguLahir,
-      orangTuaId: orangTuaId ?? this.orangTuaId,
+      orangTua: orangTua ?? this.orangTua,
       pengukuran: pengukuran ?? this.pengukuran,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -94,7 +95,7 @@ class AnakModel {
       'bbLahir': bbLahir,
       'tbLahir': tbLahir,
       'mingguLahir': mingguLahir,
-      'orangTuaId': orangTuaId,
+      'orangTua': orangTua?.toMap(),
       'pengukuran': pengukuran?.map((x) => x.toMap()).toList(),
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
@@ -120,7 +121,9 @@ class AnakModel {
       mingguLahir: map['mingguLahir'] != null
           ? map['mingguLahir'] as int
           : null,
-      orangTuaId: map['orangTuaId'] != null ? map['orangTuaId'] as int : null,
+      orangTua: map['orangTua'] != null
+          ? OrangTuaModel.fromMap(map['orangTua'] as Map<String, dynamic>)
+          : null,
       pengukuran: map['pengukuran'] != null
           ? List<PengukuranModel>.from(
               (map['pengukuran'] as List<int>).map<PengukuranModel?>(
@@ -143,7 +146,7 @@ class AnakModel {
 
   @override
   String toString() {
-    return 'AnakModel(localId: $localId, serverId: $serverId, nama: $nama, tanggalLahir: $tanggalLahir, jenisKelamin: $jenisKelamin, usia: $usia, usiaInString: $usiaInString, nik: $nik, bbLahir: $bbLahir, tbLahir: $tbLahir, mingguLahir: $mingguLahir, orangTuaId: $orangTuaId, pengukuran: $pengukuran, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+    return 'AnakModel(localId: $localId, serverId: $serverId, nama: $nama, tanggalLahir: $tanggalLahir, jenisKelamin: $jenisKelamin, usia: $usia, usiaInString: $usiaInString, nik: $nik, bbLahir: $bbLahir, tbLahir: $tbLahir, mingguLahir: $mingguLahir, orangTua: $orangTua, pengukuran: $pengukuran, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
   @override
@@ -162,7 +165,7 @@ class AnakModel {
         other.bbLahir == bbLahir &&
         other.tbLahir == tbLahir &&
         other.mingguLahir == mingguLahir &&
-        other.orangTuaId == orangTuaId &&
+        other.orangTua == orangTua &&
         listEquals(other.pengukuran, pengukuran) &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt &&
@@ -182,7 +185,7 @@ class AnakModel {
         bbLahir.hashCode ^
         tbLahir.hashCode ^
         mingguLahir.hashCode ^
-        orangTuaId.hashCode ^
+        orangTua.hashCode ^
         pengukuran.hashCode ^
         createdAt.hashCode ^
         updatedAt.hashCode ^
