@@ -1,8 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:age_calculator/age_calculator.dart';
 import 'package:app/core/model/pengukuran_model.dart';
 import 'package:app/core/utils/utils.dart';
+import 'package:collection/collection.dart';
 
 class AnakModel {
   final int localId;
@@ -17,6 +19,7 @@ class AnakModel {
   final double? tbLahir;
   final int? mingguLahir;
   final int? orangTuaId;
+  final List<PengukuranModel>? pengukuran;
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
@@ -31,6 +34,7 @@ class AnakModel {
     this.tbLahir,
     this.mingguLahir,
     this.orangTuaId,
+    this.pengukuran,
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,
@@ -52,7 +56,7 @@ class AnakModel {
     double? tbLahir,
     int? mingguLahir,
     int? orangTuaId,
-    List<PengukuranModel>? listPengukuran,
+    List<PengukuranModel>? pengukuran,
     DateTime? createdAt,
     DateTime? updatedAt,
     DateTime? deletedAt,
@@ -68,6 +72,7 @@ class AnakModel {
       tbLahir: tbLahir ?? this.tbLahir,
       mingguLahir: mingguLahir ?? this.mingguLahir,
       orangTuaId: orangTuaId ?? this.orangTuaId,
+      pengukuran: pengukuran ?? this.pengukuran,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
@@ -90,6 +95,7 @@ class AnakModel {
       'tbLahir': tbLahir,
       'mingguLahir': mingguLahir,
       'orangTuaId': orangTuaId,
+      'pengukuran': pengukuran?.map((x) => x.toMap()).toList(),
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
       'deletedAt': deletedAt?.toIso8601String(),
@@ -115,6 +121,13 @@ class AnakModel {
           ? map['mingguLahir'] as int
           : null,
       orangTuaId: map['orangTuaId'] != null ? map['orangTuaId'] as int : null,
+      pengukuran: map['pengukuran'] != null
+          ? List<PengukuranModel>.from(
+              (map['pengukuran'] as List<int>).map<PengukuranModel?>(
+                (x) => PengukuranModel.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : null,
       createdAt: DateTime.tryParse(map['createdAt'] as String)!,
       updatedAt: DateTime.tryParse(map['updatedAt'] as String)!,
       deletedAt: map['deletedAt'] != null
@@ -130,12 +143,13 @@ class AnakModel {
 
   @override
   String toString() {
-    return 'AnakModel(localId: $localId, serverId: $serverId, nama: $nama, tanggalLahir: $tanggalLahir, jenisKelamin: $jenisKelamin, usia: $usia, usiaInString: $usiaInString, nik: $nik, bbLahir: $bbLahir, tbLahir: $tbLahir, mingguLahir: $mingguLahir, orangTuaId: $orangTuaId, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+    return 'AnakModel(localId: $localId, serverId: $serverId, nama: $nama, tanggalLahir: $tanggalLahir, jenisKelamin: $jenisKelamin, usia: $usia, usiaInString: $usiaInString, nik: $nik, bbLahir: $bbLahir, tbLahir: $tbLahir, mingguLahir: $mingguLahir, orangTuaId: $orangTuaId, pengukuran: $pengukuran, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
   @override
   bool operator ==(covariant AnakModel other) {
     if (identical(this, other)) return true;
+    final listEquals = const DeepCollectionEquality().equals;
 
     return other.localId == localId &&
         other.serverId == serverId &&
@@ -149,6 +163,7 @@ class AnakModel {
         other.tbLahir == tbLahir &&
         other.mingguLahir == mingguLahir &&
         other.orangTuaId == orangTuaId &&
+        listEquals(other.pengukuran, pengukuran) &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt &&
         other.deletedAt == deletedAt;
@@ -168,6 +183,7 @@ class AnakModel {
         tbLahir.hashCode ^
         mingguLahir.hashCode ^
         orangTuaId.hashCode ^
+        pengukuran.hashCode ^
         createdAt.hashCode ^
         updatedAt.hashCode ^
         deletedAt.hashCode;
