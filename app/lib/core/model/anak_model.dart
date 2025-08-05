@@ -19,6 +19,7 @@ class AnakModel {
   final double? bbLahir;
   final double? tbLahir;
   final int? mingguLahir;
+  final int? orangTuaId;
   final OrangTuaModel? orangTua;
   final List<PengukuranModel>? pengukuran;
   final DateTime createdAt;
@@ -34,6 +35,7 @@ class AnakModel {
     this.bbLahir,
     this.tbLahir,
     this.mingguLahir,
+    this.orangTuaId,
     this.orangTua,
     this.pengukuran,
     required this.createdAt,
@@ -56,6 +58,7 @@ class AnakModel {
     double? bbLahir,
     double? tbLahir,
     int? mingguLahir,
+    int? orangTuaId,
     OrangTuaModel? orangTua,
     List<PengukuranModel>? pengukuran,
     DateTime? createdAt,
@@ -72,6 +75,7 @@ class AnakModel {
       bbLahir: bbLahir ?? this.bbLahir,
       tbLahir: tbLahir ?? this.tbLahir,
       mingguLahir: mingguLahir ?? this.mingguLahir,
+      orangTuaId: orangTuaId ?? this.orangTuaId,
       orangTua: orangTua ?? this.orangTua,
       pengukuran: pengukuran ?? this.pengukuran,
       createdAt: createdAt ?? this.createdAt,
@@ -95,6 +99,7 @@ class AnakModel {
       'bbLahir': bbLahir,
       'tbLahir': tbLahir,
       'mingguLahir': mingguLahir,
+      'orangTuaId': orangTuaId,
       'orangTua': orangTua?.toMap(),
       'pengukuran': pengukuran?.map((x) => x.toMap()).toList(),
       'createdAt': createdAt.toIso8601String(),
@@ -121,6 +126,7 @@ class AnakModel {
       mingguLahir: map['mingguLahir'] != null
           ? map['mingguLahir'] as int
           : null,
+      orangTuaId: map['orangTuaId'] != null ? map['orangTuaId'] as int : null,
       orangTua: map['orangTua'] != null
           ? OrangTuaModel.fromMap(map['orangTua'] as Map<String, dynamic>)
           : null,
@@ -146,7 +152,7 @@ class AnakModel {
 
   @override
   String toString() {
-    return 'AnakModel(localId: $localId, serverId: $serverId, nama: $nama, tanggalLahir: $tanggalLahir, jenisKelamin: $jenisKelamin, usia: $usia, usiaInString: $usiaInString, nik: $nik, bbLahir: $bbLahir, tbLahir: $tbLahir, mingguLahir: $mingguLahir, orangTua: $orangTua, pengukuran: $pengukuran, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+    return 'AnakModel(localId: $localId, serverId: $serverId, nama: $nama, tanggalLahir: $tanggalLahir, jenisKelamin: $jenisKelamin, usia: $usia, usiaInString: $usiaInString, nik: $nik, bbLahir: $bbLahir, tbLahir: $tbLahir, mingguLahir: $mingguLahir, orangTuaId: $orangTuaId, orangTua: $orangTua, pengukuran: $pengukuran, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
   @override
@@ -165,6 +171,7 @@ class AnakModel {
         other.bbLahir == bbLahir &&
         other.tbLahir == tbLahir &&
         other.mingguLahir == mingguLahir &&
+        other.orangTuaId == orangTuaId &&
         other.orangTua == orangTua &&
         listEquals(other.pengukuran, pengukuran) &&
         other.createdAt == createdAt &&
@@ -185,6 +192,7 @@ class AnakModel {
         bbLahir.hashCode ^
         tbLahir.hashCode ^
         mingguLahir.hashCode ^
+        orangTuaId.hashCode ^
         orangTua.hashCode ^
         pengukuran.hashCode ^
         createdAt.hashCode ^
