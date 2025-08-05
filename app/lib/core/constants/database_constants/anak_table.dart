@@ -2,6 +2,7 @@ class AnakTable {
   static const String tableName = 'anak';
   static const String localIdColumnName = 'localId';
   static const String serverIdColumnName = 'serverId';
+  static const String namaColumnName = 'nama';
   static const String tanggalLahirColumnName = 'tanggalLahir';
   static const String jenisKelaminColumnName = 'jenisKelamin';
   static const String nikColumnName = 'nik';
@@ -18,6 +19,7 @@ class AnakTable {
         CREATE TABLE $tableName (
         $localIdColumnName INTEGER PRIMARY KEY AUTOINCREMENT,
         $serverIdColumnName INTEGER,
+        $namaColumnName TEXT NOT NULL,
         $tanggalLahirColumnName TEXT NOT NULL,
         $jenisKelaminColumnName TEXT NOT NULL,
         $nikColumnName TEXT,

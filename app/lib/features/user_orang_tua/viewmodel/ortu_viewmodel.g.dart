@@ -6,7 +6,7 @@ part of 'ortu_viewmodel.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$ortuViewModelHash() => r'7fd319d166240a69f45d92e6f8ccf368992c4414';
+String _$ortuViewModelHash() => r'02e8aeb0aca634abc5d4014d09ac8a5a726ae81e';
 
 /// See also [OrtuViewModel].
 @ProviderFor(OrtuViewModel)

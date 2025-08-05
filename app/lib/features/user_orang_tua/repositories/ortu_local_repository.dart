@@ -19,6 +19,7 @@ class OrtuLocalRepository {
   OrtuLocalRepository(this.database);
 
   Future<void> tambahDataAnak({
+    required String nama,
     required String tanggalLahir,
     required String jenisKelamin,
     String? nik,
@@ -28,6 +29,7 @@ class OrtuLocalRepository {
     int? orangTuaId,
   }) async {
     await database.insert(AnakTable.tableName, {
+      AnakTable.namaColumnName: nama,
       AnakTable.tanggalLahirColumnName: tanggalLahir,
       AnakTable.jenisKelaminColumnName: jenisKelamin,
       AnakTable.nikColumnName: nik,
@@ -35,6 +37,8 @@ class OrtuLocalRepository {
       AnakTable.tbLahirColumnName: tbLahir,
       AnakTable.mingguLahirColumnName: mingguLahir,
       AnakTable.orangTuaIdColumnName: orangTuaId,
+      AnakTable.createdAtColumnName: DateTime.now().toIso8601String(),
+      AnakTable.updatedAtColumnName: DateTime.now().toIso8601String(),
     });
   }
 
