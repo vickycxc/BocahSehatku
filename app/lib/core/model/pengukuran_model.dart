@@ -7,6 +7,7 @@ class PengukuranModel {
   final int localId;
   final int? serverId;
   final int anakId;
+  final String namaPosyandu;
   final int posyanduId;
   final DateTime tanggalPengukuran;
   final double beratBadan;
@@ -26,6 +27,7 @@ class PengukuranModel {
     required this.localId,
     this.serverId,
     required this.anakId,
+    required this.namaPosyandu,
     required this.posyanduId,
     required this.tanggalPengukuran,
     required this.beratBadan,
@@ -47,6 +49,7 @@ class PengukuranModel {
     int? localId,
     int? serverId,
     int? anakId,
+    String? namaPosyandu,
     int? posyanduId,
     DateTime? tanggalPengukuran,
     double? beratBadan,
@@ -67,6 +70,7 @@ class PengukuranModel {
       localId: localId ?? this.localId,
       serverId: serverId ?? this.serverId,
       anakId: anakId ?? this.anakId,
+      namaPosyandu: namaPosyandu ?? this.namaPosyandu,
       posyanduId: posyanduId ?? this.posyanduId,
       tanggalPengukuran: tanggalPengukuran ?? this.tanggalPengukuran,
       beratBadan: beratBadan ?? this.beratBadan,
@@ -118,6 +122,7 @@ class PengukuranModel {
       'localId': localId,
       'serverId': serverId,
       'anakId': anakId,
+      'namaPosyandu': namaPosyandu,
       'posyanduId': posyanduId,
       'tanggalPengukuran': tanggalPengukuran.millisecondsSinceEpoch,
       'beratBadan': beratBadan,
@@ -169,10 +174,19 @@ class PengukuranModel {
       'OBESITAS' => KategoriIMTU.obesitas,
       _ => throw Exception('Invalid kategoriIMTU value'),
     };
+
+    String namaPosyandu;
+
+    if (map['posyandu'] != null) {
+      namaPosyandu = map['posyandu']['namaPosyandu'] as String;
+    } else {
+      namaPosyandu = map['namaPosyandu'] as String;
+    }
     return PengukuranModel(
       localId: map['localId'] as int,
       serverId: map['serverId'] != null ? map['serverId'] as int : null,
       anakId: map['anakId'] as int,
+      namaPosyandu: namaPosyandu,
       posyanduId: map['posyanduId'] as int,
       tanggalPengukuran: DateTime.tryParse(map['tanggalPengukuran'] as String)!,
       beratBadan: map['beratBadan'] as double,
@@ -185,10 +199,10 @@ class PengukuranModel {
       statusPertumbuhan: map['statusPertumbuhan'] as String,
       rekomendasiOrtu: map['rekomendasiOrtu'] as String,
       rekomendasiKader: map['rekomendasiKader'] as String,
-      createdAt: DateTime.tryParse(map['createdAt'] as String)!,
-      updatedAt: DateTime.tryParse(map['updatedAt'] as String)!,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
+      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int),
       deletedAt: map['deletedAt'] != null
-          ? DateTime.tryParse(map['deletedAt'] as String)
+          ? DateTime.fromMillisecondsSinceEpoch(map['deletedAt'] as int)
           : null,
     );
   }
@@ -200,7 +214,7 @@ class PengukuranModel {
 
   @override
   String toString() {
-    return 'PengukuranModel(localId: $localId, serverId: $serverId, anakId: $anakId, posyanduId: $posyanduId, tanggalPengukuran: $tanggalPengukuran, beratBadan: $beratBadan, tinggiBadan: $tinggiBadan, imt: $imt, kategoriBBU: $kategoriBBU, kategoriTBU: $kategoriTBU, kategoriBBTB: $kategoriBBTB, kategoriIMTU: $kategoriIMTU, statusPertumbuhan: $statusPertumbuhan, rekomendasiOrtu: $rekomendasiOrtu, rekomendasiKader: $rekomendasiKader, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+    return 'PengukuranModel(localId: $localId, serverId: $serverId, anakId: $anakId, namaPosyandu: $namaPosyandu, posyanduId: $posyanduId, tanggalPengukuran: $tanggalPengukuran, beratBadan: $beratBadan, tinggiBadan: $tinggiBadan, imt: $imt, kategoriBBU: $kategoriBBU, kategoriTBU: $kategoriTBU, kategoriBBTB: $kategoriBBTB, kategoriIMTU: $kategoriIMTU, statusPertumbuhan: $statusPertumbuhan, rekomendasiOrtu: $rekomendasiOrtu, rekomendasiKader: $rekomendasiKader, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
   @override
@@ -210,6 +224,7 @@ class PengukuranModel {
     return other.localId == localId &&
         other.serverId == serverId &&
         other.anakId == anakId &&
+        other.namaPosyandu == namaPosyandu &&
         other.posyanduId == posyanduId &&
         other.tanggalPengukuran == tanggalPengukuran &&
         other.beratBadan == beratBadan &&
@@ -232,6 +247,7 @@ class PengukuranModel {
     return localId.hashCode ^
         serverId.hashCode ^
         anakId.hashCode ^
+        namaPosyandu.hashCode ^
         posyanduId.hashCode ^
         tanggalPengukuran.hashCode ^
         beratBadan.hashCode ^
