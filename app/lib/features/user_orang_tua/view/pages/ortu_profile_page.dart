@@ -34,7 +34,7 @@ class OrtuProfilePage extends ConsumerWidget {
               icon: LucideIcons.userRoundPen,
               text: 'Edit Profil',
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             ProfileButton(
               onPressed: () {
                 Navigator.push(
@@ -47,13 +47,13 @@ class OrtuProfilePage extends ConsumerWidget {
               icon: LucideIcons.baby,
               text: 'Edit Profil Anak',
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             ProfileButton(
               onPressed: () {},
               icon: LucideIcons.info,
               text: 'Tentang Aplikasi',
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             ProfileButton(
               onPressed: () {
                 ref.read(authViewModelProvider.notifier).keluar();
@@ -70,16 +70,16 @@ class OrtuProfilePage extends ConsumerWidget {
               icon: LucideIcons.logOut,
               text: 'Keluar',
             ),
-            SizedBox(height: 42),
-            Text(
-              '© 2025 - Isuk Guyon Team ITS',
+            const SizedBox(height: 42),
+            const Text(
+              '© 2025 - Zulfikar Satria Allam Syahputra',
               style: TextStyle(
                 fontSize: 14,
                 color: Palette.backgroundPrimaryColor,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 48),
+            const SizedBox(height: 48),
           ],
         ),
       ),

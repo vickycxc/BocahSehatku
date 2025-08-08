@@ -23,7 +23,11 @@ class OrtuDashboardPage extends ConsumerWidget {
               edgeOffset: 50,
               onRefresh: () async =>
                   await ref.read(ortuViewModelProvider.notifier).segarkan(),
-              child: const NoDataWidget('Belum ada data anak yang ditambahkan'),
+              child: ListView(
+                children: [
+                  const NoDataWidget('Belum ada data anak yang ditambahkan'),
+                ],
+              ),
             );
           }
           return RefreshIndicator(

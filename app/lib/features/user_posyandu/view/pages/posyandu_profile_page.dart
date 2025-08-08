@@ -32,19 +32,19 @@ class PosyanduProfilePage extends ConsumerWidget {
               icon: LucideIcons.shieldCheck,
               text: 'Verifikasi Akun',
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             ProfileButton(
               onPressed: () {},
               icon: LucideIcons.keyRound,
               text: 'Ganti Kata Sandi',
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             ProfileButton(
               onPressed: () {},
               icon: LucideIcons.info,
               text: 'Tentang Aplikasi',
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             ProfileButton(
               onPressed: () {
                 ref.read(authViewModelProvider.notifier).keluar();
@@ -60,16 +60,16 @@ class PosyanduProfilePage extends ConsumerWidget {
               icon: LucideIcons.logOut,
               text: 'Keluar',
             ),
-            SizedBox(height: 42),
-            Text(
-              '© 2025 - Isuk Guyon Team ITS',
+            const SizedBox(height: 42),
+            const Text(
+              '© 2025 - Zulfikar Satria Allam Syahputra',
               style: TextStyle(
                 fontSize: 14,
                 color: Palette.backgroundPrimaryColor,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 48),
+            const SizedBox(height: 48),
           ],
         ),
       ),

@@ -8,8 +8,8 @@ class NoDataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         SvgPicture.asset('assets/baby_no_bg.svg', width: 10, height: 100),
         const SizedBox(height: 24),
@@ -22,6 +22,7 @@ class NoDataWidget extends StatelessWidget {
           ),
           textAlign: TextAlign.center,
         ),
+        const SizedBox(height: 20),
       ],
     );
   }
