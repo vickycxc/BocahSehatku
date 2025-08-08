@@ -18,29 +18,14 @@ class OrtuLocalRepository {
 
   OrtuLocalRepository(this.database);
 
-  Future<void> tambahDataAnak({
-    required String nama,
-    required String tanggalLahir,
-    required String jenisKelamin,
-    String? nik,
-    double? bbLahir,
-    double? tbLahir,
-    int? mingguLahir,
-    int? orangTuaId,
-  }) async {
-    await database.insert(AnakTable.tableName, {
-      AnakTable.serverIdColumnName: 0,
-      AnakTable.namaColumnName: nama,
-      AnakTable.tanggalLahirColumnName: tanggalLahir,
-      AnakTable.jenisKelaminColumnName: jenisKelamin,
-      AnakTable.nikColumnName: nik,
-      AnakTable.bbLahirColumnName: bbLahir,
-      AnakTable.tbLahirColumnName: tbLahir,
-      AnakTable.mingguLahirColumnName: mingguLahir,
-      AnakTable.orangTuaIdColumnName: orangTuaId,
-      AnakTable.createdAtColumnName: DateTime.now().toIso8601String(),
-      AnakTable.updatedAtColumnName: DateTime.now().toIso8601String(),
-    });
+  Future<void> tambahDataAnak(AnakModel anak) async {
+    final newAnak = anak.copyWith(
+      localId: null,
+      serverId: 0,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+    await database.insert(AnakTable.tableName, newAnak.toMap());
   }
 
   Future<List<AnakModel>> ambilDataAnak() async {

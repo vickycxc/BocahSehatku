@@ -1,4 +1,5 @@
 import 'package:app/core/constants/database_constants/anak_table.dart';
+import 'package:app/core/constants/database_constants/pengukuran_table.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -27,6 +28,7 @@ class DatabaseHelper {
 
   Future<void> _createDb(Database db, int version) async {
     await db.execute(AnakTable.createTableQuery);
+    await db.execute(PengukuranTable.createTableQuery);
   }
 
   Future<void> _onConfigure(Database db) async {

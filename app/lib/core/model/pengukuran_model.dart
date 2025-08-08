@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:app/core/utils/utils.dart';
 
 class PengukuranModel {
-  final int localId;
+  final int? localId;
   final int? serverId;
   final int anakId;
   final String namaPosyandu;
@@ -23,8 +23,8 @@ class PengukuranModel {
   final StatusPengukuran statusPengukuranTren;
   final String rekomendasiOrtu;
   final String rekomendasiKader;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
   final DateTime? deletedAt;
   PengukuranModel({
     required this.localId,
@@ -162,8 +162,8 @@ class PengukuranModel {
       'statusPengukuranTren': statusPengukuranTrenString,
       'rekomendasiOrtu': rekomendasiOrtu,
       'rekomendasiKader': rekomendasiKader,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
       'deletedAt': deletedAt?.toIso8601String(),
     };
   }
@@ -225,12 +225,12 @@ class PengukuranModel {
       namaPosyandu = map['namaPosyandu'] as String;
     }
     return PengukuranModel(
-      localId: map['localId'] as int,
+      localId: map['localId'] != null ? map['localId'] as int : null,
       serverId: map['serverId'] != null ? map['serverId'] as int : null,
       anakId: map['anakId'] as int,
       namaPosyandu: namaPosyandu,
       posyanduId: map['posyanduId'] as int,
-      tanggalPengukuran: DateTime.tryParse(map['tanggalPengukuran'] as String)!,
+      tanggalPengukuran: DateTime.parse(map['tanggalPengukuran'] as String),
       beratBadan: map['beratBadan'] as double,
       tinggiBadan: map['tinggiBadan'] as double,
       imt: map['imt'] as double,
@@ -244,8 +244,12 @@ class PengukuranModel {
       statusPengukuranTren: statusPengukuranTren,
       rekomendasiOrtu: map['rekomendasiOrtu'] as String,
       rekomendasiKader: map['rekomendasiKader'] as String,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int),
+      createdAt: map['createdAt'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int)
+          : null,
+      updatedAt: map['updatedAt'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int)
+          : null,
       deletedAt: map['deletedAt'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['deletedAt'] as int)
           : null,

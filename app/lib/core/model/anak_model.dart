@@ -8,8 +8,8 @@ import 'package:app/core/utils/utils.dart';
 import 'package:collection/collection.dart';
 
 class AnakModel {
-  final int localId;
-  final int serverId;
+  final int? localId;
+  final int? serverId;
   final String nama;
   final DateTime tanggalLahir;
   final JenisKelamin jenisKelamin;
@@ -22,8 +22,8 @@ class AnakModel {
   final int? orangTuaId;
   final OrangTuaModel? orangTua;
   final List<PengukuranModel>? pengukuran;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
   final DateTime? deletedAt;
   AnakModel({
     required this.localId,
@@ -102,8 +102,8 @@ class AnakModel {
       'orangTuaId': orangTuaId,
       'orangTua': orangTua?.toMap(),
       'pengukuran': pengukuran?.map((x) => x.toMap()).toList(),
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
       'deletedAt': deletedAt?.toIso8601String(),
     };
   }
@@ -115,10 +115,10 @@ class AnakModel {
       _ => throw Exception('Jenis Kelamin tidak valid'),
     };
     return AnakModel(
-      localId: map['localId'] as int,
-      serverId: map['serverId'] as int,
+      localId: map['localId'] != null ? map['localId'] as int : null,
+      serverId: map['serverId'] != null ? map['serverId'] as int : null,
       nama: map['nama'] as String,
-      tanggalLahir: DateTime.tryParse(map['tanggalLahir'] as String)!,
+      tanggalLahir: DateTime.parse(map['tanggalLahir'] as String),
       jenisKelamin: jenisKelamin,
       nik: map['nik'] != null ? map['nik'] as String : null,
       bbLahir: map['bbLahir'] != null ? map['bbLahir'] as double : null,
@@ -137,10 +137,14 @@ class AnakModel {
               ),
             )
           : null,
-      createdAt: DateTime.tryParse(map['createdAt'] as String)!,
-      updatedAt: DateTime.tryParse(map['updatedAt'] as String)!,
+      createdAt: map['createdAt'] != null
+          ? DateTime.parse(map['createdAt'] as String)
+          : null,
+      updatedAt: map['updatedAt'] != null
+          ? DateTime.parse(map['updatedAt'] as String)
+          : null,
       deletedAt: map['deletedAt'] != null
-          ? DateTime.tryParse(map['deletedAt'] as String)
+          ? DateTime.parse(map['deletedAt'] as String)
           : null,
     );
   }
