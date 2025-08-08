@@ -1,3 +1,4 @@
+import 'package:app/core/model/pengukuran_model.dart';
 import 'package:app/core/theme/palette.dart';
 import 'package:app/core/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -5,16 +6,23 @@ import 'package:flutter_svg/svg.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class BabyGrowthHistoryCard extends StatelessWidget {
+  final PengukuranModel pengukuran;
+  final JenisKelamin jenisKelamin;
   final bool withEdit;
-  const BabyGrowthHistoryCard({super.key, this.withEdit = false});
+  const BabyGrowthHistoryCard(
+    this.pengukuran,
+    this.jenisKelamin, {
+    super.key,
+    this.withEdit = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsGeometry.symmetric(vertical: 6),
+      padding: const EdgeInsetsGeometry.symmetric(vertical: 6),
       child: Card(
         color: Palette.maleColor,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32)),
         ),
         child: Padding(
@@ -50,13 +58,13 @@ class BabyGrowthHistoryCard extends StatelessWidget {
                                 height: 36,
                               ),
                               const SizedBox(width: 6),
-                              Flexible(
+                              const Flexible(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       'Waktu',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 12,
                                       ),
@@ -68,7 +76,7 @@ class BabyGrowthHistoryCard extends StatelessWidget {
                                     ),
                                     Text(
                                       'Senin, 3 Oktober 2025',
-                                      style: const TextStyle(fontSize: 12),
+                                      style: TextStyle(fontSize: 12),
                                       textAlign: TextAlign.start,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
@@ -88,13 +96,13 @@ class BabyGrowthHistoryCard extends StatelessWidget {
                                 height: 36,
                               ),
                               const SizedBox(width: 6),
-                              Flexible(
+                              const Flexible(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       'Posyandu',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -104,7 +112,7 @@ class BabyGrowthHistoryCard extends StatelessWidget {
                                     ),
                                     Text(
                                       'Posyandu Melati',
-                                      style: const TextStyle(fontSize: 12),
+                                      style: TextStyle(fontSize: 12),
                                       textAlign: TextAlign.start,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines:
@@ -125,13 +133,13 @@ class BabyGrowthHistoryCard extends StatelessWidget {
                                 height: 36,
                               ),
                               const SizedBox(width: 6),
-                              Flexible(
+                              const Flexible(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       'Usia',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -141,7 +149,7 @@ class BabyGrowthHistoryCard extends StatelessWidget {
                                     ),
                                     Text(
                                       '2 Bulan 2 Hari',
-                                      style: const TextStyle(fontSize: 12),
+                                      style: TextStyle(fontSize: 12),
                                       textAlign: TextAlign.start,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines:
@@ -170,7 +178,7 @@ class BabyGrowthHistoryCard extends StatelessWidget {
                                 padding: const EdgeInsets.all(8),
                                 backgroundColor: Palette.backgroundPrimaryColor,
                               ),
-                              child: Icon(
+                              child: const Icon(
                                 LucideIcons.squarePen,
                                 color: Palette.textPrimaryColor,
                               ),
@@ -197,7 +205,7 @@ class BabyGrowthHistoryCard extends StatelessWidget {
                                   ),
                                   height: !withEdit ? 65 : 55,
                                   width: 60,
-                                  padding: EdgeInsets.all(14),
+                                  padding: const EdgeInsets.all(14),
                                   child: SvgPicture.asset(
                                     'assets/baby_weight.svg',
                                   ),
@@ -207,20 +215,20 @@ class BabyGrowthHistoryCard extends StatelessWidget {
                                     child: Text.rich(
                                       TextSpan(
                                         text: 'Berat\n',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 11,
                                           color: Palette.textPrimaryColor,
                                         ),
                                         children: [
                                           TextSpan(
                                             text: formatAngka(23),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 11,
                                               fontWeight: FontWeight.bold,
                                               color: Palette.textPrimaryColor,
                                             ),
                                           ),
-                                          TextSpan(
+                                          const TextSpan(
                                             text: ' kg',
                                             style: TextStyle(
                                               fontSize: 11,
@@ -236,7 +244,7 @@ class BabyGrowthHistoryCard extends StatelessWidget {
                               ],
                             ),
                           ),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           Container(
                             decoration: BoxDecoration(
                               color: Palette.healthyBackgroundColor,
@@ -253,7 +261,7 @@ class BabyGrowthHistoryCard extends StatelessWidget {
                                   ),
                                   height: !withEdit ? 65 : 55,
                                   width: 60,
-                                  padding: EdgeInsets.all(14),
+                                  padding: const EdgeInsets.all(14),
                                   child: SvgPicture.asset(
                                     'assets/baby_height.svg',
                                   ),
@@ -263,20 +271,20 @@ class BabyGrowthHistoryCard extends StatelessWidget {
                                     child: Text.rich(
                                       TextSpan(
                                         text: 'Tinggi\n',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 11,
                                           color: Palette.textPrimaryColor,
                                         ),
                                         children: [
                                           TextSpan(
                                             text: formatAngka(61),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 11,
                                               fontWeight: FontWeight.bold,
                                               color: Palette.textPrimaryColor,
                                             ),
                                           ),
-                                          TextSpan(
+                                          const TextSpan(
                                             text: ' cm',
                                             style: TextStyle(
                                               fontSize: 11,
@@ -298,15 +306,12 @@ class BabyGrowthHistoryCard extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 12),
-              Text(
+              const SizedBox(height: 12),
+              const Text(
                 'Status Pertumbuhan',
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 // width: double.infinity,
@@ -314,13 +319,10 @@ class BabyGrowthHistoryCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                   color: Palette.healthyBackgroundColor,
                 ),
-                child: Center(
+                child: const Center(
                   child: Text(
                     'Normal, Gizi Baik',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),

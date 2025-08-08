@@ -2,6 +2,7 @@
 import 'package:app/core/model/anak_model.dart';
 import 'package:app/core/theme/palette.dart';
 import 'package:app/core/utils/utils.dart';
+import 'package:app/features/user_orang_tua/view/pages/ortu_baby_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -12,7 +13,7 @@ class AnakAppBarCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Container(
         decoration: BoxDecoration(
           color: Palette.backgroundPrimaryColor,
@@ -24,7 +25,14 @@ class AnakAppBarCard extends StatelessWidget {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OrtuBabyDetailPage(anak),
+                  ),
+                );
+              },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Column(
@@ -39,11 +47,11 @@ class AnakAppBarCard extends StatelessWidget {
                       width: 42,
                       height: 42,
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
                       anak.nama,
                       maxLines: 1,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Palette.textPrimaryColor,
@@ -51,7 +59,7 @@ class AnakAppBarCard extends StatelessWidget {
                     ),
                     Text(
                       anak.usiaInString,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
                         color: Palette.textPrimaryColor,

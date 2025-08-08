@@ -20,11 +20,11 @@ class OrtuBabyDetailPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12),
         color: Palette.backgroundSecondaryColor,
         child: ListView(
-          padding: const EdgeInsets.only(top: 130, bottom: 16),
+          padding: const EdgeInsets.only(top: 105, bottom: 16),
           children: [
             OrtuBabyGrowthNoteCard(anak),
-            BabyGraphCard(),
-            BabyDetailsCard(),
+            BabyGraphCard(anak),
+            BabyDetailsCard(anak),
           ],
         ),
       ),

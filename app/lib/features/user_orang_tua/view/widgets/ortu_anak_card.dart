@@ -12,15 +12,17 @@ class OrtuAnakCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Card(
         elevation: 4,
-        color: Palette.maleColor,
-        shape: RoundedRectangleBorder(
+        color: anak.jenisKelamin == JenisKelamin.lakiLaki
+            ? Palette.maleColor
+            : Palette.femaleColor,
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32)),
         ),
         child: InkWell(
-          borderRadius: BorderRadius.all(Radius.circular(32)),
+          borderRadius: const BorderRadius.all(Radius.circular(32)),
           onTap: () {
             Navigator.push(
               context,
@@ -33,7 +35,9 @@ class OrtuAnakCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SvgPicture.asset(
-                    'assets/baby_male.svg',
+                    anak.jenisKelamin == JenisKelamin.lakiLaki
+                        ? 'assets/baby_male.svg'
+                        : 'assets/baby_female.svg',
                     width: 100,
                     height: 100,
                   ),
@@ -46,7 +50,7 @@ class OrtuAnakCard extends StatelessWidget {
                           Text(
                             anak.nama,
                             maxLines: 2,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Palette.textPrimaryColor,
@@ -54,7 +58,7 @@ class OrtuAnakCard extends StatelessWidget {
                           ),
                           Text(
                             anak.usiaInString,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                               color: Palette.textPrimaryColor,
                             ),
@@ -70,7 +74,19 @@ class OrtuAnakCard extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Palette.healthyBackgroundColor,
+                      color:
+                          anak.pengukuran != null && anak.pengukuran!.isNotEmpty
+                          ? switch (anak.pengukuran!.first.kategoriBBU) {
+                              KategoriBBU.sangatKurang =>
+                                Palette.unhealthyBackgroundColor,
+                              KategoriBBU.kurang =>
+                                Palette.lessHealthyBackgroundColor,
+                              KategoriBBU.normal =>
+                                Palette.healthyBackgroundColor,
+                              KategoriBBU.lebih =>
+                                Palette.lessHealthyBackgroundColor,
+                            }
+                          : Palette.noDataBackgroundColor,
                       borderRadius: BorderRadius.circular(16),
                     ),
                     height: 110,
@@ -79,12 +95,24 @@ class OrtuAnakCard extends StatelessWidget {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            color: Palette.healthyColor,
+                            color:
+                                anak.pengukuran != null &&
+                                    anak.pengukuran!.isNotEmpty
+                                ? switch (anak.pengukuran!.first.kategoriBBU) {
+                                    KategoriBBU.sangatKurang =>
+                                      Palette.unhealthyColor,
+                                    KategoriBBU.kurang =>
+                                      Palette.lessHealthyColor,
+                                    KategoriBBU.normal => Palette.healthyColor,
+                                    KategoriBBU.lebih =>
+                                      Palette.lessHealthyColor,
+                                  }
+                                : Palette.noDataColor,
                             borderRadius: BorderRadius.circular(16),
                           ),
                           height: 60,
                           width: 75,
-                          padding: EdgeInsets.all(14),
+                          padding: const EdgeInsets.all(14),
                           child: SvgPicture.asset('assets/baby_weight.svg'),
                         ),
                         Expanded(
@@ -92,20 +120,22 @@ class OrtuAnakCard extends StatelessWidget {
                             child: Text.rich(
                               TextSpan(
                                 text: 'Berat\n',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 13,
                                   color: Palette.textPrimaryColor,
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: formatAngka(42),
-                                    style: TextStyle(
+                                    text: formatAngka(
+                                      anak.pengukuran?.first.beratBadan,
+                                    ),
+                                    style: const TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.bold,
                                       color: Palette.textPrimaryColor,
                                     ),
                                   ),
-                                  TextSpan(
+                                  const TextSpan(
                                     text: ' kg',
                                     style: TextStyle(
                                       fontSize: 13,
@@ -121,10 +151,22 @@ class OrtuAnakCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(width: 30),
+                  const SizedBox(width: 30),
                   Container(
                     decoration: BoxDecoration(
-                      color: Palette.healthyBackgroundColor,
+                      color:
+                          anak.pengukuran != null && anak.pengukuran!.isNotEmpty
+                          ? switch (anak.pengukuran!.first.kategoriTBU) {
+                              KategoriTBU.sangatPendek =>
+                                Palette.unhealthyBackgroundColor,
+                              KategoriTBU.pendek =>
+                                Palette.lessHealthyBackgroundColor,
+                              KategoriTBU.normal =>
+                                Palette.healthyBackgroundColor,
+                              KategoriTBU.tinggi =>
+                                Palette.lessHealthyBackgroundColor,
+                            }
+                          : Palette.noDataBackgroundColor,
                       borderRadius: BorderRadius.circular(16),
                     ),
                     height: 110,
@@ -133,12 +175,24 @@ class OrtuAnakCard extends StatelessWidget {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            color: Palette.healthyColor,
+                            color:
+                                anak.pengukuran != null &&
+                                    anak.pengukuran!.isNotEmpty
+                                ? switch (anak.pengukuran!.first.kategoriTBU) {
+                                    KategoriTBU.sangatPendek =>
+                                      Palette.unhealthyColor,
+                                    KategoriTBU.pendek =>
+                                      Palette.lessHealthyColor,
+                                    KategoriTBU.normal => Palette.healthyColor,
+                                    KategoriTBU.tinggi =>
+                                      Palette.lessHealthyColor,
+                                  }
+                                : Palette.noDataColor,
                             borderRadius: BorderRadius.circular(16),
                           ),
                           height: 60,
                           width: 75,
-                          padding: EdgeInsets.all(14),
+                          padding: const EdgeInsets.all(14),
                           child: SvgPicture.asset('assets/baby_height.svg'),
                         ),
                         Expanded(
@@ -146,20 +200,22 @@ class OrtuAnakCard extends StatelessWidget {
                             child: Text.rich(
                               TextSpan(
                                 text: 'Tinggi\n',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 13,
                                   color: Palette.textPrimaryColor,
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: formatAngka(42),
-                                    style: TextStyle(
+                                    text: formatAngka(
+                                      anak.pengukuran?.first.tinggiBadan,
+                                    ),
+                                    style: const TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.bold,
                                       color: Palette.textPrimaryColor,
                                     ),
                                   ),
-                                  TextSpan(
+                                  const TextSpan(
                                     text: ' cm',
                                     style: TextStyle(
                                       fontSize: 13,
@@ -177,7 +233,7 @@ class OrtuAnakCard extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               Padding(
                 padding: const EdgeInsets.only(left: 18, right: 18, bottom: 24),
                 child: Column(
@@ -189,30 +245,46 @@ class OrtuAnakCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
                     Container(
                       // width: double.infinity,
                       height: 72,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
-                        color: Palette.healthyBackgroundColor,
+                        color:
+                            anak.pengukuran != null &&
+                                anak.pengukuran!.isNotEmpty
+                            ? switch (anak
+                                  .pengukuran!
+                                  .first
+                                  .statusPengukuranPertumbuhan) {
+                                StatusPengukuran.sehat =>
+                                  Palette.healthyBackgroundColor,
+                                StatusPengukuran.kurangSehat =>
+                                  Palette.lessHealthyBackgroundColor,
+                                StatusPengukuran.tidakSehat =>
+                                  Palette.unhealthyBackgroundColor,
+                              }
+                            : Palette.backgroundPrimaryColor.withAlpha(191),
                       ),
                       child: Center(
                         child: Text(
-                          'Normal, Gizi Baik',
+                          anak.pengukuran != null && anak.pengukuran!.isNotEmpty
+                              ? anak.pengukuran!.first.statusPertumbuhan
+                              : 'Belum Ada Data',
                           style: Theme.of(context).textTheme.titleMedium
                               ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
                     Text(
                       'Rekomendasi',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 10,
@@ -223,14 +295,17 @@ class OrtuAnakCard extends StatelessWidget {
                         color: Palette.backgroundPrimaryColor.withAlpha(191),
                       ),
                       child: Padding(
-                        padding: EdgeInsetsGeometry.symmetric(
+                        padding: const EdgeInsetsGeometry.symmetric(
                           horizontal: 12,
                           vertical: 6,
                         ),
                         child: Center(
                           child: Text(
-                            'Hebat sekali, Bunda! Terus tingkatkan pengetahuan seputar gizi dan stimulasi anak sesuai usianya. Jangan ragu untuk bertanya kepada kader Posyandu atau tenaga kesehatan jika ada yang ingin didiskusikan. Peran aktif Bunda sangat penting untuk masa depan si kecil!',
-                            style: TextStyle(
+                            anak.pengukuran != null &&
+                                    anak.pengukuran!.isNotEmpty
+                                ? anak.pengukuran!.first.rekomendasiOrtu
+                                : 'Belum Ada Data',
+                            style: const TextStyle(
                               fontSize: 13,
                               color: Palette.textPrimaryColor,
                             ),

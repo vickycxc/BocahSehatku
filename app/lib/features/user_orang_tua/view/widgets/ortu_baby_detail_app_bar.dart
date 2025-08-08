@@ -13,34 +13,32 @@ class OrtuBabyDetailAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        CustomBackButton(),
+        const CustomBackButton(),
         Expanded(
           child: SafeArea(
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    anak.nama,
-                    textAlign: TextAlign.start,
-                    maxLines: 2,
-                    style: TextStyle(
-                      color: Palette.backgroundPrimaryColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  anak.nama,
+                  textAlign: TextAlign.start,
+                  maxLines: 2,
+                  style: const TextStyle(
+                    color: Palette.backgroundPrimaryColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Text(
-                    anak.usiaInString,
-                    maxLines: 2,
-                    style: TextStyle(
-                      color: Palette.backgroundPrimaryColor,
-                      fontSize: 14,
-                    ),
+                ),
+                Text(
+                  anak.usiaInString,
+                  maxLines: 2,
+                  style: const TextStyle(
+                    color: Palette.backgroundPrimaryColor,
+                    fontSize: 14,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -52,10 +50,10 @@ class OrtuBabyDetailAppBar extends StatelessWidget {
               onPressed: () => {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const OrtuQrPage()),
+                  MaterialPageRoute(builder: (context) => OrtuQrPage(anak)),
                 ),
               },
-              child: Icon(
+              child: const Icon(
                 LucideIcons.qrCode,
                 color: Palette.textPrimaryColor,
                 size: 24,

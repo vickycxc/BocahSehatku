@@ -19,8 +19,8 @@ class PosyanduCalendarPage extends StatelessWidget {
           top: 100,
         ),
         children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 24),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 24),
             child: Card(
               color: Palette.backgroundPrimaryColor,
               elevation: 4,
@@ -30,8 +30,8 @@ class PosyanduCalendarPage extends StatelessWidget {
               child: SizedBox(height: 350),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 4),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 4),
             child: Center(
               child: Text(
                 '4 Juli',
@@ -42,6 +42,7 @@ class PosyanduCalendarPage extends StatelessWidget {
           PosyanduAnakCard(
             AnakModel(
               localId: 0,
+              serverId: 1,
               nama:
                   'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
               tanggalLahir: DateTime(2025, 2, 3),
@@ -55,6 +56,7 @@ class PosyanduCalendarPage extends StatelessWidget {
           PosyanduAnakCard(
             AnakModel(
               localId: 0,
+              serverId: 2,
               nama:
                   'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
               tanggalLahir: DateTime(2025, 2, 3),
@@ -68,6 +70,7 @@ class PosyanduCalendarPage extends StatelessWidget {
           PosyanduAnakCard(
             AnakModel(
               localId: 0,
+              serverId: 2,
               nama:
                   'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
               tanggalLahir: DateTime(2025, 2, 3),

@@ -14,9 +14,9 @@ class PosyanduDashboardPage extends StatelessWidget {
       color: Palette.backgroundSecondaryColor,
       child: CustomScrollView(
         slivers: [
-          PosyanduDashboardAppBar(),
-          SliverPadding(
-            padding: const EdgeInsets.only(top: 24, bottom: 4),
+          const PosyanduDashboardAppBar(),
+          const SliverPadding(
+            padding: EdgeInsets.only(top: 24, bottom: 4),
 
             sliver: SliverToBoxAdapter(
               child: Center(
@@ -38,6 +38,7 @@ class PosyanduDashboardPage extends StatelessWidget {
                 child: PosyanduAnakCard(
                   AnakModel(
                     localId: 0,
+                    serverId: 2,
                     nama:
                         'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
                     tanggalLahir: DateTime(2025, 2, 3),

@@ -12,11 +12,13 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Card(
         elevation: 4,
-        color: Palette.maleColor,
-        shape: RoundedRectangleBorder(
+        color: anak.jenisKelamin == JenisKelamin.lakiLaki
+            ? Palette.maleColor
+            : Palette.femaleColor,
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32)),
         ),
         child: Column(
@@ -25,11 +27,13 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SvgPicture.asset(
-                  'assets/baby_male.svg',
+                  anak.jenisKelamin == JenisKelamin.lakiLaki
+                      ? 'assets/baby_male.svg'
+                      : 'assets/baby_female.svg',
                   width: 100,
                   height: 100,
                 ),
-                Expanded(
+                const Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(left: 8, right: 24),
                     child: Text(
@@ -50,7 +54,19 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: Palette.healthyBackgroundColor,
+                    color:
+                        anak.pengukuran != null && anak.pengukuran!.isNotEmpty
+                        ? switch (anak.pengukuran!.first.kategoriBBU) {
+                            KategoriBBU.sangatKurang =>
+                              Palette.unhealthyBackgroundColor,
+                            KategoriBBU.kurang =>
+                              Palette.lessHealthyBackgroundColor,
+                            KategoriBBU.normal =>
+                              Palette.healthyBackgroundColor,
+                            KategoriBBU.lebih =>
+                              Palette.lessHealthyBackgroundColor,
+                          }
+                        : Palette.noDataBackgroundColor,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   height: 110,
@@ -59,12 +75,23 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Palette.healthyColor,
+                          color:
+                              anak.pengukuran != null &&
+                                  anak.pengukuran!.isNotEmpty
+                              ? switch (anak.pengukuran!.first.kategoriBBU) {
+                                  KategoriBBU.sangatKurang =>
+                                    Palette.unhealthyColor,
+                                  KategoriBBU.kurang =>
+                                    Palette.lessHealthyColor,
+                                  KategoriBBU.normal => Palette.healthyColor,
+                                  KategoriBBU.lebih => Palette.lessHealthyColor,
+                                }
+                              : Palette.noDataColor,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         height: 60,
                         width: 75,
-                        padding: EdgeInsets.all(14),
+                        padding: const EdgeInsets.all(14),
                         child: SvgPicture.asset('assets/baby_weight.svg'),
                       ),
                       Expanded(
@@ -72,20 +99,22 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                           child: Text.rich(
                             TextSpan(
                               text: 'Berat\n',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 13,
                                 color: Palette.textPrimaryColor,
                               ),
                               children: [
                                 TextSpan(
-                                  text: formatAngka(21),
-                                  style: TextStyle(
+                                  text: formatAngka(
+                                    anak.pengukuran?.first.beratBadan,
+                                  ),
+                                  style: const TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
                                     color: Palette.textPrimaryColor,
                                   ),
                                 ),
-                                TextSpan(
+                                const TextSpan(
                                   text: ' kg',
                                   style: TextStyle(
                                     fontSize: 13,
@@ -101,10 +130,22 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(width: 30),
+                const SizedBox(width: 30),
                 Container(
                   decoration: BoxDecoration(
-                    color: Palette.healthyBackgroundColor,
+                    color:
+                        anak.pengukuran != null && anak.pengukuran!.isNotEmpty
+                        ? switch (anak.pengukuran!.first.kategoriTBU) {
+                            KategoriTBU.sangatPendek =>
+                              Palette.unhealthyBackgroundColor,
+                            KategoriTBU.pendek =>
+                              Palette.lessHealthyBackgroundColor,
+                            KategoriTBU.normal =>
+                              Palette.healthyBackgroundColor,
+                            KategoriTBU.tinggi =>
+                              Palette.lessHealthyBackgroundColor,
+                          }
+                        : Palette.noDataBackgroundColor,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   height: 110,
@@ -113,12 +154,24 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Palette.healthyColor,
+                          color:
+                              anak.pengukuran != null &&
+                                  anak.pengukuran!.isNotEmpty
+                              ? switch (anak.pengukuran!.first.kategoriTBU) {
+                                  KategoriTBU.sangatPendek =>
+                                    Palette.unhealthyColor,
+                                  KategoriTBU.pendek =>
+                                    Palette.lessHealthyColor,
+                                  KategoriTBU.normal => Palette.healthyColor,
+                                  KategoriTBU.tinggi =>
+                                    Palette.lessHealthyColor,
+                                }
+                              : Palette.noDataColor,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         height: 60,
                         width: 75,
-                        padding: EdgeInsets.all(14),
+                        padding: const EdgeInsets.all(14),
                         child: SvgPicture.asset('assets/baby_height.svg'),
                       ),
                       Expanded(
@@ -126,20 +179,22 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                           child: Text.rich(
                             TextSpan(
                               text: 'Tinggi\n',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 13,
                                 color: Palette.textPrimaryColor,
                               ),
                               children: [
                                 TextSpan(
-                                  text: formatAngka(31),
-                                  style: TextStyle(
+                                  text: formatAngka(
+                                    anak.pengukuran?.first.tinggiBadan,
+                                  ),
+                                  style: const TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
                                     color: Palette.textPrimaryColor,
                                   ),
                                 ),
-                                TextSpan(
+                                const TextSpan(
                                   text: ' cm',
                                   style: TextStyle(
                                     fontSize: 13,
@@ -157,7 +212,7 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
               child: Center(
@@ -177,18 +232,24 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 'Kunjungan Terakhir',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: TextStyle(fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.start, // Teks rata kiri
                                 overflow: TextOverflow
                                     .ellipsis, // Potong teks jika terlalu panjang
                                 maxLines: 1, // Maksimal 1 baris
                               ),
                               Text(
-                                'Senin, 3 Oktober 2025',
+                                anak.pengukuran != null &&
+                                        anak.pengukuran!.isNotEmpty
+                                    ? formatHari(
+                                        anak
+                                            .pengukuran!
+                                            .first
+                                            .tanggalPengukuran,
+                                      )
+                                    : '-',
                                 textAlign: TextAlign.start,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
@@ -212,17 +273,18 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 'Nama Posyandu',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: TextStyle(fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.start,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),
                               Text(
-                                'Posyandu Melati',
+                                anak.pengukuran != null &&
+                                        anak.pengukuran!.isNotEmpty
+                                    ? anak.pengukuran!.first.namaPosyandu
+                                    : '-',
                                 textAlign: TextAlign.start,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines:
@@ -237,13 +299,13 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const OrtuBabyGrowthHistoryPage(),
+                    builder: (context) => OrtuBabyGrowthHistoryPage(anak),
                   ),
                 );
               },
@@ -253,11 +315,8 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: Text(
                   'Lihat Riwayat Pertumbuhan',
                   style: TextStyle(
@@ -268,7 +327,7 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
           ],
         ),
       ),

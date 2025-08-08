@@ -6,6 +6,7 @@ import 'package:app/features/auth/view/pages/edit_profile_page.dart';
 import 'package:app/features/auth/view/pages/onboarding_page.dart';
 import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:app/features/user_orang_tua/view/pages/edit_profil_anak_page.dart';
+import 'package:app/features/user_orang_tua/viewmodel/ortu_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -64,6 +65,7 @@ class OrtuProfilePage extends ConsumerWidget {
                   ),
                   (_) => false,
                 );
+                ref.invalidate(ortuViewModelProvider);
               },
               icon: LucideIcons.logOut,
               text: 'Keluar',

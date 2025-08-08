@@ -10,7 +10,7 @@ class PosyanduBabyGrowthHistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         content: Row(
           children: [
             CustomBackButton(),
@@ -55,9 +55,9 @@ class PosyanduBabyGrowthHistoryPage extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.only(top: 110, bottom: 16),
           children: [
-            BabyGrowthHistoryCard(withEdit: true),
-            BabyGrowthHistoryCard(withEdit: true),
-            BabyGrowthHistoryCard(),
+            // BabyGrowthHistoryCard(withEdit: true),
+            // BabyGrowthHistoryCard(withEdit: true),
+            // BabyGrowthHistoryCard(),
           ],
         ),
       ),

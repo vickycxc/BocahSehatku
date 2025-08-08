@@ -20,12 +20,16 @@ class DatabaseHelper {
       databasePath,
       version: 1,
       onCreate: _createDb,
+      onConfigure: _onConfigure,
     );
     return database;
   }
 
   Future<void> _createDb(Database db, int version) async {
-    // Heroes table
     await db.execute(AnakTable.createTableQuery);
+  }
+
+  Future<void> _onConfigure(Database db) async {
+    await db.execute('PRAGMA foreign_keys = ON');
   }
 }

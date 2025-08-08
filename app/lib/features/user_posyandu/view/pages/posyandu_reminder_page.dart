@@ -23,6 +23,7 @@ class PosyanduReminderPage extends ConsumerWidget {
           PosyanduReminderCard(
             AnakModel(
               localId: 0,
+              serverId: 3,
               nama:
                   'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
               tanggalLahir: DateTime(2025, 2, 3),
@@ -36,6 +37,7 @@ class PosyanduReminderPage extends ConsumerWidget {
           PosyanduReminderCard(
             AnakModel(
               localId: 0,
+              serverId: 3,
               nama:
                   'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
               tanggalLahir: DateTime(2025, 2, 3),
@@ -49,6 +51,7 @@ class PosyanduReminderPage extends ConsumerWidget {
           PosyanduReminderCard(
             AnakModel(
               localId: 0,
+              serverId: 3,
               nama:
                   'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
               tanggalLahir: DateTime(2025, 2, 3),

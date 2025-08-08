@@ -35,21 +35,21 @@ class _PosyanduSearchPageState extends State<PosyanduSearchPage> {
                   Expanded(
                     flex: 7,
                     child: SearchBar(
-                      textStyle: WidgetStatePropertyAll(
+                      textStyle: const WidgetStatePropertyAll(
                         TextStyle(
                           fontSize: 14,
                           color: Palette.textPrimaryColor,
                         ),
                       ),
                       hintText: 'Cari data anak...',
-                      backgroundColor: WidgetStatePropertyAll(
+                      backgroundColor: const WidgetStatePropertyAll(
                         Palette.backgroundPrimaryColor,
                       ),
-                      leading: Icon(
+                      leading: const Icon(
                         LucideIcons.search,
                         color: Palette.textPrimaryColor,
                       ),
-                      elevation: WidgetStatePropertyAll(2),
+                      elevation: const WidgetStatePropertyAll(2),
                       shape: WidgetStatePropertyAll(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
@@ -57,17 +57,17 @@ class _PosyanduSearchPageState extends State<PosyanduSearchPage> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Expanded(
                     flex: 3,
                     child: TextButton(
                       onPressed: () {},
                       style: ButtonStyle(
-                        elevation: WidgetStatePropertyAll(2),
-                        shadowColor: WidgetStatePropertyAll(
+                        elevation: const WidgetStatePropertyAll(2),
+                        shadowColor: const WidgetStatePropertyAll(
                           Palette.textPrimaryColor,
                         ),
-                        backgroundColor: WidgetStatePropertyAll(
+                        backgroundColor: const WidgetStatePropertyAll(
                           Palette.backgroundPrimaryColor,
                         ),
                         shape: WidgetStatePropertyAll(
@@ -76,7 +76,7 @@ class _PosyanduSearchPageState extends State<PosyanduSearchPage> {
                           ),
                         ),
                       ),
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
@@ -104,6 +104,7 @@ class _PosyanduSearchPageState extends State<PosyanduSearchPage> {
           PosyanduAnakCard(
             AnakModel(
               localId: 0,
+              serverId: 3,
               nama:
                   'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
               tanggalLahir: DateTime(2025, 2, 3),
@@ -117,6 +118,7 @@ class _PosyanduSearchPageState extends State<PosyanduSearchPage> {
           PosyanduAnakCard(
             AnakModel(
               localId: 0,
+              serverId: 3,
               nama:
                   'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
               tanggalLahir: DateTime(2025, 2, 3),
@@ -130,6 +132,7 @@ class _PosyanduSearchPageState extends State<PosyanduSearchPage> {
           PosyanduAnakCard(
             AnakModel(
               localId: 0,
+              serverId: 3,
               nama:
                   'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
               tanggalLahir: DateTime(2025, 2, 3),

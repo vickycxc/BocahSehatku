@@ -18,6 +18,9 @@ class PengukuranModel {
   final KategoriBBTB kategoriBBTB;
   final KategoriIMTU kategoriIMTU;
   final String statusPertumbuhan;
+  final StatusPengukuran statusPengukuranPertumbuhan;
+  final String penilaianTren;
+  final StatusPengukuran statusPengukuranTren;
   final String rekomendasiOrtu;
   final String rekomendasiKader;
   final DateTime createdAt;
@@ -38,6 +41,9 @@ class PengukuranModel {
     required this.kategoriBBTB,
     required this.kategoriIMTU,
     required this.statusPertumbuhan,
+    required this.statusPengukuranPertumbuhan,
+    required this.penilaianTren,
+    required this.statusPengukuranTren,
     required this.rekomendasiOrtu,
     required this.rekomendasiKader,
     required this.createdAt,
@@ -60,6 +66,9 @@ class PengukuranModel {
     KategoriBBTB? kategoriBBTB,
     KategoriIMTU? kategoriIMTU,
     String? statusPertumbuhan,
+    StatusPengukuran? statusPengukuranPertumbuhan,
+    String? penilaianTren,
+    StatusPengukuran? statusPengukuranTren,
     String? rekomendasiOrtu,
     String? rekomendasiKader,
     DateTime? createdAt,
@@ -81,6 +90,10 @@ class PengukuranModel {
       kategoriBBTB: kategoriBBTB ?? this.kategoriBBTB,
       kategoriIMTU: kategoriIMTU ?? this.kategoriIMTU,
       statusPertumbuhan: statusPertumbuhan ?? this.statusPertumbuhan,
+      statusPengukuranPertumbuhan:
+          statusPengukuranPertumbuhan ?? this.statusPengukuranPertumbuhan,
+      penilaianTren: penilaianTren ?? this.penilaianTren,
+      statusPengukuranTren: statusPengukuranTren ?? this.statusPengukuranTren,
       rekomendasiOrtu: rekomendasiOrtu ?? this.rekomendasiOrtu,
       rekomendasiKader: rekomendasiKader ?? this.rekomendasiKader,
       createdAt: createdAt ?? this.createdAt,
@@ -118,6 +131,17 @@ class PengukuranModel {
       KategoriIMTU.giziLebih => 'GIZI_LEBIH',
       KategoriIMTU.obesitas => 'OBESITAS',
     };
+    final statusPengukuranPertumbuhanString =
+        switch (statusPengukuranPertumbuhan) {
+          StatusPengukuran.sehat => 'SEHAT',
+          StatusPengukuran.kurangSehat => 'KURANG_SEHAT',
+          StatusPengukuran.tidakSehat => 'TIDAK_SEHAT',
+        };
+    final statusPengukuranTrenString = switch (statusPengukuranTren) {
+      StatusPengukuran.sehat => 'SEHAT',
+      StatusPengukuran.kurangSehat => 'KURANG_SEHAT',
+      StatusPengukuran.tidakSehat => 'TIDAK_SEHAT',
+    };
     return <String, dynamic>{
       'localId': localId,
       'serverId': serverId,
@@ -133,6 +157,9 @@ class PengukuranModel {
       'kategoriBBTB': kategoriBBTBString,
       'kategoriIMTU': kategoriIMTUString,
       'statusPertumbuhan': statusPertumbuhan,
+      'statusPengukuranPertumbuhan': statusPengukuranPertumbuhanString,
+      'penilaianTren': penilaianTren,
+      'statusPengukuranTren': statusPengukuranTrenString,
       'rekomendasiOrtu': rekomendasiOrtu,
       'rekomendasiKader': rekomendasiKader,
       'createdAt': createdAt.toIso8601String(),
@@ -175,6 +202,21 @@ class PengukuranModel {
       _ => throw Exception('Invalid kategoriIMTU value'),
     };
 
+    final statusPengukuranPertumbuhan =
+        switch (map['statusPengukuranPertumbuhan']) {
+          'SEHAT' => StatusPengukuran.sehat,
+          'KURANG_SEHAT' => StatusPengukuran.kurangSehat,
+          'TIDAK_SEHAT' => StatusPengukuran.tidakSehat,
+          _ => throw Exception('Invalid statusPengukuranPertumbuhan value'),
+        };
+
+    final statusPengukuranTren = switch (map['statusPengukuranTren']) {
+      'SEHAT' => StatusPengukuran.sehat,
+      'KURANG_SEHAT' => StatusPengukuran.kurangSehat,
+      'TIDAK_SEHAT' => StatusPengukuran.tidakSehat,
+      _ => throw Exception('Invalid statusPengukuranTren value'),
+    };
+
     String namaPosyandu;
 
     if (map['posyandu'] != null) {
@@ -197,6 +239,9 @@ class PengukuranModel {
       kategoriBBTB: kategoriBBTB,
       kategoriIMTU: kategoriIMTU,
       statusPertumbuhan: map['statusPertumbuhan'] as String,
+      statusPengukuranPertumbuhan: statusPengukuranPertumbuhan,
+      penilaianTren: map['penilaianTren'] as String,
+      statusPengukuranTren: statusPengukuranTren,
       rekomendasiOrtu: map['rekomendasiOrtu'] as String,
       rekomendasiKader: map['rekomendasiKader'] as String,
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
@@ -214,7 +259,7 @@ class PengukuranModel {
 
   @override
   String toString() {
-    return 'PengukuranModel(localId: $localId, serverId: $serverId, anakId: $anakId, namaPosyandu: $namaPosyandu, posyanduId: $posyanduId, tanggalPengukuran: $tanggalPengukuran, beratBadan: $beratBadan, tinggiBadan: $tinggiBadan, imt: $imt, kategoriBBU: $kategoriBBU, kategoriTBU: $kategoriTBU, kategoriBBTB: $kategoriBBTB, kategoriIMTU: $kategoriIMTU, statusPertumbuhan: $statusPertumbuhan, rekomendasiOrtu: $rekomendasiOrtu, rekomendasiKader: $rekomendasiKader, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+    return 'PengukuranModel(localId: $localId, serverId: $serverId, anakId: $anakId, namaPosyandu: $namaPosyandu, posyanduId: $posyanduId, tanggalPengukuran: $tanggalPengukuran, beratBadan: $beratBadan, tinggiBadan: $tinggiBadan, imt: $imt, kategoriBBU: $kategoriBBU, kategoriTBU: $kategoriTBU, kategoriBBTB: $kategoriBBTB, kategoriIMTU: $kategoriIMTU, statusPertumbuhan: $statusPertumbuhan, statusPengukuranPertumbuhan: $statusPengukuranPertumbuhan, penilaianTren: $penilaianTren, statusPengukuranTren: $statusPengukuranTren, rekomendasiOrtu: $rekomendasiOrtu, rekomendasiKader: $rekomendasiKader, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
   @override
@@ -235,6 +280,9 @@ class PengukuranModel {
         other.kategoriBBTB == kategoriBBTB &&
         other.kategoriIMTU == kategoriIMTU &&
         other.statusPertumbuhan == statusPertumbuhan &&
+        other.statusPengukuranPertumbuhan == statusPengukuranPertumbuhan &&
+        other.penilaianTren == penilaianTren &&
+        other.statusPengukuranTren == statusPengukuranTren &&
         other.rekomendasiOrtu == rekomendasiOrtu &&
         other.rekomendasiKader == rekomendasiKader &&
         other.createdAt == createdAt &&
@@ -258,6 +306,9 @@ class PengukuranModel {
         kategoriBBTB.hashCode ^
         kategoriIMTU.hashCode ^
         statusPertumbuhan.hashCode ^
+        statusPengukuranPertumbuhan.hashCode ^
+        penilaianTren.hashCode ^
+        statusPengukuranTren.hashCode ^
         rekomendasiOrtu.hashCode ^
         rekomendasiKader.hashCode ^
         createdAt.hashCode ^

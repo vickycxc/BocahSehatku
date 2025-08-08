@@ -29,6 +29,7 @@ class OrtuLocalRepository {
     int? orangTuaId,
   }) async {
     await database.insert(AnakTable.tableName, {
+      AnakTable.serverIdColumnName: 0,
       AnakTable.namaColumnName: nama,
       AnakTable.tanggalLahirColumnName: tanggalLahir,
       AnakTable.jenisKelaminColumnName: jenisKelamin,
@@ -43,6 +44,7 @@ class OrtuLocalRepository {
   }
 
   Future<List<AnakModel>> ambilDataAnak() async {
+    // await database.delete(AnakTable.tableName);
     final data = await database.query(
       AnakTable.tableName,
       where: '${AnakTable.deletedAtColumnName} IS NULL',

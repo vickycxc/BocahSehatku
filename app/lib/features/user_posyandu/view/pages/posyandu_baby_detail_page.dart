@@ -23,8 +23,8 @@ class PosyanduBabyDetailPage extends StatelessWidget {
           padding: const EdgeInsets.only(top: 130, bottom: 16),
           children: [
             PosyanduBabyGrowthNoteCard(anak),
-            BabyGraphCard(),
-            BabyDetailsCard(),
+            BabyGraphCard(anak),
+            BabyDetailsCard(anak),
           ],
         ),
       ),

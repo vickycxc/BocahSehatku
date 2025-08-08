@@ -20,8 +20,8 @@ class Constants {
   ];
 
   static const String serverUrl =
-      'https://bocahsehatku-1182e8ee94fa.herokuapp.com/api';
-  // 'http://192.168.6.36:3000/api';
+      // 'https://bocahsehatku-1182e8ee94fa.herokuapp.com/api';
+      'http://192.168.88.31:3000/api';
 
   static const List<String> daftarKecamatan = ['Gresik', 'Kebomas'];
   static const Map<String, List<String>> daftarPuskesmas = {

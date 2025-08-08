@@ -26,6 +26,7 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
     PosyanduAnakCard(
       AnakModel(
         localId: 0,
+        serverId: 1,
         nama:
             'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
         tanggalLahir: DateTime(2025, 2, 3),
@@ -39,6 +40,7 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
     PosyanduAnakCard(
       AnakModel(
         localId: 0,
+        serverId: 1,
         nama:
             'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
         tanggalLahir: DateTime(2025, 2, 3),
@@ -52,6 +54,7 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
     PosyanduAnakCard(
       AnakModel(
         localId: 0,
+        serverId: 1,
         nama:
             'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
         tanggalLahir: DateTime(2025, 2, 3),
@@ -65,6 +68,7 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
     PosyanduAnakCard(
       AnakModel(
         localId: 0,
+        serverId: 1,
         nama:
             'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
         tanggalLahir: DateTime(2025, 2, 3),
@@ -90,7 +94,7 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.textPrimaryColor,
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         content: Row(
           children: [
             CustomBackButton(),
@@ -128,13 +132,13 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
         },
         minHeight: 250,
         maxHeight: SizeConfig.screenHeight,
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(36),
           topRight: Radius.circular(36),
         ),
         panelBuilder: (sc) {
           return ClipRRect(
-            borderRadius: BorderRadiusGeometry.only(
+            borderRadius: const BorderRadiusGeometry.only(
               topLeft: Radius.circular(36),
               topRight: Radius.circular(36),
             ),
@@ -144,10 +148,10 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
                 padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
                 child: Column(
                   children: [
-                    SizedBox(height: 24),
+                    const SizedBox(height: 24),
                     _panelOpened
-                        ? SizedBox(height: 100)
-                        : Text(
+                        ? const SizedBox(height: 100)
+                        : const Text(
                             'Atau Masukkan Nama Lengkap Anak',
                             textAlign: TextAlign.center,
                             style: TextStyle(
@@ -157,7 +161,7 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
                             ),
                           ),
                     if (_panelOpened)
-                      Text(
+                      const Text(
                         'Masukkan Nama Lengkap Anak',
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -175,25 +179,25 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
                         onTap: () {
                           _panelController.open();
                         },
-                        textStyle: WidgetStatePropertyAll(
+                        textStyle: const WidgetStatePropertyAll(
                           TextStyle(
                             fontSize: 14,
                             color: Palette.textPrimaryColor,
                           ),
                         ),
                         hintText: 'Masukkan nama anak...',
-                        backgroundColor: WidgetStatePropertyAll(
+                        backgroundColor: const WidgetStatePropertyAll(
                           Palette.backgroundPrimaryColor,
                         ),
-                        leading: Icon(
+                        leading: const Icon(
                           LucideIcons.search,
                           color: Palette.textPrimaryColor,
                         ),
-                        elevation: WidgetStatePropertyAll(0),
+                        elevation: const WidgetStatePropertyAll(0),
                         shape: WidgetStatePropertyAll(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
-                            side: BorderSide(
+                            side: const BorderSide(
                               color: Palette.accentColor,
                               width: 2,
                             ),
@@ -212,7 +216,7 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
                       child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
                           // fixedSize: const Size(320, 55),
-                          side: BorderSide(
+                          side: const BorderSide(
                             color: Palette.textPrimaryColor,
                             width: 2.0,
                           ),
@@ -221,8 +225,8 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
                           ),
                         ),
                         onPressed: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -271,15 +275,15 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
                   width: SizeConfig.screenWidth * 0.8,
                   height: SizeConfig.screenWidth * 0.8,
                 ),
-                SizedBox(height: 50),
-                Text(
+                const SizedBox(height: 50),
+                const Text(
                   'Silakan Memindai Kode QR',
                   style: TextStyle(
                     fontSize: 16,
                     color: Palette.backgroundPrimaryColor,
                   ),
                 ),
-                SizedBox(height: 265),
+                const SizedBox(height: 265),
               ],
             ),
           ],

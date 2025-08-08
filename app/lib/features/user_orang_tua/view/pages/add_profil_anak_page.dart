@@ -1,19 +1,13 @@
-import 'package:app/core/providers/pengguna_aktif_notifier.dart';
 import 'package:app/core/theme/palette.dart';
-import 'package:app/core/utils/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/core/widgets/custom_field.dart';
+import 'package:app/core/widgets/date_picker_field.dart';
 import 'package:app/core/widgets/wave_background.dart';
-import 'package:app/features/auth/model/navigasi_auth_model.dart';
-import 'package:app/features/auth/view/pages/onboarding_page.dart';
-import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
-import 'package:app/features/user_orang_tua/view/pages/ortu_page.dart';
+import 'package:app/features/user_orang_tua/viewmodel/ortu_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:quickalert/quickalert.dart';
 
 class AddProfilAnakPage extends ConsumerStatefulWidget {
   const AddProfilAnakPage({super.key});
@@ -27,7 +21,6 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
   final _formKeyPageOne = GlobalKey<FormState>();
   final _formKeyPageTwo = GlobalKey<FormState>();
   final TextEditingController _namaLengkapController = TextEditingController();
-  final TextEditingController _tanggalLahirController = TextEditingController();
   final TextEditingController _nikController = TextEditingController();
   final TextEditingController _bbLahirController = TextEditingController();
   final TextEditingController _tbLahirController = TextEditingController();
@@ -36,68 +29,17 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
   final List<String> _opsiJenisKelamin = ['LAKI_LAKI', 'PEREMPUAN'];
   int _currentPage = 0;
   String? _selectedGender;
+  DateTime? _tanggalLahir;
   bool? _isPrematur;
   bool _jenisKelaminRadioError = false;
-  final bool _prematurRadioError = false;
+  bool _prematurRadioError = false;
+  bool _tanggalLahirError = false;
   @override
   Widget build(BuildContext context) {
     //TODO handle nik sama
     final isLoading = ref.watch(
-      authViewModelProvider.select((val) => val?.isLoading == true),
+      ortuViewModelProvider.select((val) => val.isLoading),
     );
-    final currentUser = ref.watch(penggunaAktifNotifierProvider);
-    final noHp = switch (currentUser?.data) {
-      Left(value: final l) => l.noHp,
-      Right() => null,
-      _ => null,
-    };
-    ref.listen(authViewModelProvider, (_, next) {
-      next?.when(
-        data: (nav) {
-          print('Data received from complete profile page: ${nav.message}.');
-          if (nav.message.isNotEmpty) {
-            showSnackBar(context, nav.message);
-          }
-          switch (nav.tujuan) {
-            case 'ORTU_PAGE':
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const OrtuPage()),
-                (_) => false,
-              );
-            case 'ONBOARDING_PAGE':
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const OnboardingPage()),
-                (_) => false,
-              );
-          }
-        },
-        error: (error, stackTrace) {
-          print("🚀 ~ _CompleteProfilePageState ~ ref.listen ~ error:$error");
-          if (error is NavigasiAuthModel) {
-            QuickAlert.show(
-              context: context,
-              type: QuickAlertType.confirm,
-              title: error.message,
-              text:
-                  'No. HP Yang Tersambung Ke NIK: ${error.noHp}\nApakah Anda ingin keluar dan menghapus akun sekarang dengan No HP: $noHp?',
-              confirmBtnText: 'Ya',
-              cancelBtnText: 'Tidak',
-              onConfirmBtnTap: () {
-                ref.read(authViewModelProvider.notifier).hapusAkun();
-              },
-              confirmBtnColor: Palette.accentColor,
-              barrierDismissible: false,
-              customAsset: 'assets/info.gif',
-            );
-          } else {
-            showSnackBar(context, error.toString());
-          }
-        },
-        loading: () {},
-      );
-    });
     return WaveBackground(
       backgroundColor: Palette.secondaryColor,
       withLogo: false,
@@ -113,7 +55,7 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SvgPicture.asset('assets/logo.svg', width: 100, height: 100),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               Padding(
                 padding: const EdgeInsets.only(top: 16),
                 child: Text(
@@ -151,28 +93,25 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 16),
-                        CustomField(
+                        const SizedBox(height: 16),
+                        DatePickerField(
+                          isError: _tanggalLahirError,
+                          dateValue: _tanggalLahir,
                           errorColor: Palette.backgroundPrimaryColor,
                           labelColor: Palette.backgroundPrimaryColor,
                           borderColor: Palette.primaryColor,
                           label: 'Tanggal Lahir',
                           hintText: 'Tanggal Lahir',
-                          keyboardType: TextInputType.number,
-                          controller: _tanggalLahirController,
-                          validator: (val) {
-                            if (val!.trim().isEmpty) {
-                              return 'NIK Harus Diisi!';
-                            }
-                            return null;
-                          },
+                          onDateSelected: (selectedDate) => setState(() {
+                            _tanggalLahir = selectedDate;
+                          }),
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'Jenis Kelamin Anak',
                               style: TextStyle(
                                 fontSize: 16,
@@ -200,7 +139,7 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
                                           Palette.backgroundPrimaryColor,
                                         ),
                                   ),
-                                  Text(
+                                  const Text(
                                     'Laki-Laki',
                                     style: TextStyle(
                                       fontSize: 16,
@@ -219,7 +158,7 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
                                           Palette.backgroundPrimaryColor,
                                         ),
                                   ),
-                                  Text(
+                                  const Text(
                                     'Perempuan',
                                     style: TextStyle(
                                       fontSize: 16,
@@ -231,40 +170,48 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
                               ),
                             ),
                             if (_jenisKelaminRadioError)
-                              Text(
+                              const Text(
                                 'Jenis Kelamin Harus Diisi!',
                                 style: TextStyle(
                                   color: Palette.backgroundPrimaryColor,
                                 ),
                               ),
-                            if (_jenisKelaminRadioError) SizedBox(height: 16),
+                            if (_jenisKelaminRadioError)
+                              const SizedBox(height: 16),
                           ],
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         CustomField(
                           errorColor: Palette.backgroundPrimaryColor,
                           labelColor: Palette.backgroundPrimaryColor,
                           borderColor: Palette.primaryColor,
-                          label: 'Nomor Induk Kependudukan (NIK)',
+                          label: 'NIK Anak (Opsional)',
                           hintText: 'NIK Anak',
                           keyboardType: TextInputType.number,
                           controller: _nikController,
                           validator: (val) {
-                            if (val!.trim().isEmpty) {
-                              return 'NIK Harus Diisi!';
+                            if (val!.trim().isNotEmpty) {
+                              if (val.length != 16 ||
+                                  !RegExp(r'^\d{16}$').hasMatch(val)) {
+                                return 'NIK Harus 16 Digit Angka!';
+                              }
                             }
-                            if (val.length != 16) {
-                              return 'Masukkan 16 Digit NIK!';
-                            }
-                            if (!RegExp(r'^\d{16}$').hasMatch(val)) {
-                              return 'NIK Harus 16 Digit Angka!';
-                            }
+
                             return null;
                           },
                         ),
-                        SizedBox(height: 24),
+                        const SizedBox(height: 24),
                         CustomButton(
                           onPressed: () async {
+                            if (_tanggalLahir == null) {
+                              setState(() {
+                                _tanggalLahirError = true;
+                              });
+                            } else {
+                              setState(() {
+                                _tanggalLahirError = false;
+                              });
+                            }
                             if (_selectedGender == null) {
                               setState(() {
                                 _jenisKelaminRadioError = true;
@@ -275,7 +222,8 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
                               });
                             }
                             if (_formKeyPageOne.currentState!.validate() &&
-                                !_jenisKelaminRadioError) {
+                                !_jenisKelaminRadioError &&
+                                !_tanggalLahirError) {
                               setState(() => _currentPage = 1);
                             }
                           },
@@ -296,14 +244,14 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
                           borderColor: Palette.primaryColor,
                           label: 'Berat Badan Lahir (kg) (Opsional)',
                           hintText: 'Berat Badan Lahir',
-                          keyboardType: TextInputType.name,
+                          keyboardType: TextInputType.number,
                           controller: _bbLahirController,
-                          validator: (val) {
-                            if (val!.trim().isEmpty) {
-                              return 'Nama Harus Diisi!';
-                            }
-                            return null;
-                          },
+                          // validator: (val) {
+                          //   if (val!.trim().isEmpty) {
+                          //     return 'Berat Badan Lahir Harus Diisi!';
+                          //   }
+                          //   return null;
+                          // },
                         ),
                         CustomField(
                           errorColor: Palette.backgroundPrimaryColor,
@@ -313,18 +261,18 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
                           hintText: 'Tinggi Badan Lahir',
                           keyboardType: TextInputType.number,
                           controller: _tbLahirController,
-                          validator: (val) {
-                            if (val!.trim().isEmpty) {
-                              return 'NIK Harus Diisi!';
-                            }
-                            return null;
-                          },
+                          // validator: (val) {
+                          //   if (val!.trim().isEmpty) {
+                          //     return 'Tinggi Badan Lahir Harus Diisi!';
+                          //   }
+                          //   return null;
+                          // },
                         ),
                         Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'Apakah Anak Lahir Prematur?',
                               style: TextStyle(
                                 fontSize: 16,
@@ -352,7 +300,7 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
                                           Palette.backgroundPrimaryColor,
                                         ),
                                   ),
-                                  Text(
+                                  const Text(
                                     'Ya',
                                     style: TextStyle(
                                       fontSize: 16,
@@ -371,7 +319,7 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
                                           Palette.backgroundPrimaryColor,
                                         ),
                                   ),
-                                  Text(
+                                  const Text(
                                     'Tidak',
                                     style: TextStyle(
                                       fontSize: 16,
@@ -382,14 +330,14 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
                                 ],
                               ),
                             ),
-                            if (_jenisKelaminRadioError)
-                              Text(
+                            if (_prematurRadioError)
+                              const Text(
                                 'Opsi Prematur Harus Diisi!',
                                 style: TextStyle(
                                   color: Palette.backgroundPrimaryColor,
                                 ),
                               ),
-                            if (_prematurRadioError) SizedBox(height: 16),
+                            if (_prematurRadioError) const SizedBox(height: 16),
                           ],
                         ),
                         if (_isPrematur == true)
@@ -402,19 +350,26 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
                             keyboardType: TextInputType.number,
                             controller: _usiaKehamilanController,
                             validator: (val) {
-                              if (val!.trim().isEmpty) {
-                                return 'NIK Harus Diisi!';
+                              if (_isPrematur == true) {
+                                if (val!.trim().isEmpty) {
+                                  return 'Usia Kehamilan Harus Diisi!';
+                                }
+                                if (int.tryParse(val.trim()) == null) {
+                                  return 'Nilai Harus Angka Dan Tidak Berkoma!';
+                                }
+                                if (int.parse(val.trim()) <= 0) {
+                                  return 'Usia Kehamilan Harus Angka Positif!';
+                                }
                               }
                               return null;
                             },
                           ),
-                        if (_isPrematur == true) SizedBox(height: 0),
 
                         OutlinedButton(
                           style: OutlinedButton.styleFrom(
                             backgroundColor: Palette.backgroundPrimaryColor,
                             fixedSize: const Size(320, 55),
-                            side: BorderSide(
+                            side: const BorderSide(
                               color: Palette.primaryColor,
                               width: 2.0,
                             ),
@@ -424,7 +379,7 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
                               _currentPage = 0;
                             });
                           },
-                          child: Row(
+                          child: const Row(
                             spacing: 12,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -446,17 +401,40 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
                         CustomButton(
                           isLoading: isLoading,
                           onPressed: () async {
-                            if (_formKeyPageTwo.currentState!.validate()) {
-                              // await ref
-                              //     .read(authViewModelProvider.notifier)
-                              //     .perbaruiProfil(
-                              //       nama: _namaController.text,
-                              //       nik: _nikController.text,
-                              //       jenisKelamin: _selectedGender!,
-                              //       alamat: _alamatController.text,
-                              //       posyanduId: int.parse(selectedPosyandu!),
-                              //     );
+                            if (_isPrematur == null) {
+                              setState(() {
+                                _prematurRadioError = true;
+                              });
+                            } else {
+                              setState(() {
+                                _prematurRadioError = false;
+                              });
                             }
+                            if (_formKeyPageTwo.currentState!.validate() &&
+                                !_prematurRadioError) {
+                              await ref
+                                  .read(ortuViewModelProvider.notifier)
+                                  .tambahDataAnak(
+                                    nama: _namaLengkapController.text.trim(),
+                                    tanggalLahir: _tanggalLahir!
+                                        .toIso8601String(),
+                                    jenisKelamin: _selectedGender!,
+                                    nik: _nikController.text,
+                                    bbLahir: double.tryParse(
+                                      _bbLahirController.text.trim(),
+                                    ),
+                                    tbLahir: double.tryParse(
+                                      _tbLahirController.text.trim(),
+                                    ),
+                                    mingguLahir: _isPrematur == true
+                                        ? int.parse(
+                                            _usiaKehamilanController.text
+                                                .trim(),
+                                          )
+                                        : null,
+                                  );
+                            }
+                            if (context.mounted) Navigator.of(context).pop();
                           },
                           text: 'Simpan',
                         ),
@@ -472,7 +450,6 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
   @override
   void dispose() {
     _namaLengkapController.dispose();
-    _tanggalLahirController.dispose();
     _nikController.dispose();
     _bbLahirController.dispose();
     _tbLahirController.dispose();

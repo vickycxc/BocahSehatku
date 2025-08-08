@@ -18,7 +18,7 @@ class AnakTable {
       '''
         CREATE TABLE $tableName (
         $localIdColumnName INTEGER PRIMARY KEY AUTOINCREMENT,
-        $serverIdColumnName INTEGER,
+        $serverIdColumnName INTEGER NOT NULL,
         $namaColumnName TEXT NOT NULL,
         $tanggalLahirColumnName TEXT NOT NULL,
         $jenisKelaminColumnName TEXT NOT NULL,

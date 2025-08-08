@@ -12,11 +12,11 @@ class PosyanduBabyGrowthNoteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Card(
         elevation: 4,
         color: Palette.maleColor,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32)),
         ),
         child: Column(
@@ -29,7 +29,7 @@ class PosyanduBabyGrowthNoteCard extends StatelessWidget {
                   width: 100,
                   height: 100,
                 ),
-                Expanded(
+                const Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(left: 8, right: 24),
                     child: Text(
@@ -64,7 +64,7 @@ class PosyanduBabyGrowthNoteCard extends StatelessWidget {
                         ),
                         height: 60,
                         width: 75,
-                        padding: EdgeInsets.all(14),
+                        padding: const EdgeInsets.all(14),
                         child: SvgPicture.asset('assets/baby_weight.svg'),
                       ),
                       Expanded(
@@ -72,20 +72,20 @@ class PosyanduBabyGrowthNoteCard extends StatelessWidget {
                           child: Text.rich(
                             TextSpan(
                               text: 'Berat\n',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 13,
                                 color: Palette.textPrimaryColor,
                               ),
                               children: [
                                 TextSpan(
                                   text: formatAngka(3),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
                                     color: Palette.textPrimaryColor,
                                   ),
                                 ),
-                                TextSpan(
+                                const TextSpan(
                                   text: ' kg',
                                   style: TextStyle(
                                     fontSize: 13,
@@ -101,7 +101,7 @@ class PosyanduBabyGrowthNoteCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(width: 30),
+                const SizedBox(width: 30),
                 Container(
                   decoration: BoxDecoration(
                     color: Palette.healthyBackgroundColor,
@@ -118,7 +118,7 @@ class PosyanduBabyGrowthNoteCard extends StatelessWidget {
                         ),
                         height: 60,
                         width: 75,
-                        padding: EdgeInsets.all(14),
+                        padding: const EdgeInsets.all(14),
                         child: SvgPicture.asset('assets/baby_height.svg'),
                       ),
                       Expanded(
@@ -126,20 +126,20 @@ class PosyanduBabyGrowthNoteCard extends StatelessWidget {
                           child: Text.rich(
                             TextSpan(
                               text: 'Tinggi\n',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 13,
                                 color: Palette.textPrimaryColor,
                               ),
                               children: [
                                 TextSpan(
                                   text: formatAngka(41),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
                                     color: Palette.textPrimaryColor,
                                   ),
                                 ),
-                                TextSpan(
+                                const TextSpan(
                                   text: ' cm',
                                   style: TextStyle(
                                     fontSize: 13,
@@ -157,7 +157,7 @@ class PosyanduBabyGrowthNoteCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
               child: Center(
@@ -173,15 +173,13 @@ class PosyanduBabyGrowthNoteCard extends StatelessWidget {
                           height: 36,
                         ),
                         const SizedBox(width: 6),
-                        Flexible(
+                        const Flexible(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 'Orang Tua',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: TextStyle(fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.start,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
@@ -208,15 +206,13 @@ class PosyanduBabyGrowthNoteCard extends StatelessWidget {
                           height: 36,
                         ),
                         const SizedBox(width: 6),
-                        Flexible(
+                        const Flexible(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 'Alamat',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: TextStyle(fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.start,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
@@ -242,15 +238,13 @@ class PosyanduBabyGrowthNoteCard extends StatelessWidget {
                           height: 36,
                         ),
                         const SizedBox(width: 6),
-                        Flexible(
+                        const Flexible(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 'Kunjungan Terakhir',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: TextStyle(fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.start, // Teks rata kiri
                                 overflow: TextOverflow
                                     .ellipsis, // Potong teks jika terlalu panjang
@@ -277,15 +271,13 @@ class PosyanduBabyGrowthNoteCard extends StatelessWidget {
                           height: 36,
                         ),
                         const SizedBox(width: 6),
-                        Flexible(
+                        const Flexible(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 'Nama Posyandu',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: TextStyle(fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.start,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
@@ -306,7 +298,7 @@ class PosyanduBabyGrowthNoteCard extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextButton(
               onPressed: () {
                 Navigator.push(
@@ -317,17 +309,14 @@ class PosyanduBabyGrowthNoteCard extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(240, 40),
+                minimumSize: const Size(240, 40),
                 backgroundColor: Palette.backgroundPrimaryColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: Text(
                   'Lihat Riwayat Pertumbuhan',
                   style: TextStyle(
@@ -338,21 +327,18 @@ class PosyanduBabyGrowthNoteCard extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(240, 40),
+                minimumSize: const Size(240, 40),
                 backgroundColor: Palette.backgroundPrimaryColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: Text(
                   'Hubungi Orang Tua',
                   style: TextStyle(
@@ -363,7 +349,7 @@ class PosyanduBabyGrowthNoteCard extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
           ],
         ),
       ),

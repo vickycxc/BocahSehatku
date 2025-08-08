@@ -9,15 +9,16 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'ortu_viewmodel.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class OrtuViewModel extends _$OrtuViewModel {
   late OrtuLocalRepository _ortuLocalRepository;
   late OrangTuaModel _orangTua;
 
   @override
   Future<UserOrtuModel> build() async {
-    _ortuLocalRepository = await ref.watch(authLocalRepositoryProvider.future);
-    final currentUser = ref.watch(penggunaAktifNotifierProvider);
+    state = const AsyncLoading();
+    _ortuLocalRepository = await ref.read(authLocalRepositoryProvider.future);
+    final currentUser = ref.read(penggunaAktifNotifierProvider);
     switch (currentUser!.data) {
       case Left(value: final l):
         _orangTua = l;
@@ -92,6 +93,10 @@ class OrtuViewModel extends _$OrtuViewModel {
   Future<void> hapusDataAnak(int localId) async {
     state = const AsyncLoading();
     await _ortuLocalRepository.hapusDataAnak(localId);
+    state = AsyncValue.data(await _getUserOrtuModel());
+  }
+
+  Future<void> segarkan() async {
     state = AsyncValue.data(await _getUserOrtuModel());
   }
 }

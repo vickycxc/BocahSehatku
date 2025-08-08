@@ -1,4 +1,6 @@
+import 'package:app/core/model/anak_model.dart';
 import 'package:app/core/theme/palette.dart';
+import 'package:app/core/utils/utils.dart';
 import 'package:app/core/widgets/custom_app_bar.dart';
 import 'package:app/core/widgets/custom_back_button.dart';
 import 'package:flutter/material.dart';
@@ -6,13 +8,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class OrtuQrPage extends StatelessWidget {
-  const OrtuQrPage({super.key});
+  final AnakModel anak;
+  const OrtuQrPage(this.anak, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         content: Row(
           children: [
             CustomBackButton(),
@@ -37,8 +40,10 @@ class OrtuQrPage extends StatelessWidget {
         child: Center(
           child: Card(
             elevation: 4,
-            color: Palette.maleColor,
-            shape: RoundedRectangleBorder(
+            color: anak.jenisKelamin == JenisKelamin.lakiLaki
+                ? Palette.maleColor
+                : Palette.femaleColor,
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(32)),
             ),
             child: Padding(
@@ -52,23 +57,25 @@ class OrtuQrPage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   SvgPicture.asset(
-                    'assets/baby_male.svg',
+                    anak.jenisKelamin == JenisKelamin.lakiLaki
+                        ? 'assets/baby_male.svg'
+                        : 'assets/baby_female.svg',
                     width: 100,
                     height: 100,
                   ),
 
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   Text(
-                    'Melon Usk Kurniati Wijayati',
+                    anak.nama,
                     textAlign: TextAlign.center,
                     maxLines: 2,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Palette.textPrimaryColor,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 32),
+                  const SizedBox(height: 32),
                   Container(
                     height: 240,
                     width: 240,
@@ -77,10 +84,10 @@ class OrtuQrPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                       color: Palette.backgroundPrimaryColor,
                     ),
-                    child: QrImageView(data: '352513002211203'),
+                    child: QrImageView(data: anak.nik!),
                   ),
-                  SizedBox(height: 32),
-                  Text(
+                  const SizedBox(height: 32),
+                  const Text(
                     'Tunjukkan Kode QR ini kepada kader posyandu untuk melakukan penimbangan berat badan dan pengukuran tinggi badan.',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),

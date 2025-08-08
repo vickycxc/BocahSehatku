@@ -6,17 +6,16 @@ import 'package:app/features/user_orang_tua/view/pages/ortu_profile_page.dart';
 import 'package:app/features/user_orang_tua/view/widgets/ortu_app_bar.dart';
 import 'package:app/features/user_orang_tua/view/widgets/ortu_nav_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-class OrtuPage extends ConsumerStatefulWidget {
+class OrtuPage extends StatefulWidget {
   const OrtuPage({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _OrtuPageState();
+  State<StatefulWidget> createState() => _OrtuPageState();
 }
 
-class _OrtuPageState extends ConsumerState<OrtuPage> {
+class _OrtuPageState extends State<OrtuPage> {
   int _indexHalaman = 0;
 
   late final List<NavModel> _iconHalaman;

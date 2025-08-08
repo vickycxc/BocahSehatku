@@ -49,7 +49,8 @@ class CustomField extends StatelessWidget {
           keyboardType: keyboardType,
           obscureText: isObscure,
           validator: validator,
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
+          selectAllOnFocus: false,
           decoration: InputDecoration(
             errorStyle: TextStyle(color: errorColor),
             filled: true,

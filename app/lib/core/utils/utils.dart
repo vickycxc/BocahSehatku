@@ -1,5 +1,6 @@
 import 'package:app/core/theme/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void showSnackBar(
   BuildContext context,
@@ -12,7 +13,7 @@ void showSnackBar(
       SnackBar(
         content: Text(
           message,
-          style: TextStyle(color: Palette.backgroundPrimaryColor),
+          style: const TextStyle(color: Palette.backgroundPrimaryColor),
         ),
         backgroundColor: Palette.accentColor,
         behavior: (isFloating)
@@ -32,6 +33,14 @@ String formatAngka(double? angka) {
                 1,
               )) // Tampilkan dengan koma jika ada desimal
       : '-';
+}
+
+String formatTanggal(DateTime tanggal) {
+  return DateFormat.yMMMMd('id_ID').format(tanggal);
+}
+
+String formatHari(DateTime tanggal) {
+  return DateFormat.yMMMMEEEEd('id_ID').format(tanggal);
 }
 
 enum JenisKelamin { lakiLaki, perempuan }
@@ -71,3 +80,5 @@ enum KategoriIMTU {
   giziLebih,
   obesitas,
 }
+
+enum StatusPengukuran { sehat, kurangSehat, tidakSehat }
