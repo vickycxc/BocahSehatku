@@ -61,26 +61,10 @@ class OrtuViewModel extends _$OrtuViewModel {
     return riwayatKunjungan;
   }
 
-  Future<void> tambahDataAnak({
-    required String nama,
-    required String tanggalLahir,
-    required String jenisKelamin,
-    String? nik,
-    double? bbLahir,
-    double? tbLahir,
-    int? mingguLahir,
-  }) async {
+  Future<void> tambahDataAnak(AnakModel anak) async {
     state = const AsyncLoading();
-    await _ortuLocalRepository.tambahDataAnak(
-      nama: nama,
-      tanggalLahir: tanggalLahir,
-      jenisKelamin: jenisKelamin,
-      nik: nik,
-      bbLahir: bbLahir,
-      tbLahir: tbLahir,
-      mingguLahir: mingguLahir,
-      orangTuaId: _orangTua.id,
-    );
+    final newAnak = anak.copyWith(orangTuaId: _orangTua.id);
+    await _ortuLocalRepository.tambahDataAnak(newAnak);
     state = AsyncValue.data(await _getUserOrtuModel());
   }
 

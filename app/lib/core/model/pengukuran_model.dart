@@ -1,12 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:app/core/model/anak_model.dart';
 import 'package:app/core/utils/utils.dart';
 
 class PengukuranModel {
   final int? localId;
   final int? serverId;
   final int anakId;
+  final AnakModel? anak;
   final String namaPosyandu;
   final int posyanduId;
   final DateTime tanggalPengukuran;
@@ -27,9 +29,10 @@ class PengukuranModel {
   final DateTime? updatedAt;
   final DateTime? deletedAt;
   PengukuranModel({
-    required this.localId,
+    this.localId,
     this.serverId,
     required this.anakId,
+    this.anak,
     required this.namaPosyandu,
     required this.posyanduId,
     required this.tanggalPengukuran,
@@ -46,8 +49,8 @@ class PengukuranModel {
     required this.statusPengukuranTren,
     required this.rekomendasiOrtu,
     required this.rekomendasiKader,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
     this.deletedAt,
   });
 
@@ -55,6 +58,7 @@ class PengukuranModel {
     int? localId,
     int? serverId,
     int? anakId,
+    AnakModel? anak,
     String? namaPosyandu,
     int? posyanduId,
     DateTime? tanggalPengukuran,
@@ -79,6 +83,7 @@ class PengukuranModel {
       localId: localId ?? this.localId,
       serverId: serverId ?? this.serverId,
       anakId: anakId ?? this.anakId,
+      anak: anak ?? this.anak,
       namaPosyandu: namaPosyandu ?? this.namaPosyandu,
       posyanduId: posyanduId ?? this.posyanduId,
       tanggalPengukuran: tanggalPengukuran ?? this.tanggalPengukuran,
@@ -142,11 +147,12 @@ class PengukuranModel {
       StatusPengukuran.kurangSehat => 'KURANG_SEHAT',
       StatusPengukuran.tidakSehat => 'TIDAK_SEHAT',
     };
-    return <String, dynamic>{
+    final map = {
       'localId': localId,
       'serverId': serverId,
       'anakId': anakId,
-      'namaPosyandu': namaPosyandu,
+      'anak': anak?.toMap(),
+      // 'namaPosyandu': namaPosyandu,
       'posyanduId': posyanduId,
       'tanggalPengukuran': tanggalPengukuran.millisecondsSinceEpoch,
       'beratBadan': beratBadan,
@@ -166,6 +172,8 @@ class PengukuranModel {
       'updatedAt': updatedAt?.toIso8601String(),
       'deletedAt': deletedAt?.toIso8601String(),
     };
+    map.removeWhere((key, value) => value == null);
+    return map;
   }
 
   factory PengukuranModel.fromMap(Map<String, dynamic> map) {
@@ -228,6 +236,9 @@ class PengukuranModel {
       localId: map['localId'] != null ? map['localId'] as int : null,
       serverId: map['serverId'] != null ? map['serverId'] as int : null,
       anakId: map['anakId'] as int,
+      anak: map['anak'] != null
+          ? AnakModel.fromMap(map['anak'] as Map<String, dynamic>)
+          : null,
       namaPosyandu: namaPosyandu,
       posyanduId: map['posyanduId'] as int,
       tanggalPengukuran: DateTime.parse(map['tanggalPengukuran'] as String),
@@ -263,7 +274,7 @@ class PengukuranModel {
 
   @override
   String toString() {
-    return 'PengukuranModel(localId: $localId, serverId: $serverId, anakId: $anakId, namaPosyandu: $namaPosyandu, posyanduId: $posyanduId, tanggalPengukuran: $tanggalPengukuran, beratBadan: $beratBadan, tinggiBadan: $tinggiBadan, imt: $imt, kategoriBBU: $kategoriBBU, kategoriTBU: $kategoriTBU, kategoriBBTB: $kategoriBBTB, kategoriIMTU: $kategoriIMTU, statusPertumbuhan: $statusPertumbuhan, statusPengukuranPertumbuhan: $statusPengukuranPertumbuhan, penilaianTren: $penilaianTren, statusPengukuranTren: $statusPengukuranTren, rekomendasiOrtu: $rekomendasiOrtu, rekomendasiKader: $rekomendasiKader, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+    return 'PengukuranModel(localId: $localId, serverId: $serverId, anakId: $anakId, anak: $anak, namaPosyandu: $namaPosyandu, posyanduId: $posyanduId, tanggalPengukuran: $tanggalPengukuran, beratBadan: $beratBadan, tinggiBadan: $tinggiBadan, imt: $imt, kategoriBBU: $kategoriBBU, kategoriTBU: $kategoriTBU, kategoriBBTB: $kategoriBBTB, kategoriIMTU: $kategoriIMTU, statusPertumbuhan: $statusPertumbuhan, statusPengukuranPertumbuhan: $statusPengukuranPertumbuhan, penilaianTren: $penilaianTren, statusPengukuranTren: $statusPengukuranTren, rekomendasiOrtu: $rekomendasiOrtu, rekomendasiKader: $rekomendasiKader, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
   @override
@@ -273,6 +284,7 @@ class PengukuranModel {
     return other.localId == localId &&
         other.serverId == serverId &&
         other.anakId == anakId &&
+        other.anak == anak &&
         other.namaPosyandu == namaPosyandu &&
         other.posyanduId == posyanduId &&
         other.tanggalPengukuran == tanggalPengukuran &&
@@ -299,6 +311,7 @@ class PengukuranModel {
     return localId.hashCode ^
         serverId.hashCode ^
         anakId.hashCode ^
+        anak.hashCode ^
         namaPosyandu.hashCode ^
         posyanduId.hashCode ^
         tanggalPengukuran.hashCode ^

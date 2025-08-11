@@ -52,7 +52,9 @@ class OnboardingPage extends ConsumerWidget {
               case 'PILIH_POSYANDU':
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PosyanduPickPage()),
+                  MaterialPageRoute(
+                    builder: (context) => const PosyanduPickPage(),
+                  ),
                 );
               case 'OTP_PAGE':
                 Navigator.push(
@@ -136,13 +138,13 @@ class OnboardingPage extends ConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          OnboardingMessages(),
+          const OnboardingMessages(),
           const SizedBox(height: 32),
           CustomButton(
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => PickRolePage()),
+                MaterialPageRoute(builder: (context) => const PickRolePage()),
               );
             },
             text: 'Masuk',
@@ -151,15 +153,15 @@ class OnboardingPage extends ConsumerWidget {
           OutlinedButton(
             style: OutlinedButton.styleFrom(
               fixedSize: const Size(320, 55),
-              side: BorderSide(color: Palette.accentColor, width: 2.0),
+              side: const BorderSide(color: Palette.accentColor, width: 2.0),
             ),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => RegisterPage()),
+                MaterialPageRoute(builder: (context) => const RegisterPage()),
               );
             },
-            child: Text(
+            child: const Text(
               'Daftar',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),

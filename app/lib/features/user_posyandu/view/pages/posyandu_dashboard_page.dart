@@ -3,13 +3,16 @@ import 'package:app/core/theme/palette.dart';
 import 'package:app/core/utils/utils.dart';
 import 'package:app/features/user_posyandu/view/widgets/posyandu_anak_card.dart';
 import 'package:app/features/user_posyandu/view/widgets/posyandu_dashboard_app_bar.dart';
+import 'package:app/features/user_posyandu/viewmodel/posyandu_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PosyanduDashboardPage extends StatelessWidget {
+class PosyanduDashboardPage extends ConsumerWidget {
   const PosyanduDashboardPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final posyanduViewModel = ref.watch(posyanduViewModelProvider);
     return Container(
       color: Palette.backgroundSecondaryColor,
       child: CustomScrollView(

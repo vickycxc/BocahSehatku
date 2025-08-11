@@ -94,7 +94,7 @@ class _OrtuPageState extends ConsumerState<PosyanduPage> {
     return Scaffold(
       appBar: switch (_indexHalaman) {
         0 => null,
-        1 => CustomAppBar(
+        1 => const CustomAppBar(
           height: 0,
           content: SafeArea(
             child: Center(
@@ -111,7 +111,7 @@ class _OrtuPageState extends ConsumerState<PosyanduPage> {
             ),
           ),
         ),
-        2 => CustomAppBar(
+        2 => const CustomAppBar(
           height: 0,
           content: SafeArea(
             child: Center(
@@ -128,7 +128,7 @@ class _OrtuPageState extends ConsumerState<PosyanduPage> {
             ),
           ),
         ),
-        3 => CustomAppBar(
+        3 => const CustomAppBar(
           height: 10,
           content: SafeArea(
             child: Center(
@@ -154,24 +154,24 @@ class _OrtuPageState extends ConsumerState<PosyanduPage> {
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
       body: switch (_indexHalaman) {
-        0 => PosyanduDashboardPage(),
-        1 => PosyanduCalendarPage(),
-        2 => PosyanduSearchPage(),
-        3 => PosyanduReminderPage(),
+        0 => const PosyanduDashboardPage(),
+        1 => const PosyanduCalendarPage(),
+        2 => const PosyanduSearchPage(),
+        3 => const PosyanduReminderPage(),
         4 => Container(
           color: Palette.backgroundSecondaryColor,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 64),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 64),
                   child: Text(
                     'Halo Nona Nona\nSaat Air mataku mengalir,\nAku tak bisa menggunakan tissue,\nAku butuh 4 Lembar,\n4 Lembar,\n4 Lembar,\nSaat aku menangis :\'(',
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 CustomButton(
                   onPressed: () {
                     ref.read(authViewModelProvider.notifier).keluar();
@@ -179,7 +179,7 @@ class _OrtuPageState extends ConsumerState<PosyanduPage> {
                   },
                   text: 'Show Snackbar',
                 ),
-                SizedBox(height: 25),
+                const SizedBox(height: 25),
                 CustomButton(
                   onPressed: () {
                     ref.read(authViewModelProvider.notifier).keluar();
@@ -198,8 +198,8 @@ class _OrtuPageState extends ConsumerState<PosyanduPage> {
             ),
           ),
         ),
-        5 => PosyanduProfilePage(),
-        _ => Center(child: Text('Halaman tidak ditemukan')),
+        5 => const PosyanduProfilePage(),
+        _ => const Center(child: Text('Halaman tidak ditemukan')),
       },
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: SizedBox(

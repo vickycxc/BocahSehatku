@@ -46,7 +46,6 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     SizeConfig().init(context);
     final currentUser = ref.watch(penggunaAktifNotifierProvider);
-    print('currentUser: $currentUser');
     return MaterialApp(
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,

@@ -1,16 +1,20 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:app/core/utils/utils.dart';
+
 class OrangTuaModel {
   final int id;
   final String noHp;
   final String? nama;
   final String? nik;
-  final String? jenisKelamin;
+  final JenisKelamin? jenisKelamin;
   final String? alamat;
   final int? posyanduId;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final String? namaPosyandu;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final DateTime? deletedAt;
   OrangTuaModel({
     required this.id,
     required this.noHp,
@@ -19,8 +23,10 @@ class OrangTuaModel {
     this.jenisKelamin,
     this.alamat,
     this.posyanduId,
+    this.namaPosyandu,
     required this.createdAt,
     required this.updatedAt,
+    this.deletedAt,
   });
 
   OrangTuaModel copyWith({
@@ -28,13 +34,13 @@ class OrangTuaModel {
     String? noHp,
     String? nama,
     String? nik,
-    String? jenisKelamin,
+    JenisKelamin? jenisKelamin,
     String? alamat,
     int? posyanduId,
+    String? namaPosyandu,
     DateTime? createdAt,
     DateTime? updatedAt,
-    String? token,
-    String? message,
+    DateTime? deletedAt,
   }) {
     return OrangTuaModel(
       id: id ?? this.id,
@@ -44,38 +50,70 @@ class OrangTuaModel {
       jenisKelamin: jenisKelamin ?? this.jenisKelamin,
       alamat: alamat ?? this.alamat,
       posyanduId: posyanduId ?? this.posyanduId,
+      namaPosyandu: namaPosyandu ?? this.namaPosyandu,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
     );
   }
 
   Map<String, dynamic> toMap() {
+    final jenisKelaminString = jenisKelamin != null
+        ? switch (jenisKelamin!) {
+            JenisKelamin.lakiLaki => 'LAKI_LAKI',
+            JenisKelamin.perempuan => 'PEREMPUAN',
+          }
+        : null;
     return <String, dynamic>{
       'id': id,
       'noHp': noHp,
       'nama': nama,
       'nik': nik,
-      'jenisKelamin': jenisKelamin,
+      'jenisKelamin': jenisKelaminString,
       'alamat': alamat,
       'posyanduId': posyanduId,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'namaPosyandu': namaPosyandu,
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
+      'deletedAt': deletedAt?.toIso8601String(),
     };
   }
 
   factory OrangTuaModel.fromMap(Map<String, dynamic> map) {
+    final jenisKelamin = map['jenisKelamin'] != null
+        ? switch (map['jenisKelamin']) {
+            'LAKI_LAKI' => JenisKelamin.lakiLaki,
+            'PEREMPUAN' => JenisKelamin.perempuan,
+            _ => throw Exception('Jenis Kelamin tidak valid'),
+          }
+        : null;
+
+    String? namaPosyandu;
+
+    if (map['posyandu'] != null) {
+      namaPosyandu = map['posyandu']['namaPosyandu'] as String;
+    }
+    if (map['namaPosyandu'] != null) {
+      namaPosyandu = map['namaPosyandu'] as String;
+    }
     return OrangTuaModel(
       id: map['id'] as int,
       noHp: map['noHp'] as String,
       nama: map['nama'] != null ? map['nama'] as String : null,
       nik: map['nik'] != null ? map['nik'] as String : null,
-      jenisKelamin: map['jenisKelamin'] != null
-          ? map['jenisKelamin'] as String
-          : null,
+      jenisKelamin: jenisKelamin,
       alamat: map['alamat'] != null ? map['alamat'] as String : null,
       posyanduId: map['posyanduId'] != null ? map['posyanduId'] as int : null,
-      createdAt: DateTime.tryParse(map['createdAt'] as String)!,
-      updatedAt: DateTime.tryParse(map['updatedAt'] as String)!,
+      namaPosyandu: namaPosyandu,
+      createdAt: map['createdAt'] != null
+          ? DateTime.parse(map['createdAt'] as String)
+          : null,
+      updatedAt: map['updatedAt'] != null
+          ? DateTime.parse(map['updatedAt'] as String)
+          : null,
+      deletedAt: map['deletedAt'] != null
+          ? DateTime.parse(map['deletedAt'] as String)
+          : null,
     );
   }
 
@@ -86,7 +124,7 @@ class OrangTuaModel {
 
   @override
   String toString() {
-    return 'UserOrangTuaModel(id: $id, noHp: $noHp, nama: $nama, nik: $nik, jenisKelamin: $jenisKelamin, alamat: $alamat, posyanduId: $posyanduId, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'OrangTuaModel(id: $id, noHp: $noHp, nama: $nama, nik: $nik, jenisKelamin: $jenisKelamin, alamat: $alamat, posyanduId: $posyanduId, namaPosyandu: $namaPosyandu, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
   @override
@@ -100,8 +138,10 @@ class OrangTuaModel {
         other.jenisKelamin == jenisKelamin &&
         other.alamat == alamat &&
         other.posyanduId == posyanduId &&
+        other.namaPosyandu == namaPosyandu &&
         other.createdAt == createdAt &&
-        other.updatedAt == updatedAt;
+        other.updatedAt == updatedAt &&
+        other.deletedAt == deletedAt;
   }
 
   @override
@@ -113,7 +153,9 @@ class OrangTuaModel {
         jenisKelamin.hashCode ^
         alamat.hashCode ^
         posyanduId.hashCode ^
+        namaPosyandu.hashCode ^
         createdAt.hashCode ^
-        updatedAt.hashCode;
+        updatedAt.hashCode ^
+        deletedAt.hashCode;
   }
 }

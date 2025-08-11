@@ -27,7 +27,7 @@ class PengukuranTable {
       '''
         CREATE TABLE $tableName (
         $localIdColumnName INTEGER PRIMARY KEY AUTOINCREMENT,
-        $serverIdColumnName INTEGER,
+        $serverIdColumnName INTEGER UNIQUE,
         $anakIdColumnName INTEGER NOT NULL,
         $posyanduIdColumnName INTEGER NOT NULL,
         $tanggalPengukuranColumnName TEXT NOT NULL,
@@ -46,8 +46,9 @@ class PengukuranTable {
         $rekomendasiKaderColumnName TEXT,
         $createdAtColumnName TEXT NOT NULL,
         $updatedAtColumnName TEXT NOT NULL,
-        $deletedAtColumnName TEXT
+        $deletedAtColumnName TEXT,
         FOREIGN KEY ($anakIdColumnName) REFERENCES anak(serverId) ON DELETE CASCADE,
+        FOREIGN KEY ($posyanduIdColumnName) REFERENCES posyandu(serverId)
         )
       ''';
 }

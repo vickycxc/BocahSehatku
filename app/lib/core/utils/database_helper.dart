@@ -1,5 +1,7 @@
 import 'package:app/core/constants/database_constants/anak_table.dart';
+import 'package:app/core/constants/database_constants/orang_tua_table.dart';
 import 'package:app/core/constants/database_constants/pengukuran_table.dart';
+import 'package:app/core/constants/database_constants/posyandu_table.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -17,6 +19,7 @@ class DatabaseHelper {
   Future<Database> getDatabase() async {
     final databaseDirPath = await getDatabasesPath();
     final databasePath = join(databaseDirPath, 'bocahsehatku.db');
+    deleteDatabase(databasePath);
     final database = await openDatabase(
       databasePath,
       version: 1,
@@ -29,6 +32,8 @@ class DatabaseHelper {
   Future<void> _createDb(Database db, int version) async {
     await db.execute(AnakTable.createTableQuery);
     await db.execute(PengukuranTable.createTableQuery);
+    await db.execute(OrangTuaTable.createTableQuery);
+    await db.execute(PosyanduTable.createTableQuery);
   }
 
   Future<void> _onConfigure(Database db) async {

@@ -26,8 +26,8 @@ class AnakModel {
   final DateTime? updatedAt;
   final DateTime? deletedAt;
   AnakModel({
-    required this.localId,
-    required this.serverId,
+    this.localId,
+    this.serverId,
     required this.nama,
     required this.tanggalLahir,
     required this.jenisKelamin,
@@ -38,8 +38,8 @@ class AnakModel {
     this.orangTuaId,
     this.orangTua,
     this.pengukuran,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
     this.deletedAt,
   }) {
     usia = AgeCalculator.age(tanggalLahir);
@@ -89,7 +89,7 @@ class AnakModel {
       JenisKelamin.lakiLaki => 'LAKI_LAKI',
       JenisKelamin.perempuan => 'PEREMPUAN',
     };
-    return <String, dynamic>{
+    final map = {
       'localId': localId,
       'serverId': serverId,
       'nama': nama,
@@ -106,6 +106,8 @@ class AnakModel {
       'updatedAt': updatedAt?.toIso8601String(),
       'deletedAt': deletedAt?.toIso8601String(),
     };
+    map.removeWhere((key, value) => value == null);
+    return map;
   }
 
   factory AnakModel.fromMap(Map<String, dynamic> map) {

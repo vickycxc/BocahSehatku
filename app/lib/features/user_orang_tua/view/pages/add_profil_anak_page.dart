@@ -1,4 +1,6 @@
+import 'package:app/core/model/anak_model.dart';
 import 'package:app/core/theme/palette.dart';
+import 'package:app/core/utils/utils.dart';
 import 'package:app/core/widgets/custom_button.dart';
 import 'package:app/core/widgets/custom_field.dart';
 import 'package:app/core/widgets/date_picker_field.dart';
@@ -26,9 +28,12 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
   final TextEditingController _tbLahirController = TextEditingController();
   final TextEditingController _usiaKehamilanController =
       TextEditingController();
-  final List<String> _opsiJenisKelamin = ['LAKI_LAKI', 'PEREMPUAN'];
+  final List<JenisKelamin> _opsiJenisKelamin = [
+    JenisKelamin.lakiLaki,
+    JenisKelamin.perempuan,
+  ];
   int _currentPage = 0;
-  String? _selectedGender;
+  JenisKelamin? _selectedGender;
   DateTime? _tanggalLahir;
   bool? _isPrematur;
   bool _jenisKelaminRadioError = false;
@@ -119,7 +124,7 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
                                 color: Palette.backgroundPrimaryColor,
                               ),
                             ),
-                            RadioGroup<String>(
+                            RadioGroup<JenisKelamin>(
                               groupValue: _selectedGender,
                               onChanged: (value) {
                                 setState(() {
@@ -415,23 +420,24 @@ class _CompleteProfilePageState extends ConsumerState<AddProfilAnakPage> {
                               await ref
                                   .read(ortuViewModelProvider.notifier)
                                   .tambahDataAnak(
-                                    nama: _namaLengkapController.text.trim(),
-                                    tanggalLahir: _tanggalLahir!
-                                        .toIso8601String(),
-                                    jenisKelamin: _selectedGender!,
-                                    nik: _nikController.text,
-                                    bbLahir: double.tryParse(
-                                      _bbLahirController.text.trim(),
+                                    AnakModel(
+                                      nama: _namaLengkapController.text.trim(),
+                                      tanggalLahir: _tanggalLahir!,
+                                      jenisKelamin: _selectedGender!,
+                                      nik: _nikController.text,
+                                      bbLahir: double.tryParse(
+                                        _bbLahirController.text.trim(),
+                                      ),
+                                      tbLahir: double.tryParse(
+                                        _tbLahirController.text.trim(),
+                                      ),
+                                      mingguLahir: _isPrematur == true
+                                          ? int.parse(
+                                              _usiaKehamilanController.text
+                                                  .trim(),
+                                            )
+                                          : null,
                                     ),
-                                    tbLahir: double.tryParse(
-                                      _tbLahirController.text.trim(),
-                                    ),
-                                    mingguLahir: _isPrematur == true
-                                        ? int.parse(
-                                            _usiaKehamilanController.text
-                                                .trim(),
-                                          )
-                                        : null,
                                   );
                             }
                             if (context.mounted) Navigator.of(context).pop();
