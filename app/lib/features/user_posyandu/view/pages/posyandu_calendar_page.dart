@@ -40,7 +40,7 @@ class PosyanduCalendarPage extends StatelessWidget {
             ),
           ),
           PosyanduAnakCard(
-            AnakModel(
+            anak: AnakModel(
               localId: 0,
               serverId: 1,
               nama:
@@ -54,7 +54,7 @@ class PosyanduCalendarPage extends StatelessWidget {
             ),
           ),
           PosyanduAnakCard(
-            AnakModel(
+            anak: AnakModel(
               localId: 0,
               serverId: 2,
               nama:
@@ -68,7 +68,7 @@ class PosyanduCalendarPage extends StatelessWidget {
             ),
           ),
           PosyanduAnakCard(
-            AnakModel(
+            anak: AnakModel(
               localId: 0,
               serverId: 2,
               nama:

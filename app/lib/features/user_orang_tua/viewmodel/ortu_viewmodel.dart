@@ -52,7 +52,7 @@ class OrtuViewModel extends _$OrtuViewModel {
         }
         riwayatKunjungan.add(
           RiwayatKunjunganModel(
-            namaPosyandu: pengukuran.namaPosyandu,
+            namaPosyandu: pengukuran.namaPosyandu!,
             tanggalKunjungan: pengukuran.tanggalPengukuran,
           ),
         );

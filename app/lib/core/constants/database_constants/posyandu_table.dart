@@ -24,9 +24,9 @@ class PosyanduTable {
         $puskesmasColumnName TEXT NOT NULL,
         $desaKelurahanColumnName TEXT NOT NULL,
         $alamatColumnName TEXT NOT NULL,
-        $createdAtColumnName TEXT NOT NULL,
-        $updatedAtColumnName TEXT NOT NULL,
-        $deletedAtColumnName TEXT
+        $createdAtColumnName INTEGER NOT NULL,
+        $updatedAtColumnName INTEGER NOT NULL,
+        $deletedAtColumnName INTEGER
         )
       ''';
 }

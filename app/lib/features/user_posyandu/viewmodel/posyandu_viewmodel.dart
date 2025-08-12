@@ -18,7 +18,7 @@ class PosyanduViewModel extends _$PosyanduViewModel {
   }
 
   Future<List<PengukuranModel>> _getPengukuran() async {
-    return await _posyanduLocalRepository.ambilDataPengukuran();
+    return await _posyanduLocalRepository.ambilDataPengukuranHariIni();
   }
 
   // Future<void> tambahDataAnak(AnakModel anak) async {
@@ -40,7 +40,7 @@ class PosyanduViewModel extends _$PosyanduViewModel {
   //   state = AsyncValue.data(await _getPengukuran());
   // }
 
-  // Future<void> segarkan() async {
-  //   state = AsyncValue.data(await _getPengukuran());
-  // }
+  Future<void> segarkan() async {
+    state = AsyncValue.data(await _getPengukuran());
+  }
 }

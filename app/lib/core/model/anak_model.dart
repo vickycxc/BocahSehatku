@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:age_calculator/age_calculator.dart';
+import 'package:app/core/constants/database_constants/anak_table.dart';
 import 'package:app/core/model/orang_tua_model.dart';
 import 'package:app/core/model/pengukuran_model.dart';
 import 'package:app/core/utils/utils.dart';
@@ -93,7 +94,7 @@ class AnakModel {
       'localId': localId,
       'serverId': serverId,
       'nama': nama,
-      'tanggalLahir': tanggalLahir.toIso8601String(),
+      'tanggalLahir': tanggalLahir.millisecondsSinceEpoch,
       'jenisKelamin': jenisKelaminString,
       'nik': nik,
       'bbLahir': bbLahir,
@@ -102,9 +103,9 @@ class AnakModel {
       'orangTuaId': orangTuaId,
       'orangTua': orangTua?.toMap(),
       'pengukuran': pengukuran?.map((x) => x.toMap()).toList(),
-      'createdAt': createdAt?.toIso8601String(),
-      'updatedAt': updatedAt?.toIso8601String(),
-      'deletedAt': deletedAt?.toIso8601String(),
+      'createdAt': createdAt?.millisecondsSinceEpoch,
+      'updatedAt': updatedAt?.millisecondsSinceEpoch,
+      'deletedAt': deletedAt?.millisecondsSinceEpoch,
     };
     map.removeWhere((key, value) => value == null);
     return map;
@@ -116,11 +117,22 @@ class AnakModel {
       'PEREMPUAN' => JenisKelamin.perempuan,
       _ => throw Exception('Jenis Kelamin tidak valid'),
     };
+
+    String nama;
+    if (map[AnakTable.namaColumnNameAlias] != null) {
+      nama = map[AnakTable.namaColumnNameAlias] as String;
+    } else if (map['nama'] != null) {
+      nama = map['nama'] as String;
+    } else {
+      throw Exception('Nama anak tidak ditemukan');
+    }
     return AnakModel(
       localId: map['localId'] != null ? map['localId'] as int : null,
       serverId: map['serverId'] != null ? map['serverId'] as int : null,
-      nama: map['nama'] as String,
-      tanggalLahir: DateTime.parse(map['tanggalLahir'] as String),
+      nama: nama,
+      tanggalLahir: map['tanggalLahir'] is String
+          ? DateTime.parse(map['tanggalLahir'] as String)
+          : DateTime.fromMillisecondsSinceEpoch(map['tanggalLahir'] as int),
       jenisKelamin: jenisKelamin,
       nik: map['nik'] != null ? map['nik'] as String : null,
       bbLahir: map['bbLahir'] != null ? map['bbLahir'] as double : null,
@@ -140,13 +152,19 @@ class AnakModel {
             )
           : null,
       createdAt: map['createdAt'] != null
-          ? DateTime.parse(map['createdAt'] as String)
+          ? map['createdAt'] is String
+                ? DateTime.parse(map['createdAt'] as String)
+                : DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int)
           : null,
       updatedAt: map['updatedAt'] != null
-          ? DateTime.parse(map['updatedAt'] as String)
+          ? map['updatedAt'] is String
+                ? DateTime.parse(map['updatedAt'] as String)
+                : DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int)
           : null,
       deletedAt: map['deletedAt'] != null
-          ? DateTime.parse(map['deletedAt'] as String)
+          ? map['deletedAt'] is String
+                ? DateTime.parse(map['deletedAt'] as String)
+                : DateTime.fromMillisecondsSinceEpoch(map['deletedAt'] as int)
           : null,
     );
   }

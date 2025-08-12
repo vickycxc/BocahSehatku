@@ -60,7 +60,7 @@ class BabyDetailsCard extends ConsumerWidget {
                       ? switch (anak
                             .pengukuran!
                             .first
-                            .statusPengukuranPertumbuhan) {
+                            .statusPengukuranPertumbuhan!) {
                           StatusPengukuran.sehat =>
                             Palette.healthyBackgroundColor,
                           StatusPengukuran.kurangSehat =>
@@ -92,7 +92,7 @@ class BabyDetailsCard extends ConsumerWidget {
                 height: 72,
                 decoration: BoxDecoration(
                   color: anak.pengukuran != null && anak.pengukuran!.isNotEmpty
-                      ? switch (anak.pengukuran!.first.statusPengukuranTren) {
+                      ? switch (anak.pengukuran!.first.statusPengukuranTren!) {
                           StatusPengukuran.sehat =>
                             Palette.healthyBackgroundColor,
                           StatusPengukuran.kurangSehat =>
@@ -106,7 +106,7 @@ class BabyDetailsCard extends ConsumerWidget {
                 child: Center(
                   child: Text(
                     anak.pengukuran != null && anak.pengukuran!.isNotEmpty
-                        ? anak.pengukuran!.first.penilaianTren
+                        ? anak.pengukuran!.first.penilaianTren!
                         : 'Belum Ada Tren',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
@@ -138,8 +138,8 @@ class BabyDetailsCard extends ConsumerWidget {
                     child: Text(
                       anak.pengukuran != null && anak.pengukuran!.isNotEmpty
                           ? isOrangTua
-                                ? anak.pengukuran!.first.rekomendasiOrtu
-                                : anak.pengukuran!.first.rekomendasiKader
+                                ? anak.pengukuran!.first.rekomendasiOrtu!
+                                : anak.pengukuran!.first.rekomendasiKader!
                           : 'Belum Ada Data',
                       style: const TextStyle(
                         fontSize: 13,

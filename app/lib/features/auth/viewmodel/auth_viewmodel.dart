@@ -125,7 +125,7 @@ class AuthViewModel extends _$AuthViewModel {
     }
     final res = await _authRemoteRepository.perbaruiProfil(
       token: user.token,
-      id: userOrangTua.id,
+      id: userOrangTua.id!,
       nama: nama,
       nik: nik,
       jenisKelamin: jenisKelamin,

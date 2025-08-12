@@ -40,7 +40,7 @@ class PengajuanVerifikasiModel {
       'orangTua': orangTua.toMap(),
       'posyandu': posyandu.toMap(),
       'noHpBaru': noHpBaru,
-      'createdAt': createdAt.toIso8601String(),
+      'createdAt': createdAt.millisecondsSinceEpoch,
     };
   }
 
@@ -50,7 +50,7 @@ class PengajuanVerifikasiModel {
       orangTua: OrangTuaModel.fromMap(map['orangTua'] as Map<String, dynamic>),
       posyandu: PosyanduModel.fromMap(map['posyandu'] as Map<String, dynamic>),
       noHpBaru: map['noHpBaru'] as String,
-      createdAt: DateTime.tryParse(map['createdAt'] as String)!,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
     );
   }
 

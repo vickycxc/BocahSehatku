@@ -9,22 +9,22 @@ class PengukuranModel {
   final int? serverId;
   final int anakId;
   final AnakModel? anak;
-  final String namaPosyandu;
-  final int posyanduId;
+  final String? namaPosyandu;
+  final int? posyanduId;
   final DateTime tanggalPengukuran;
   final double beratBadan;
   final double tinggiBadan;
-  final double imt;
-  final KategoriBBU kategoriBBU;
-  final KategoriTBU kategoriTBU;
-  final KategoriBBTB kategoriBBTB;
-  final KategoriIMTU kategoriIMTU;
+  final double? imt;
+  final KategoriBBU? kategoriBBU;
+  final KategoriTBU? kategoriTBU;
+  final KategoriBBTB? kategoriBBTB;
+  final KategoriIMTU? kategoriIMTU;
   final String statusPertumbuhan;
   final StatusPengukuran statusPengukuranPertumbuhan;
-  final String penilaianTren;
-  final StatusPengukuran statusPengukuranTren;
-  final String rekomendasiOrtu;
-  final String rekomendasiKader;
+  final String? penilaianTren;
+  final StatusPengukuran? statusPengukuranTren;
+  final String? rekomendasiOrtu;
+  final String? rekomendasiKader;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final DateTime? deletedAt;
@@ -33,22 +33,22 @@ class PengukuranModel {
     this.serverId,
     required this.anakId,
     this.anak,
-    required this.namaPosyandu,
-    required this.posyanduId,
+    this.namaPosyandu,
+    this.posyanduId,
     required this.tanggalPengukuran,
     required this.beratBadan,
     required this.tinggiBadan,
-    required this.imt,
-    required this.kategoriBBU,
-    required this.kategoriTBU,
-    required this.kategoriBBTB,
-    required this.kategoriIMTU,
+    this.imt,
+    this.kategoriBBU,
+    this.kategoriTBU,
+    this.kategoriBBTB,
+    this.kategoriIMTU,
     required this.statusPertumbuhan,
     required this.statusPengukuranPertumbuhan,
-    required this.penilaianTren,
-    required this.statusPengukuranTren,
-    required this.rekomendasiOrtu,
-    required this.rekomendasiKader,
+    this.penilaianTren,
+    this.statusPengukuranTren,
+    this.rekomendasiOrtu,
+    this.rekomendasiKader,
     this.createdAt,
     this.updatedAt,
     this.deletedAt,
@@ -113,12 +113,14 @@ class PengukuranModel {
       KategoriBBU.kurang => 'KURANG',
       KategoriBBU.normal => 'NORMAL',
       KategoriBBU.lebih => 'LEBIH',
+      _ => null,
     };
     final kategoriTBUString = switch (kategoriTBU) {
       KategoriTBU.sangatPendek => 'SANGAT_PENDEK',
       KategoriTBU.pendek => 'PENDEK',
       KategoriTBU.normal => 'NORMAL',
       KategoriTBU.tinggi => 'TINGGI',
+      _ => null,
     };
     final kategoriBBTBString = switch (kategoriBBTB) {
       KategoriBBTB.giziBuruk => 'GIZI_BURUK',
@@ -127,6 +129,7 @@ class PengukuranModel {
       KategoriBBTB.berisikoGiziLebih => 'BERISIKO_GIZI_LEBIH',
       KategoriBBTB.giziLebih => 'GIZI_LEBIH',
       KategoriBBTB.obesitas => 'OBESITAS',
+      _ => null,
     };
     final kategoriIMTUString = switch (kategoriIMTU) {
       KategoriIMTU.giziBuruk => 'GIZI_BURUK',
@@ -135,6 +138,7 @@ class PengukuranModel {
       KategoriIMTU.berisikoGiziLebih => 'BERISIKO_GIZI_LEBIH',
       KategoriIMTU.giziLebih => 'GIZI_LEBIH',
       KategoriIMTU.obesitas => 'OBESITAS',
+      _ => null,
     };
     final statusPengukuranPertumbuhanString =
         switch (statusPengukuranPertumbuhan) {
@@ -146,13 +150,14 @@ class PengukuranModel {
       StatusPengukuran.sehat => 'SEHAT',
       StatusPengukuran.kurangSehat => 'KURANG_SEHAT',
       StatusPengukuran.tidakSehat => 'TIDAK_SEHAT',
+      _ => null,
     };
     final map = {
       'localId': localId,
       'serverId': serverId,
       'anakId': anakId,
       'anak': anak?.toMap(),
-      // 'namaPosyandu': namaPosyandu,
+      'namaPosyandu': namaPosyandu,
       'posyanduId': posyanduId,
       'tanggalPengukuran': tanggalPengukuran.millisecondsSinceEpoch,
       'beratBadan': beratBadan,
@@ -168,9 +173,9 @@ class PengukuranModel {
       'statusPengukuranTren': statusPengukuranTrenString,
       'rekomendasiOrtu': rekomendasiOrtu,
       'rekomendasiKader': rekomendasiKader,
-      'createdAt': createdAt?.toIso8601String(),
-      'updatedAt': updatedAt?.toIso8601String(),
-      'deletedAt': deletedAt?.toIso8601String(),
+      'createdAt': createdAt?.millisecondsSinceEpoch,
+      'updatedAt': updatedAt?.millisecondsSinceEpoch,
+      'deletedAt': deletedAt?.millisecondsSinceEpoch,
     };
     map.removeWhere((key, value) => value == null);
     return map;
@@ -182,14 +187,14 @@ class PengukuranModel {
       'KURANG' => KategoriBBU.kurang,
       'NORMAL' => KategoriBBU.normal,
       'LEBIH' => KategoriBBU.lebih,
-      _ => throw Exception('Invalid kategoriBBU value'),
+      _ => null,
     };
     final kategoriTBU = switch (map['kategoriTBU']) {
       'SANGAT_PENDEK' => KategoriTBU.sangatPendek,
       'PENDEK' => KategoriTBU.pendek,
       'NORMAL' => KategoriTBU.normal,
       'TINGGI' => KategoriTBU.tinggi,
-      _ => throw Exception('Invalid kategoriTBU value'),
+      _ => null,
     };
     final kategoriBBTB = switch (map['kategoriBBTB']) {
       'GIZI_BURUK' => KategoriBBTB.giziBuruk,
@@ -198,7 +203,7 @@ class PengukuranModel {
       'BERISIKO_GIZI_LEBIH' => KategoriBBTB.berisikoGiziLebih,
       'GIZI_LEBIH' => KategoriBBTB.giziLebih,
       'OBESITAS' => KategoriBBTB.obesitas,
-      _ => throw Exception('Invalid kategoriBBTB value'),
+      _ => null,
     };
     final kategoriIMTU = switch (map['kategoriIMTU']) {
       'GIZI_BURUK' => KategoriIMTU.giziBuruk,
@@ -207,7 +212,7 @@ class PengukuranModel {
       'BERISIKO_GIZI_LEBIH' => KategoriIMTU.berisikoGiziLebih,
       'GIZI_LEBIH' => KategoriIMTU.giziLebih,
       'OBESITAS' => KategoriIMTU.obesitas,
-      _ => throw Exception('Invalid kategoriIMTU value'),
+      _ => null,
     };
 
     final statusPengukuranPertumbuhan =
@@ -215,21 +220,23 @@ class PengukuranModel {
           'SEHAT' => StatusPengukuran.sehat,
           'KURANG_SEHAT' => StatusPengukuran.kurangSehat,
           'TIDAK_SEHAT' => StatusPengukuran.tidakSehat,
-          _ => throw Exception('Invalid statusPengukuranPertumbuhan value'),
+          _ => throw Exception(
+            'Status pengukuran pertumbuhan tidak valid: ${map['statusPengukuranPertumbuhan']}',
+          ),
         };
 
     final statusPengukuranTren = switch (map['statusPengukuranTren']) {
       'SEHAT' => StatusPengukuran.sehat,
       'KURANG_SEHAT' => StatusPengukuran.kurangSehat,
       'TIDAK_SEHAT' => StatusPengukuran.tidakSehat,
-      _ => throw Exception('Invalid statusPengukuranTren value'),
+      _ => null,
     };
 
-    String namaPosyandu;
+    String? namaPosyandu;
 
     if (map['posyandu'] != null) {
       namaPosyandu = map['posyandu']['namaPosyandu'] as String;
-    } else {
+    } else if (map['namaPosyandu'] != null) {
       namaPosyandu = map['namaPosyandu'] as String;
     }
     return PengukuranModel(
@@ -240,29 +247,45 @@ class PengukuranModel {
           ? AnakModel.fromMap(map['anak'] as Map<String, dynamic>)
           : null,
       namaPosyandu: namaPosyandu,
-      posyanduId: map['posyanduId'] as int,
-      tanggalPengukuran: DateTime.parse(map['tanggalPengukuran'] as String),
+      posyanduId: map['posyanduId'] != null ? map['posyanduId'] as int : null,
+      tanggalPengukuran: map['tanggalPengukuran'] is String
+          ? DateTime.parse(map['tanggalPengukuran'] as String)
+          : DateTime.fromMillisecondsSinceEpoch(
+              map['tanggalPengukuran'] as int,
+            ),
       beratBadan: map['beratBadan'] as double,
       tinggiBadan: map['tinggiBadan'] as double,
-      imt: map['imt'] as double,
+      imt: map['imt'] != null ? map['imt'] as double : null,
       kategoriBBU: kategoriBBU,
       kategoriTBU: kategoriTBU,
       kategoriBBTB: kategoriBBTB,
       kategoriIMTU: kategoriIMTU,
       statusPertumbuhan: map['statusPertumbuhan'] as String,
       statusPengukuranPertumbuhan: statusPengukuranPertumbuhan,
-      penilaianTren: map['penilaianTren'] as String,
+      penilaianTren: map['penilaianTren'] != null
+          ? map['penilaianTren'] as String
+          : null,
       statusPengukuranTren: statusPengukuranTren,
-      rekomendasiOrtu: map['rekomendasiOrtu'] as String,
-      rekomendasiKader: map['rekomendasiKader'] as String,
+      rekomendasiOrtu: map['rekomendasiOrtu'] != null
+          ? map['rekomendasiOrtu'] as String
+          : null,
+      rekomendasiKader: map['rekomendasiKader'] != null
+          ? map['rekomendasiKader'] as String
+          : null,
       createdAt: map['createdAt'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int)
+          ? map['createdAt'] is String
+                ? DateTime.parse(map['createdAt'] as String)
+                : DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int)
           : null,
       updatedAt: map['updatedAt'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int)
+          ? map['updatedAt'] is String
+                ? DateTime.parse(map['updatedAt'] as String)
+                : DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int)
           : null,
       deletedAt: map['deletedAt'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['deletedAt'] as int)
+          ? map['deletedAt'] is String
+                ? DateTime.parse(map['deletedAt'] as String)
+                : DateTime.fromMillisecondsSinceEpoch(map['deletedAt'] as int)
           : null,
     );
   }

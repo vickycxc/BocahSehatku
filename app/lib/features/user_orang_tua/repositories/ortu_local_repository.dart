@@ -49,7 +49,7 @@ class OrtuLocalRepository {
   Future<void> hapusDataAnak(int localId) async {
     await database.update(
       AnakTable.tableName,
-      {AnakTable.deletedAtColumnName: DateTime.now().toIso8601String()},
+      {AnakTable.deletedAtColumnName: DateTime.now().millisecondsSinceEpoch},
       where: '${AnakTable.localIdColumnName} = ?',
       whereArgs: [localId],
     );

@@ -1,6 +1,6 @@
-import 'package:app/core/model/anak_model.dart';
 import 'package:app/core/theme/palette.dart';
-import 'package:app/core/utils/utils.dart';
+import 'package:app/core/widgets/loading_widget.dart';
+import 'package:app/core/widgets/no_data_widget.dart';
 import 'package:app/features/user_posyandu/view/widgets/posyandu_anak_card.dart';
 import 'package:app/features/user_posyandu/view/widgets/posyandu_dashboard_app_bar.dart';
 import 'package:app/features/user_posyandu/viewmodel/posyandu_viewmodel.dart';
@@ -15,47 +15,59 @@ class PosyanduDashboardPage extends ConsumerWidget {
     final posyanduViewModel = ref.watch(posyanduViewModelProvider);
     return Container(
       color: Palette.backgroundSecondaryColor,
-      child: CustomScrollView(
-        slivers: [
-          const PosyanduDashboardAppBar(),
-          const SliverPadding(
-            padding: EdgeInsets.only(top: 24, bottom: 4),
+      child: posyanduViewModel.when(
+        loading: () => const LoadingWidget(),
+        error: (error, stack) =>
+            throw Exception('Error loading data: $error, stackTrace: $stack'),
+        data: (data) {
+          return RefreshIndicator(
+            edgeOffset: 200,
+            onRefresh: () async {
+              await ref.read(posyanduViewModelProvider.notifier).segarkan();
+            },
+            child: CustomScrollView(
+              slivers: [
+                const PosyanduDashboardAppBar(),
+                const SliverPadding(
+                  padding: EdgeInsets.only(top: 24, bottom: 4),
 
-            sliver: SliverToBoxAdapter(
-              child: Center(
-                child: Text(
-                  'Pelayanan Hari Ini',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          ),
-          SliverList.builder(
-            itemCount: 3,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12.0,
-                  vertical: 4,
-                ),
-                child: PosyanduAnakCard(
-                  AnakModel(
-                    localId: 0,
-                    serverId: 2,
-                    nama:
-                        'Ngatmono Ranu Danaswara Kinanjati Winarno adi sucipto mangonkusumo',
-                    tanggalLahir: DateTime(2025, 2, 3),
-                    jenisKelamin: JenisKelamin.lakiLaki,
-                    nik: '20000',
-                    orangTuaId: 2,
-                    createdAt: DateTime.now(),
-                    updatedAt: DateTime.now(),
+                  sliver: SliverToBoxAdapter(
+                    child: Center(
+                      child: Text(
+                        'Pelayanan Hari Ini',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              );
-            },
-          ),
-        ],
+                data.isEmpty
+                    ? const SliverToBoxAdapter(
+                        child: Column(
+                          children: [
+                            SizedBox(height: 100),
+                            NoDataWidget('Belum ada anak dilayani hari ini'),
+                          ],
+                        ),
+                      )
+                    : SliverList.builder(
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                              vertical: 4,
+                            ),
+                            child: PosyanduAnakCard(pengukuran: data[index]),
+                          );
+                        },
+                      ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

@@ -24,7 +24,7 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
   bool _panelOpened = false;
   List<PosyanduAnakCard> pos = [
     PosyanduAnakCard(
-      AnakModel(
+      anak: AnakModel(
         localId: 0,
         serverId: 1,
         nama:
@@ -38,7 +38,7 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
       ),
     ),
     PosyanduAnakCard(
-      AnakModel(
+      anak: AnakModel(
         localId: 0,
         serverId: 1,
         nama:
@@ -52,7 +52,7 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
       ),
     ),
     PosyanduAnakCard(
-      AnakModel(
+      anak: AnakModel(
         localId: 0,
         serverId: 1,
         nama:
@@ -66,7 +66,7 @@ class _PosyanduAddEntryPageState extends State<PosyanduAddEntryPage> {
       ),
     ),
     PosyanduAnakCard(
-      AnakModel(
+      anak: AnakModel(
         localId: 0,
         serverId: 1,
         nama:

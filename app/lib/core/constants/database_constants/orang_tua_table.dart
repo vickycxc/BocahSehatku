@@ -25,9 +25,9 @@ class OrangTuaTable {
         $jenisKelaminColumnName TEXT NOT NULL,
         $alamatColumnName TEXT NOT NULL,
         $posyanduIdColumnName INTEGER NOT NULL,
-        $createdAtColumnName TEXT NOT NULL,
-        $updatedAtColumnName TEXT NOT NULL,
-        $deletedAtColumnName TEXT,
+        $createdAtColumnName INTEGER NOT NULL,
+        $updatedAtColumnName INTEGER NOT NULL,
+        $deletedAtColumnName INTEGER,
         FOREIGN KEY ($posyanduIdColumnName) REFERENCES posyandu(serverId)
         )
       ''';

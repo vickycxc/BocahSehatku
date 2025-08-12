@@ -7,6 +7,7 @@ import 'package:app/features/auth/view/pages/complete_profile_page.dart';
 import 'package:app/features/user_orang_tua/view/pages/ortu_page.dart';
 import 'package:app/features/user_orang_tua/viewmodel/ortu_viewmodel.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_page.dart';
+import 'package:app/features/user_posyandu/viewmodel/posyandu_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,6 +34,8 @@ void main() async {
           await container.read(ortuViewModelProvider.future);
         }
       case Right():
+        await container.read(posyanduViewModelProvider.future);
+        break;
     }
   }
   FlutterNativeSplash.remove();

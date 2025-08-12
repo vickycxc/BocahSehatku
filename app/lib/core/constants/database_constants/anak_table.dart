@@ -22,16 +22,16 @@ class AnakTable {
         $localIdColumnName INTEGER PRIMARY KEY AUTOINCREMENT,
         $serverIdColumnName INTEGER UNIQUE NOT NULL,
         $namaColumnName TEXT NOT NULL,
-        $tanggalLahirColumnName TEXT NOT NULL,
+        $tanggalLahirColumnName INTEGER NOT NULL,
         $jenisKelaminColumnName TEXT NOT NULL,
         $nikColumnName TEXT UNIQUE,
         $bbLahirColumnName REAL,
         $tbLahirColumnName REAL,
         $mingguLahirColumnName INTEGER,
         $orangTuaIdColumnName INTEGER,
-        $createdAtColumnName TEXT NOT NULL,
-        $updatedAtColumnName TEXT NOT NULL,
-        $deletedAtColumnName TEXT,
+        $createdAtColumnName INTEGER NOT NULL,
+        $updatedAtColumnName INTEGER NOT NULL,
+        $deletedAtColumnName INTEGER,
         FOREIGN KEY ($orangTuaIdColumnName) REFERENCES orang_tua(serverId) ON DELETE SET NULL
         )
       ''';

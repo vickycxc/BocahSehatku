@@ -76,7 +76,7 @@ class OrtuAnakCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       color:
                           anak.pengukuran != null && anak.pengukuran!.isNotEmpty
-                          ? switch (anak.pengukuran!.first.kategoriBBU) {
+                          ? switch (anak.pengukuran!.first.kategoriBBU!) {
                               KategoriBBU.sangatKurang =>
                                 Palette.unhealthyBackgroundColor,
                               KategoriBBU.kurang =>
@@ -98,7 +98,7 @@ class OrtuAnakCard extends StatelessWidget {
                             color:
                                 anak.pengukuran != null &&
                                     anak.pengukuran!.isNotEmpty
-                                ? switch (anak.pengukuran!.first.kategoriBBU) {
+                                ? switch (anak.pengukuran!.first.kategoriBBU!) {
                                     KategoriBBU.sangatKurang =>
                                       Palette.unhealthyColor,
                                     KategoriBBU.kurang =>
@@ -156,7 +156,7 @@ class OrtuAnakCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       color:
                           anak.pengukuran != null && anak.pengukuran!.isNotEmpty
-                          ? switch (anak.pengukuran!.first.kategoriTBU) {
+                          ? switch (anak.pengukuran!.first.kategoriTBU!) {
                               KategoriTBU.sangatPendek =>
                                 Palette.unhealthyBackgroundColor,
                               KategoriTBU.pendek =>
@@ -178,7 +178,7 @@ class OrtuAnakCard extends StatelessWidget {
                             color:
                                 anak.pengukuran != null &&
                                     anak.pengukuran!.isNotEmpty
-                                ? switch (anak.pengukuran!.first.kategoriTBU) {
+                                ? switch (anak.pengukuran!.first.kategoriTBU!) {
                                     KategoriTBU.sangatPendek =>
                                       Palette.unhealthyColor,
                                     KategoriTBU.pendek =>
@@ -303,7 +303,7 @@ class OrtuAnakCard extends StatelessWidget {
                           child: Text(
                             anak.pengukuran != null &&
                                     anak.pengukuran!.isNotEmpty
-                                ? anak.pengukuran!.first.rekomendasiOrtu
+                                ? anak.pengukuran!.first.rekomendasiOrtu!
                                 : 'Belum Ada Data',
                             style: const TextStyle(
                               fontSize: 13,

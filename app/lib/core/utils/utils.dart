@@ -43,6 +43,10 @@ String formatHari(DateTime tanggal) {
   return DateFormat.yMMMMEEEEd('id_ID').format(tanggal);
 }
 
+String formatTanggalWaktu(DateTime waktu) {
+  return DateFormat('dd/MM/yyyy').add_Hm().format(waktu);
+}
+
 enum JenisKelamin { lakiLaki, perempuan }
 
 enum ZScore { minus3, minus2, minus1, median, plus1, plus2, plus3 }

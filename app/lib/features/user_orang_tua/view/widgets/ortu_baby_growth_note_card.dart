@@ -56,7 +56,7 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     color:
                         anak.pengukuran != null && anak.pengukuran!.isNotEmpty
-                        ? switch (anak.pengukuran!.first.kategoriBBU) {
+                        ? switch (anak.pengukuran!.first.kategoriBBU!) {
                             KategoriBBU.sangatKurang =>
                               Palette.unhealthyBackgroundColor,
                             KategoriBBU.kurang =>
@@ -78,7 +78,7 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                           color:
                               anak.pengukuran != null &&
                                   anak.pengukuran!.isNotEmpty
-                              ? switch (anak.pengukuran!.first.kategoriBBU) {
+                              ? switch (anak.pengukuran!.first.kategoriBBU!) {
                                   KategoriBBU.sangatKurang =>
                                     Palette.unhealthyColor,
                                   KategoriBBU.kurang =>
@@ -135,7 +135,7 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     color:
                         anak.pengukuran != null && anak.pengukuran!.isNotEmpty
-                        ? switch (anak.pengukuran!.first.kategoriTBU) {
+                        ? switch (anak.pengukuran!.first.kategoriTBU!) {
                             KategoriTBU.sangatPendek =>
                               Palette.unhealthyBackgroundColor,
                             KategoriTBU.pendek =>
@@ -157,7 +157,7 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                           color:
                               anak.pengukuran != null &&
                                   anak.pengukuran!.isNotEmpty
-                              ? switch (anak.pengukuran!.first.kategoriTBU) {
+                              ? switch (anak.pengukuran!.first.kategoriTBU!) {
                                   KategoriTBU.sangatPendek =>
                                     Palette.unhealthyColor,
                                   KategoriTBU.pendek =>
@@ -283,7 +283,7 @@ class OrtuBabyGrowthNoteCard extends StatelessWidget {
                               Text(
                                 anak.pengukuran != null &&
                                         anak.pengukuran!.isNotEmpty
-                                    ? anak.pengukuran!.first.namaPosyandu
+                                    ? anak.pengukuran!.first.namaPosyandu!
                                     : '-',
                                 textAlign: TextAlign.start,
                                 overflow: TextOverflow.ellipsis,

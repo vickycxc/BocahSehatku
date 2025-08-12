@@ -1,4 +1,5 @@
 import 'package:app/core/model/anak_model.dart';
+import 'package:app/core/model/pengukuran_model.dart';
 import 'package:app/core/theme/palette.dart';
 import 'package:app/core/utils/utils.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_add_entry2_page.dart';
@@ -7,48 +8,57 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class PosyanduAnakCard extends StatelessWidget {
-  final AnakModel anak;
+  final PengukuranModel? pengukuran;
+  final AnakModel? anak;
   final bool addEntry;
-  const PosyanduAnakCard(this.anak, {super.key, this.addEntry = false});
+  const PosyanduAnakCard({
+    super.key,
+    this.pengukuran,
+    this.anak,
+    this.addEntry = false,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final dataAnak = pengukuran != null ? pengukuran!.anak! : anak!;
     return Padding(
-      padding: EdgeInsetsGeometry.symmetric(vertical: 6),
+      padding: const EdgeInsetsGeometry.symmetric(vertical: 6),
       child: Card(
         elevation: 4,
-        color: Palette.femaleColor,
-        shape: RoundedRectangleBorder(
+        color: dataAnak.jenisKelamin == JenisKelamin.lakiLaki
+            ? Palette.maleColor
+            : Palette.femaleColor,
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32)),
         ),
         child: InkWell(
-          borderRadius: BorderRadius.all(Radius.circular(32)),
+          borderRadius: const BorderRadius.all(Radius.circular(32)),
           onTap: () {
-            if (!addEntry) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PosyanduBabyDetailPage(anak),
-                ),
-              );
-            } else {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PosyanduAddEntry2Page(),
-                ),
-              );
-            }
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => !addEntry
+                    ? PosyanduBabyDetailPage(dataAnak)
+                    : const PosyanduAddEntry2Page(),
+              ),
+            );
           },
           child: Padding(
-            padding: EdgeInsets.only(left: 4, top: 4, right: 16, bottom: 24),
+            padding: const EdgeInsets.only(
+              left: 4,
+              top: 4,
+              right: 16,
+              bottom: 24,
+            ),
             child: Column(
               children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SvgPicture.asset(
-                      'assets/baby_male.svg',
+                      dataAnak.jenisKelamin == JenisKelamin.lakiLaki
+                          ? 'assets/baby_male.svg'
+                          : 'assets/baby_female.svg',
                       width: 80,
                       height: 80,
                     ),
@@ -63,28 +73,31 @@ class PosyanduAnakCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              anak.nama,
+                              dataAnak.nama,
                               maxLines: 2,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 color: Palette.textPrimaryColor,
                               ),
                             ),
                             Text(
-                              anak.usiaInString,
-                              style: TextStyle(
+                              dataAnak.usiaInString,
+                              style: const TextStyle(
                                 fontSize: 12,
                                 color: Palette.textPrimaryColor,
                               ),
                             ),
-                            Text(
-                              '12/07/2025 09:30',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Palette.textPrimaryColor,
+                            if (pengukuran != null)
+                              Text(
+                                formatTanggalWaktu(
+                                  pengukuran!.tanggalPengukuran,
+                                ),
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Palette.textPrimaryColor,
+                                ),
                               ),
-                            ),
                           ],
                         ),
                       ),
@@ -115,9 +128,9 @@ class PosyanduAnakCard extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
+                                        const Text(
                                           'Orang Tua',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 12,
                                           ),
@@ -126,7 +139,7 @@ class PosyanduAnakCard extends StatelessWidget {
                                           maxLines: 1,
                                         ),
                                         Text(
-                                          'Mujiati Winarno Kusumabangsa Rini',
+                                          dataAnak.orangTua?.nama ?? '-',
                                           style: const TextStyle(fontSize: 12),
                                           textAlign: TextAlign.start,
                                           overflow: TextOverflow.ellipsis,
@@ -152,9 +165,9 @@ class PosyanduAnakCard extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
+                                        const Text(
                                           'Alamat',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -163,7 +176,7 @@ class PosyanduAnakCard extends StatelessWidget {
                                           maxLines: 1,
                                         ),
                                         Text(
-                                          'Posyandu Melati',
+                                          dataAnak.orangTua?.alamat ?? '-',
                                           style: const TextStyle(fontSize: 12),
                                           textAlign: TextAlign.start,
                                           overflow: TextOverflow.ellipsis,
@@ -198,7 +211,7 @@ class PosyanduAnakCard extends StatelessWidget {
                                   ),
                                   height: 55,
                                   width: 60,
-                                  padding: EdgeInsets.all(14),
+                                  padding: const EdgeInsets.all(14),
                                   child: SvgPicture.asset(
                                     'assets/baby_weight.svg',
                                   ),
@@ -208,20 +221,22 @@ class PosyanduAnakCard extends StatelessWidget {
                                     child: Text.rich(
                                       TextSpan(
                                         text: 'Berat\n',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 11,
                                           color: Palette.textPrimaryColor,
                                         ),
                                         children: [
                                           TextSpan(
-                                            text: formatAngka(23),
-                                            style: TextStyle(
+                                            text: formatAngka(
+                                              pengukuran?.beratBadan,
+                                            ),
+                                            style: const TextStyle(
                                               fontSize: 11,
                                               fontWeight: FontWeight.bold,
                                               color: Palette.textPrimaryColor,
                                             ),
                                           ),
-                                          TextSpan(
+                                          const TextSpan(
                                             text: ' kg',
                                             style: TextStyle(
                                               fontSize: 11,
@@ -237,7 +252,7 @@ class PosyanduAnakCard extends StatelessWidget {
                               ],
                             ),
                           ),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           Container(
                             decoration: BoxDecoration(
                               color: Palette.healthyBackgroundColor,
@@ -254,7 +269,7 @@ class PosyanduAnakCard extends StatelessWidget {
                                   ),
                                   height: 55,
                                   width: 60,
-                                  padding: EdgeInsets.all(14),
+                                  padding: const EdgeInsets.all(14),
                                   child: SvgPicture.asset(
                                     'assets/baby_height.svg',
                                   ),
@@ -264,20 +279,22 @@ class PosyanduAnakCard extends StatelessWidget {
                                     child: Text.rich(
                                       TextSpan(
                                         text: 'Tinggi\n',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 11,
                                           color: Palette.textPrimaryColor,
                                         ),
                                         children: [
                                           TextSpan(
-                                            text: formatAngka(61),
-                                            style: TextStyle(
+                                            text: formatAngka(
+                                              pengukuran?.tinggiBadan,
+                                            ),
+                                            style: const TextStyle(
                                               fontSize: 11,
                                               fontWeight: FontWeight.bold,
                                               color: Palette.textPrimaryColor,
                                             ),
                                           ),
-                                          TextSpan(
+                                          const TextSpan(
                                             text: ' cm',
                                             style: TextStyle(
                                               fontSize: 11,
@@ -303,24 +320,34 @@ class PosyanduAnakCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Status Pertumbuhan',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         // width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
-                          color: Palette.healthyBackgroundColor,
+                          color: pengukuran != null
+                              ? switch (pengukuran!
+                                    .statusPengukuranPertumbuhan) {
+                                  StatusPengukuran.sehat =>
+                                    Palette.healthyBackgroundColor,
+                                  StatusPengukuran.kurangSehat =>
+                                    Palette.lessHealthyBackgroundColor,
+                                  StatusPengukuran.tidakSehat =>
+                                    Palette.unhealthyBackgroundColor,
+                                }
+                              : Palette.backgroundPrimaryColor.withAlpha(191),
                         ),
                         child: Center(
                           child: Text(
-                            'Normal, Gizi Baik',
+                            pengukuran?.statusPertumbuhan ?? 'Belum Ada Data',
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,

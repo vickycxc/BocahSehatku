@@ -19,7 +19,7 @@ class DatabaseHelper {
   Future<Database> getDatabase() async {
     final databaseDirPath = await getDatabasesPath();
     final databasePath = join(databaseDirPath, 'bocahsehatku.db');
-    deleteDatabase(databasePath);
+    // deleteDatabase(databasePath);
     final database = await openDatabase(
       databasePath,
       version: 1,

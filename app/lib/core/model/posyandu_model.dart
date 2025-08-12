@@ -59,8 +59,8 @@ class PosyanduModel {
       'puskesmas': puskesmas,
       'desaKelurahan': desaKelurahan,
       'alamat': alamat,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt.millisecondsSinceEpoch,
+      'updatedAt': updatedAt.millisecondsSinceEpoch,
     };
   }
 
@@ -73,8 +73,12 @@ class PosyanduModel {
       puskesmas: map['puskesmas'] as String,
       desaKelurahan: map['desaKelurahan'] as String,
       alamat: map['alamat'] as String,
-      createdAt: DateTime.tryParse(map['createdAt'] as String)!,
-      updatedAt: DateTime.tryParse(map['updatedAt'] as String)!,
+      createdAt: map['createdAt'] is String
+          ? DateTime.parse(map['createdAt'] as String)
+          : DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
+      updatedAt: map['updatedAt'] is String
+          ? DateTime.parse(map['updatedAt'] as String)
+          : DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int),
     );
   }
 

@@ -102,7 +102,7 @@ class _PosyanduSearchPageState extends State<PosyanduSearchPage> {
             ),
           ),
           PosyanduAnakCard(
-            AnakModel(
+            anak: AnakModel(
               localId: 0,
               serverId: 3,
               nama:
@@ -116,7 +116,7 @@ class _PosyanduSearchPageState extends State<PosyanduSearchPage> {
             ),
           ),
           PosyanduAnakCard(
-            AnakModel(
+            anak: AnakModel(
               localId: 0,
               serverId: 3,
               nama:
@@ -130,7 +130,7 @@ class _PosyanduSearchPageState extends State<PosyanduSearchPage> {
             ),
           ),
           PosyanduAnakCard(
-            AnakModel(
+            anak: AnakModel(
               localId: 0,
               serverId: 3,
               nama:

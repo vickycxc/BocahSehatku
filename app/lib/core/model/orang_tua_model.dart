@@ -1,10 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:app/core/constants/database_constants/orang_tua_table.dart';
 import 'package:app/core/utils/utils.dart';
 
 class OrangTuaModel {
-  final int id;
+  final int? id;
   final String noHp;
   final String? nama;
   final String? nik;
@@ -16,7 +17,7 @@ class OrangTuaModel {
   final DateTime? updatedAt;
   final DateTime? deletedAt;
   OrangTuaModel({
-    required this.id,
+    this.id,
     required this.noHp,
     this.nama,
     this.nik,
@@ -64,7 +65,7 @@ class OrangTuaModel {
             JenisKelamin.perempuan => 'PEREMPUAN',
           }
         : null;
-    return <String, dynamic>{
+    final map = {
       'id': id,
       'noHp': noHp,
       'nama': nama,
@@ -73,10 +74,12 @@ class OrangTuaModel {
       'alamat': alamat,
       'posyanduId': posyanduId,
       'namaPosyandu': namaPosyandu,
-      'createdAt': createdAt?.toIso8601String(),
-      'updatedAt': updatedAt?.toIso8601String(),
-      'deletedAt': deletedAt?.toIso8601String(),
+      'createdAt': createdAt?.millisecondsSinceEpoch,
+      'updatedAt': updatedAt?.millisecondsSinceEpoch,
+      'deletedAt': deletedAt?.millisecondsSinceEpoch,
     };
+    map.removeWhere((key, value) => value == null);
+    return map;
   }
 
   factory OrangTuaModel.fromMap(Map<String, dynamic> map) {
@@ -88,6 +91,13 @@ class OrangTuaModel {
           }
         : null;
 
+    String? nama;
+    if (map[OrangTuaTable.namaColumnNameAlias] != null) {
+      nama = map[OrangTuaTable.namaColumnNameAlias] as String;
+    } else if (map['nama'] != null) {
+      nama = map['nama'] as String;
+    }
+
     String? namaPosyandu;
 
     if (map['posyandu'] != null) {
@@ -97,22 +107,28 @@ class OrangTuaModel {
       namaPosyandu = map['namaPosyandu'] as String;
     }
     return OrangTuaModel(
-      id: map['id'] as int,
+      id: map['id'] != null ? map['id'] as int : null,
       noHp: map['noHp'] as String,
-      nama: map['nama'] != null ? map['nama'] as String : null,
+      nama: nama,
       nik: map['nik'] != null ? map['nik'] as String : null,
       jenisKelamin: jenisKelamin,
       alamat: map['alamat'] != null ? map['alamat'] as String : null,
       posyanduId: map['posyanduId'] != null ? map['posyanduId'] as int : null,
       namaPosyandu: namaPosyandu,
       createdAt: map['createdAt'] != null
-          ? DateTime.parse(map['createdAt'] as String)
+          ? map['createdAt'] is String
+                ? DateTime.parse(map['createdAt'] as String)
+                : DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int)
           : null,
       updatedAt: map['updatedAt'] != null
-          ? DateTime.parse(map['updatedAt'] as String)
+          ? map['updatedAt'] is String
+                ? DateTime.parse(map['updatedAt'] as String)
+                : DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int)
           : null,
       deletedAt: map['deletedAt'] != null
-          ? DateTime.parse(map['deletedAt'] as String)
+          ? map['deletedAt'] is String
+                ? DateTime.parse(map['deletedAt'] as String)
+                : DateTime.fromMillisecondsSinceEpoch(map['deletedAt'] as int)
           : null,
     );
   }

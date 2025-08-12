@@ -30,7 +30,7 @@ class PengukuranTable {
         $serverIdColumnName INTEGER UNIQUE,
         $anakIdColumnName INTEGER NOT NULL,
         $posyanduIdColumnName INTEGER NOT NULL,
-        $tanggalPengukuranColumnName TEXT NOT NULL,
+        $tanggalPengukuranColumnName INTEGER NOT NULL,
         $beratBadanColumnName REAL NOT NULL,
         $tinggiBadanColumnName REAL NOT NULL,
         $imtColumnName REAL NOT NULL,
@@ -44,9 +44,9 @@ class PengukuranTable {
         $statusPengukuranTrenColumnName TEXT,
         $rekomendasiOrtuColumnName TEXT,
         $rekomendasiKaderColumnName TEXT,
-        $createdAtColumnName TEXT NOT NULL,
-        $updatedAtColumnName TEXT NOT NULL,
-        $deletedAtColumnName TEXT,
+        $createdAtColumnName INTEGER NOT NULL,
+        $updatedAtColumnName INTEGER NOT NULL,
+        $deletedAtColumnName INTEGER,
         FOREIGN KEY ($anakIdColumnName) REFERENCES anak(serverId) ON DELETE CASCADE,
         FOREIGN KEY ($posyanduIdColumnName) REFERENCES posyandu(serverId)
         )
