@@ -60,7 +60,7 @@ class BabyDetailsCard extends ConsumerWidget {
                       ? switch (anak
                             .pengukuran!
                             .first
-                            .statusPengukuranPertumbuhan!) {
+                            .statusPengukuranPertumbuhan) {
                           StatusPengukuran.sehat =>
                             Palette.healthyBackgroundColor,
                           StatusPengukuran.kurangSehat =>

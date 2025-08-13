@@ -6,7 +6,7 @@ part of 'posyandu_viewmodel.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$posyanduViewModelHash() => r'3eaad912a565b3cae4bde732d73871a11f512079';
+String _$posyanduViewModelHash() => r'e2ba341d017df3b2adcbf3e7b7fd60e46607ad09';
 
 /// See also [PosyanduViewModel].
 @ProviderFor(PosyanduViewModel)

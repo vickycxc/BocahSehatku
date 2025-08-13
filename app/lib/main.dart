@@ -1,4 +1,5 @@
 import 'package:app/core/providers/pengguna_aktif_notifier.dart';
+import 'package:app/core/providers/shared_preferences_notifier.dart';
 import 'package:app/core/utils/size_config.dart';
 import 'package:app/core/theme/theme.dart';
 import 'package:app/features/auth/view/pages/onboarding_page.dart';
@@ -20,7 +21,9 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: binding);
   final container = ProviderContainer();
   await initializeDateFormatting('id_ID', null);
-  await container.read(authViewModelProvider.notifier).initSharedPreferences();
+  await container
+      .read(sharedPreferencesNotifierProvider.notifier)
+      .initSharedPreferences();
   await container.read(authViewModelProvider.notifier).ambilDataPengguna();
   final currentUser = container.read(penggunaAktifNotifierProvider);
   if (currentUser != null) {

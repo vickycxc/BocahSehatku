@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:app/core/model/user_model.dart';
+import 'package:app/core/providers/shared_preferences_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,25 +9,23 @@ part 'auth_local_repository.g.dart';
 
 @Riverpod(keepAlive: true)
 AuthLocalRepository authLocalRepository(Ref ref) {
-  return AuthLocalRepository();
+  final sharedPreferences = ref.watch(sharedPreferencesNotifierProvider)!;
+  return AuthLocalRepository(sharedPreferences);
 }
 
 class AuthLocalRepository {
-  late SharedPreferences _sharedPreferences;
-
-  Future<void> init() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
-  }
+  final SharedPreferences sharedPreferences;
+  AuthLocalRepository(this.sharedPreferences);
 
   void setUser(UserModel? user) {
     if (user != null) {
       final userJson = user.toJson();
-      _sharedPreferences.setString('user', userJson);
+      sharedPreferences.setString('user', userJson);
     }
   }
 
   UserModel? getUser() {
-    final userJson = _sharedPreferences.getString('user');
+    final userJson = sharedPreferences.getString('user');
     if (userJson != null) {
       return UserModel.fromJson(userJson);
     }
@@ -33,6 +33,6 @@ class AuthLocalRepository {
   }
 
   void removeUser() {
-    _sharedPreferences.remove('user');
+    sharedPreferences.remove('user');
   }
 }

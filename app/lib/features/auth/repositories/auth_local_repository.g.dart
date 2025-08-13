@@ -7,7 +7,7 @@ part of 'auth_local_repository.dart';
 // **************************************************************************
 
 String _$authLocalRepositoryHash() =>
-    r'4997658913f9b8ca4ef9f6396b78c449ec13991b';
+    r'5baa094ff31666d97b0b3107f7f5e0de42fd87ce';
 
 /// See also [authLocalRepository].
 @ProviderFor(authLocalRepository)
