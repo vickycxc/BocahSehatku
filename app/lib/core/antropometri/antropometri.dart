@@ -208,7 +208,7 @@ class Antropometri {
           spots: spots,
           isCurved: true,
           color: lineColor,
-          dotData: FlDotData(show: false),
+          dotData: const FlDotData(show: false),
           belowBarData: BarAreaData(show: true, color: backgroundColor),
           aboveBarData: (zScore == ZScore.plus3)
               ? BarAreaData(show: true, color: Palette.backgroundPrimaryColor)

@@ -3,30 +3,35 @@ import 'dart:convert';
 
 class NavigasiAuthModel {
   final String tujuan;
-  final String message;
+  final String pesan;
   final String? noHp;
   final String? posyandu;
 
   NavigasiAuthModel({
     required this.tujuan,
-    required this.message,
+    required this.pesan,
     this.noHp,
     this.posyandu,
   });
 
-  NavigasiAuthModel copyWith({String? tujuan, String? message, String? noHp}) {
+  NavigasiAuthModel copyWith({
+    String? tujuan,
+    String? pesan,
+    String? noHp,
+    String? posyandu,
+  }) {
     return NavigasiAuthModel(
       tujuan: tujuan ?? this.tujuan,
-      message: message ?? this.message,
+      pesan: pesan ?? this.pesan,
       noHp: noHp ?? this.noHp,
-      posyandu: posyandu ?? posyandu,
+      posyandu: posyandu ?? this.posyandu,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'tujuan': tujuan,
-      'message': message,
+      'pesan': pesan,
       'noHp': noHp,
       'posyandu': posyandu,
     };
@@ -35,7 +40,7 @@ class NavigasiAuthModel {
   factory NavigasiAuthModel.fromMap(Map<String, dynamic> map) {
     return NavigasiAuthModel(
       tujuan: map['tujuan'] as String,
-      message: map['message'] as String,
+      pesan: map['pesan'] as String,
       noHp: map['noHp'] != null ? map['noHp'] as String : null,
       posyandu: map['posyandu'] != null ? map['posyandu'] as String : null,
     );
@@ -47,20 +52,22 @@ class NavigasiAuthModel {
       NavigasiAuthModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() =>
-      'NavigasiAuthModel(tujuan: $tujuan, message: $message, noHp: $noHp, posyandu: $posyandu)';
+  String toString() {
+    return 'NavigasiAuthModel(tujuan: $tujuan, pesan: $pesan, noHp: $noHp, posyandu: $posyandu)';
+  }
 
   @override
   bool operator ==(covariant NavigasiAuthModel other) {
     if (identical(this, other)) return true;
 
     return other.tujuan == tujuan &&
-        other.message == message &&
+        other.pesan == pesan &&
         other.noHp == noHp &&
         other.posyandu == posyandu;
   }
 
   @override
-  int get hashCode =>
-      tujuan.hashCode ^ message.hashCode ^ noHp.hashCode ^ posyandu.hashCode;
+  int get hashCode {
+    return tujuan.hashCode ^ pesan.hashCode ^ noHp.hashCode ^ posyandu.hashCode;
+  }
 }

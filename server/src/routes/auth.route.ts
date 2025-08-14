@@ -8,8 +8,8 @@ import {
   ubahNoHp,
   checkAuth,
   ajukanUbahNoHp,
-  verifikasiAkun,
-  cekVerifikasiAkun,
+  // verifikasiAkun,
+  // cekVerifikasiAkun,
   verifikasiOtp,
   hapusAkun,
   batalkanPengajuanUbahNoHp,
@@ -26,8 +26,8 @@ router.post("/ubah-no-hp", protectRoute, ubahNoHp);
 router.post("/verifikasi-otp", verifikasiOtp);
 router.post("/ajukan-ubah-no-hp", ajukanUbahNoHp);
 router.delete("/batalkan-ubah-no-hp", batalkanPengajuanUbahNoHp);
-router.get("/cek-verifikasi-akun", protectRoute, cekVerifikasiAkun);
-router.put("/verifikasi-akun", protectRoute, verifikasiAkun);
+// router.get("/cek-verifikasi-akun", protectRoute, cekVerifikasiAkun);
+// router.put("/verifikasi-akun", protectRoute, verifikasiAkun);
 router.post("/masuk", masuk);
 router.post("/masuk-posyandu", masukPosyandu);
 router.get("/", protectRoute, checkAuth);

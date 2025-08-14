@@ -1,5 +1,6 @@
 import 'package:app/core/providers/pengajuan_otp_notifier.dart';
 import 'package:app/core/providers/pengajuan_verifikasi_notifier.dart';
+import 'package:app/core/utils/respons_error_api.dart';
 import 'package:app/features/auth/model/navigasi_auth_model.dart';
 import 'package:app/features/auth/model/pengajuan_otp_model.dart';
 import 'package:app/core/model/user_model.dart';
@@ -7,7 +8,6 @@ import 'package:app/core/providers/pengguna_aktif_notifier.dart';
 import 'package:app/core/model/orang_tua_model.dart';
 import 'package:app/features/auth/model/auth_response_model.dart';
 import 'package:app/features/auth/model/verifikasi_akun_model.dart';
-import 'package:app/features/auth/model/pengajuan_verifikasi_model.dart';
 import 'package:app/features/auth/repositories/auth_local_repository.dart';
 import 'package:app/features/auth/repositories/auth_remote_repository.dart';
 import 'package:fpdart/fpdart.dart';
@@ -63,21 +63,31 @@ class AuthViewModel extends _$AuthViewModel {
         );
       }
       state = AsyncData(
-        NavigasiAuthModel(tujuan: 'OTP_PAGE', noHp: noHp, message: res.message),
+        NavigasiAuthModel(
+          tujuan: 'OTP_PAGE',
+          noHp: noHp,
+          pesan: 'OTP berhasil Dikirim',
+        ),
       );
     } else {
       if (res.noHpBaru != null) {
         state = AsyncError(
           NavigasiAuthModel(
             tujuan: 'SUDAH_MENGAJUKAN',
-            message: res.message,
+            pesan: ResponsErrorApi.getKirimOtpError(
+              res.pesanError!,
+              res.waktuTungguOtp,
+            ),
             noHp: res.noHpBaru,
             posyandu: res.posyandu,
           ),
           StackTrace.current,
         );
       } else {
-        state = AsyncError(res.message, StackTrace.current);
+        state = AsyncError(
+          ResponsErrorApi.getKirimOtpError(res.pesanError!, res.waktuTungguOtp),
+          StackTrace.current,
+        );
       }
     }
   }
@@ -89,9 +99,16 @@ class AuthViewModel extends _$AuthViewModel {
       kodeOtp: kodeOtp,
     );
     if (res.token != null) {
-      _berhasilMasuk(res: res, tujuan: 'COMPLETE_PROFILE_PAGE');
+      _berhasilMasuk(
+        res: res,
+        tujuan: 'COMPLETE_PROFILE_PAGE',
+        pesan: 'Registrasi Berhasil, Silakan Melengkapi Profil Anda',
+      );
     } else {
-      state = AsyncError(res.message, StackTrace.current);
+      state = AsyncError(
+        ResponsErrorApi.getDaftarError(res.pesanError!),
+        StackTrace.current,
+      );
     }
   }
 
@@ -129,19 +146,26 @@ class AuthViewModel extends _$AuthViewModel {
       posyanduId: posyanduId,
     );
     if (res.userOrangTua != null) {
-      _berhasilPerbaruiProfil(res: res, tujuan: 'ORTU_PAGE');
+      _berhasilPerbaruiProfil(
+        res: res,
+        tujuan: 'ORTU_PAGE',
+        pesan: 'Profil Berhasil Diperbarui',
+      );
     } else {
       if (res.noHpBaru != null) {
         state = AsyncError(
           NavigasiAuthModel(
             tujuan: 'NIK_SUDAH_TERDAFTAR',
-            message: res.message,
+            pesan: ResponsErrorApi.getPerbaruiProfilError(res.pesanError!),
             noHp: res.noHpBaru,
           ),
           StackTrace.current,
         );
       } else {
-        state = AsyncError(res.message, StackTrace.current);
+        state = AsyncError(
+          ResponsErrorApi.getPerbaruiProfilError(res.pesanError!),
+          StackTrace.current,
+        );
       }
     }
   }
@@ -169,10 +193,16 @@ class AuthViewModel extends _$AuthViewModel {
       _penggunaAktifNotifier.hapusPenggunaAktif();
       _authLocalRepository.removeUser();
       state = AsyncData(
-        NavigasiAuthModel(tujuan: 'ONBOARDING_PAGE', message: res.message),
+        NavigasiAuthModel(
+          tujuan: 'ONBOARDING_PAGE',
+          pesan: 'Akun Berhasil Dihapus',
+        ),
       );
     } else {
-      state = AsyncError(res.message, StackTrace.current);
+      state = AsyncError(
+        ResponsErrorApi.getHapusAkunError(res.pesanError!),
+        StackTrace.current,
+      );
     }
   }
 
@@ -187,9 +217,16 @@ class AuthViewModel extends _$AuthViewModel {
     );
 
     if (res.userOrangTua != null) {
-      _berhasilPerbaruiProfil(res: res, tujuan: '');
+      _berhasilPerbaruiProfil(
+        res: res,
+        tujuan: '',
+        pesan: 'No. HP Berhasil Diperbarui',
+      );
     } else {
-      state = AsyncError(res.message, StackTrace.current);
+      state = AsyncError(
+        ResponsErrorApi.getUbahNoHpError(res.pesanError!),
+        StackTrace.current,
+      );
     }
   }
 
@@ -211,7 +248,7 @@ class AuthViewModel extends _$AuthViewModel {
       );
       state = AsyncData(
         NavigasiAuthModel(
-          message: res.message,
+          pesan: 'Verifikasi OTP Berhasil',
           tujuan: 'PILIH_POSYANDU',
           noHp: noHp,
         ),
@@ -220,7 +257,7 @@ class AuthViewModel extends _$AuthViewModel {
       state = AsyncError(
         NavigasiAuthModel(
           tujuan: 'SUDAH_MENGAJUKAN',
-          message: res.message,
+          pesan: ResponsErrorApi.getVerifikasiOtpError(res.pesanError!),
           noHp: res.noHpBaru,
           posyandu: res.posyandu,
         ),
@@ -253,13 +290,17 @@ class AuthViewModel extends _$AuthViewModel {
     if (res.sukses == true) {
       _pengajuanVerifikasiNotifier.hapusPengajuanVerifikasi();
       state = AsyncData(
-        NavigasiAuthModel(tujuan: 'ONBOARDING_PAGE', message: res.message),
+        NavigasiAuthModel(
+          tujuan: 'ONBOARDING_PAGE',
+          pesan:
+              'Pengajuan Ubah No. HP Berhasil Diajukan, Silakan Menuju Ke Posyandu Untuk Verifikasi',
+        ),
       );
     } else {
       state = AsyncError(
         NavigasiAuthModel(
           tujuan: 'SUDAH_MENGAJUKAN',
-          message: res.message,
+          pesan: ResponsErrorApi.getAjukanUbahNoHpError(res.pesanError!),
           noHp: res.noHpBaru,
           posyandu: res.posyandu,
         ),
@@ -284,48 +325,61 @@ class AuthViewModel extends _$AuthViewModel {
     if (res.sukses == true) {
       _pengajuanVerifikasiNotifier.hapusPengajuanVerifikasi();
       state = AsyncData(
-        NavigasiAuthModel(tujuan: 'ONBOARDING_PAGE', message: res.message),
+        NavigasiAuthModel(
+          tujuan: 'ONBOARDING_PAGE',
+          pesan: 'Pengajuan Ubah No. HP Berhasil Dibatalkan',
+        ),
       );
     } else {
-      state = AsyncError(res.message, StackTrace.current);
+      state = AsyncError(
+        ResponsErrorApi.getBatalkanPengajuanUbahNoHpError(res.pesanError!),
+        StackTrace.current,
+      );
     }
   }
 
-  Future<List<PengajuanVerifikasiModel>> cekVerifikasiAkun(String token) async {
-    state = const AsyncLoading();
-    final res = await _authRemoteRepository.cekVerifikasiAkun(token);
-    if (res.verifikasiAkun != null) {
-      state = AsyncData(NavigasiAuthModel(tujuan: '', message: res.message));
-      return res.verifikasiAkun!;
-    } else {
-      state = AsyncError(res.message, StackTrace.current);
-      return [];
-    }
-  }
+  // Future<List<PengajuanVerifikasiModel>> cekVerifikasiAkun(String token) async {
+  //   state = const AsyncLoading();
+  //   final res = await _authRemoteRepository.cekVerifikasiAkun(token);
+  //   if (res.verifikasiAkun != null) {
+  //     state = AsyncData(NavigasiAuthModel(tujuan: '', message: res.message));
+  //     return res.verifikasiAkun!;
+  //   } else {
+  //     state = AsyncError(res.message, StackTrace.current);
+  //     return [];
+  //   }
+  // }
 
-  Future<void> verifikasiAkun({
-    required String token,
-    required String nik,
-  }) async {
-    state = const AsyncLoading();
-    final res = await _authRemoteRepository.verifikasiAkun(
-      token: token,
-      nik: nik,
-    );
-    if (res.sukses == true) {
-      state = AsyncData(NavigasiAuthModel(tujuan: '', message: res.message));
-    } else {
-      state = AsyncError(res.message, StackTrace.current);
-    }
-  }
+  // Future<void> verifikasiAkun({
+  //   required String token,
+  //   required String nik,
+  // }) async {
+  //   state = const AsyncLoading();
+  //   final res = await _authRemoteRepository.verifikasiAkun(
+  //     token: token,
+  //     nik: nik,
+  //   );
+  //   if (res.sukses == true) {
+  //     state = AsyncData(NavigasiAuthModel(tujuan: '', message: res.message));
+  //   } else {
+  //     state = AsyncError(res.message, StackTrace.current);
+  //   }
+  // }
 
   Future<void> masuk({required String noHp, required String kodeOtp}) async {
     state = const AsyncLoading();
     final res = await _authRemoteRepository.masuk(noHp: noHp, kodeOtp: kodeOtp);
     if (res.token != null) {
-      _berhasilMasuk(res: res, tujuan: 'ORTU_PAGE');
+      _berhasilMasuk(
+        res: res,
+        tujuan: 'ORTU_PAGE',
+        pesan: 'Berhasil Masuk, Selamat Datang!',
+      );
     } else {
-      state = AsyncError(res.message, StackTrace.current);
+      state = AsyncError(
+        ResponsErrorApi.getMasukError(res.pesanError!),
+        StackTrace.current,
+      );
     }
   }
 
@@ -339,20 +393,28 @@ class AuthViewModel extends _$AuthViewModel {
       password: password,
     );
     if (res.token != null) {
-      _berhasilMasuk(res: res, tujuan: 'POSYANDU_PAGE');
+      _berhasilMasuk(
+        res: res,
+        tujuan: 'POSYANDU_PAGE',
+        pesan: 'Berhasil Masuk Ke Posyandu, Selamat Datang!',
+      );
     } else {
-      state = AsyncError(res.message, StackTrace.current);
+      state = AsyncError(
+        ResponsErrorApi.getMasukPosyanduError(res.pesanError!),
+        StackTrace.current,
+      );
     }
   }
 
-  void keluar() {
-    _authLocalRepository.removeUser();
-    _penggunaAktifNotifier.hapusPenggunaAktif();
-  }
+  // void keluar() {
+  //   _authLocalRepository.removeUser();
+  //   _penggunaAktifNotifier.hapusPenggunaAktif();
+  // }
 
   void _berhasilMasuk({
     required AuthResponseModel res,
     required String tujuan,
+    required String pesan,
   }) {
     final token = res.token!;
     final UserModel user = res.userOrangTua != null
@@ -361,18 +423,19 @@ class AuthViewModel extends _$AuthViewModel {
 
     _authLocalRepository.setUser(user);
     _penggunaAktifNotifier.aturPenggunaAktif(user);
-    state = AsyncData(NavigasiAuthModel(tujuan: tujuan, message: res.message));
+    state = AsyncData(NavigasiAuthModel(tujuan: tujuan, pesan: pesan));
   }
 
   void _berhasilPerbaruiProfil({
     required AuthResponseModel res,
     required String tujuan,
+    required String pesan,
   }) {
     final user = _penggunaAktifNotifier.state;
     final UserModel newUser = res.userOrangTua != null
         ? UserModel(token: user!.token, data: Left(res.userOrangTua!))
         : UserModel(token: user!.token, data: Right(res.userPosyandu!));
     _penggunaAktifNotifier.aturPenggunaAktif(newUser);
-    state = AsyncData(NavigasiAuthModel(tujuan: tujuan, message: res.message));
+    state = AsyncData(NavigasiAuthModel(tujuan: tujuan, pesan: pesan));
   }
 }

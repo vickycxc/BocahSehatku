@@ -4,7 +4,7 @@ import 'package:app/core/constants/database_constants/orang_tua_table.dart';
 import 'package:app/core/model/anak_model.dart';
 import 'package:app/core/model/orang_tua_model.dart';
 import 'package:app/core/model/pengukuran_model.dart';
-import 'package:app/core/providers/database_provider.dart';
+import 'package:app/core/providers/database_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sqflite/sqflite.dart';
@@ -13,18 +13,22 @@ part 'posyandu_local_repository.g.dart';
 
 @riverpod
 Future<PosyanduLocalRepository> posyanduLocalRepository(Ref ref) async {
-  final db = await ref.watch(databaseProvider.future);
-  return PosyanduLocalRepository(db);
+  final databaseNotifier = ref.watch(databaseNotifierProvider.notifier);
+  await databaseNotifier.initDatabase();
+  return PosyanduLocalRepository(databaseNotifier);
 }
 
 class PosyanduLocalRepository {
-  final Database database;
+  DatabaseNotifier databaseNotifier;
+  late Database _database;
 
-  PosyanduLocalRepository(this.database);
+  PosyanduLocalRepository(this.databaseNotifier) {
+    _database = databaseNotifier.database!;
+  }
 
   Future<void> tambahDataAnak(AnakModel anak) async {
     final newAnak = anak.copyWith(localId: null);
-    await database.insert(AnakTable.tableName, newAnak.toMap());
+    await _database.insert(AnakTable.tableName, newAnak.toMap());
   }
 
   Future<void> tambahDataPengukuran(PengukuranModel pengukuran) async {
@@ -34,7 +38,7 @@ class PosyanduLocalRepository {
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
-    await database.insert(PengukuranTable.tableName, newPengukuran.toMap());
+    await _database.insert(PengukuranTable.tableName, newPengukuran.toMap());
   }
 
   Future<List<PengukuranModel>> ambilDataPengukuranHariIni() async {
@@ -108,7 +112,7 @@ class PosyanduLocalRepository {
     //       DateTime.now().millisecondsSinceEpoch,
     // });
 
-    final data = await database.rawQuery('''
+    final data = await _database.rawQuery('''
        SELECT
         p.${PengukuranTable.anakIdColumnName},
         p.${PengukuranTable.tanggalPengukuranColumnName},
@@ -161,7 +165,7 @@ class PosyanduLocalRepository {
   }
 
   Future<void> perbaruiDataPengukuran(PengukuranModel pengukuran) async {
-    await database.update(
+    await _database.update(
       PengukuranTable.tableName,
       pengukuran.toMap(),
       where: '${PengukuranTable.localIdColumnName} = ?',
@@ -170,7 +174,7 @@ class PosyanduLocalRepository {
   }
 
   Future<void> hapusDataPengukuran(int localId) async {
-    await database.update(
+    await _database.update(
       PengukuranTable.tableName,
       {
         PengukuranTable.deletedAtColumnName:
@@ -179,5 +183,9 @@ class PosyanduLocalRepository {
       where: '${PengukuranTable.localIdColumnName} = ?',
       whereArgs: [localId],
     );
+  }
+
+  Future<void> hapusDatabase() async {
+    await databaseNotifier.deleteDatabase();
   }
 }

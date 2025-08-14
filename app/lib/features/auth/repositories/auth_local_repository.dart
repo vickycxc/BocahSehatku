@@ -24,6 +24,15 @@ class AuthLocalRepository {
     }
   }
 
+  void setSinkronisasiTerakhir(DateTime? sinkronisasiTerakhir) {
+    if (sinkronisasiTerakhir != null) {
+      sharedPreferences.setString(
+        'sinkronisasiTerakhir',
+        sinkronisasiTerakhir.toIso8601String(),
+      );
+    }
+  }
+
   UserModel? getUser() {
     final userJson = sharedPreferences.getString('user');
     if (userJson != null) {

@@ -35,7 +35,7 @@ class AuthRemoteRepository {
         ).copyWith(sukses: false);
       }
     } catch (error) {
-      return AuthResponseModel(message: error.toString(), sukses: false);
+      return AuthResponseModel(pesanError: error.toString(), sukses: false);
     }
   }
 
@@ -51,7 +51,7 @@ class AuthRemoteRepository {
       );
       return AuthResponseModel.fromJson(response.body);
     } catch (error) {
-      return AuthResponseModel(message: error.toString());
+      return AuthResponseModel(pesanError: error.toString());
     }
   }
 
@@ -79,7 +79,7 @@ class AuthRemoteRepository {
       );
       return AuthResponseModel.fromJson(response.body);
     } catch (error) {
-      return AuthResponseModel(message: error.toString());
+      return AuthResponseModel(pesanError: error.toString());
     }
   }
 
@@ -97,7 +97,7 @@ class AuthRemoteRepository {
         ).copyWith(sukses: false);
       }
     } catch (error) {
-      return AuthResponseModel(message: error.toString());
+      return AuthResponseModel(pesanError: error.toString());
     }
   }
 
@@ -113,7 +113,7 @@ class AuthRemoteRepository {
       );
       return AuthResponseModel.fromJson(response.body);
     } catch (error) {
-      return AuthResponseModel(message: error.toString());
+      return AuthResponseModel(pesanError: error.toString());
     }
   }
 
@@ -135,7 +135,7 @@ class AuthRemoteRepository {
         ).copyWith(sukses: false);
       }
     } catch (error) {
-      return AuthResponseModel(message: error.toString());
+      return AuthResponseModel(pesanError: error.toString());
     }
   }
 
@@ -164,7 +164,7 @@ class AuthRemoteRepository {
         ).copyWith(sukses: false);
       }
     } catch (error) {
-      return AuthResponseModel(message: error.toString());
+      return AuthResponseModel(pesanError: error.toString());
     }
   }
 
@@ -183,7 +183,7 @@ class AuthRemoteRepository {
         ).copyWith(sukses: false);
       }
     } catch (error) {
-      return AuthResponseModel(message: error.toString());
+      return AuthResponseModel(pesanError: error.toString());
     }
   }
 
@@ -195,7 +195,7 @@ class AuthRemoteRepository {
       );
       return AuthResponseModel.fromJson(response.body);
     } catch (error) {
-      return AuthResponseModel(message: error.toString());
+      return AuthResponseModel(pesanError: error.toString());
     }
   }
 
@@ -218,7 +218,7 @@ class AuthRemoteRepository {
         ).copyWith(sukses: false);
       }
     } catch (error) {
-      return AuthResponseModel(message: error.toString());
+      return AuthResponseModel(pesanError: error.toString());
     }
   }
 
@@ -234,7 +234,7 @@ class AuthRemoteRepository {
       );
       return AuthResponseModel.fromJson(response.body);
     } catch (error) {
-      return AuthResponseModel(message: error.toString());
+      return AuthResponseModel(pesanError: error.toString());
     }
   }
 
@@ -250,7 +250,7 @@ class AuthRemoteRepository {
       );
       return AuthResponseModel.fromJson(response.body);
     } catch (error) {
-      return AuthResponseModel(message: error.toString());
+      return AuthResponseModel(pesanError: error.toString());
     }
   }
 }

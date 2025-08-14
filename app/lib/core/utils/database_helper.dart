@@ -19,7 +19,6 @@ class DatabaseHelper {
   Future<Database> getDatabase() async {
     final databaseDirPath = await getDatabasesPath();
     final databasePath = join(databaseDirPath, 'bocahsehatku.db');
-    // deleteDatabase(databasePath);
     final database = await openDatabase(
       databasePath,
       version: 1,
@@ -38,5 +37,12 @@ class DatabaseHelper {
 
   Future<void> _onConfigure(Database db) async {
     await db.execute('PRAGMA foreign_keys = ON');
+  }
+
+  static Future<void> deleteCurrentDatabase() async {
+    final databaseDirPath = await getDatabasesPath();
+    final databasePath = join(databaseDirPath, 'bocahsehatku.db');
+    await deleteDatabase(databasePath);
+    _db = null;
   }
 }

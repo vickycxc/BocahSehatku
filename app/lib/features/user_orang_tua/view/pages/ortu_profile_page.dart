@@ -4,7 +4,6 @@ import 'package:app/core/widgets/profile_button.dart';
 import 'package:app/core/widgets/profile_page.dart';
 import 'package:app/features/auth/view/pages/edit_profile_page.dart';
 import 'package:app/features/auth/view/pages/onboarding_page.dart';
-import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:app/features/user_orang_tua/view/pages/edit_profil_anak_page.dart';
 import 'package:app/features/user_orang_tua/viewmodel/ortu_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +55,7 @@ class OrtuProfilePage extends ConsumerWidget {
             const SizedBox(height: 24),
             ProfileButton(
               onPressed: () {
-                ref.read(authViewModelProvider.notifier).keluar();
+                // ref.read(authViewModelProvider.notifier).keluar();
                 showSnackBar(context, 'Berhasil Keluar!');
                 Navigator.pushAndRemoveUntil(
                   context,

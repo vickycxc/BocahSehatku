@@ -1,30 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ortu_local_repository.dart';
+part of 'database_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authLocalRepositoryHash() =>
-    r'3e975113c435e423875ca0d02b123ecebbd37767';
+String _$databaseNotifierHash() => r'972d0af34268f7f186e98e011a60963d0d89f2a9';
 
-/// See also [authLocalRepository].
-@ProviderFor(authLocalRepository)
-final authLocalRepositoryProvider =
-    AutoDisposeFutureProvider<OrtuLocalRepository>.internal(
-      authLocalRepository,
-      name: r'authLocalRepositoryProvider',
+/// See also [DatabaseNotifier].
+@ProviderFor(DatabaseNotifier)
+final databaseNotifierProvider =
+    NotifierProvider<DatabaseNotifier, Database?>.internal(
+      DatabaseNotifier.new,
+      name: r'databaseNotifierProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
           ? null
-          : _$authLocalRepositoryHash,
+          : _$databaseNotifierHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef AuthLocalRepositoryRef =
-    AutoDisposeFutureProviderRef<OrtuLocalRepository>;
+typedef _$DatabaseNotifier = Notifier<Database?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

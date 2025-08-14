@@ -26,12 +26,12 @@ class OnboardingPage extends ConsumerWidget {
       next?.when(
         data: (nav) {
           print(
-            'Data received from onboarding page: ${nav.message}. tujuan: ${nav.tujuan}',
+            'Data received from onboarding page: ${nav.pesan}. tujuan: ${nav.tujuan}',
           );
           if (nav.tujuan != 'ONBOARDING_PAGE') {
             showSnackBar(
               context,
-              nav.message,
+              nav.pesan,
               isFloating: nav.tujuan == 'POSYANDU_PAGE',
             );
             switch (nav.tujuan) {
@@ -94,7 +94,7 @@ class OnboardingPage extends ConsumerWidget {
               context: context,
               type: QuickAlertType.success,
               title: 'Sukses!',
-              text: nav.message,
+              text: nav.pesan,
               confirmBtnText: 'Oke',
               confirmBtnColor: Palette.accentColor,
             );
@@ -106,7 +106,7 @@ class OnboardingPage extends ConsumerWidget {
               QuickAlert.show(
                 context: context,
                 type: QuickAlertType.confirm,
-                title: error.message,
+                title: error.pesan,
                 text:
                     'No. HP: ${error.noHp}\nPosyandu: ${error.posyandu}\nApakah Anda ingin membatalkan pengajuan sebelumnya?',
                 confirmBtnText: 'Ya',
@@ -125,7 +125,7 @@ class OnboardingPage extends ConsumerWidget {
                 customAsset: 'assets/info.gif',
               );
             } else {
-              showSnackBar(context, error.message);
+              showSnackBar(context, error.pesan);
             }
           } else {
             showSnackBar(context, error.toString());

@@ -3,7 +3,6 @@ import 'package:app/core/utils/utils.dart';
 import 'package:app/core/widgets/profile_button.dart';
 import 'package:app/core/widgets/profile_page.dart';
 import 'package:app/features/auth/view/pages/onboarding_page.dart';
-import 'package:app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:app/features/user_posyandu/view/pages/posyandu_verifikasi_akun_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -47,7 +46,7 @@ class PosyanduProfilePage extends ConsumerWidget {
             const SizedBox(height: 24),
             ProfileButton(
               onPressed: () {
-                ref.read(authViewModelProvider.notifier).keluar();
+                // ref.read(authViewModelProvider.notifier).keluar();
                 showSnackBar(context, 'Berhasil Keluar!');
                 Navigator.pushAndRemoveUntil(
                   context,

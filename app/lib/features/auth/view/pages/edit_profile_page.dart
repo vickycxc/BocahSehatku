@@ -50,9 +50,8 @@ class _CompleteProfilePageState extends ConsumerState<EditProfilePage> {
     ref.listen(authViewModelProvider, (_, next) {
       next?.when(
         data: (nav) {
-          print('Data received from complete profile page: ${nav.message}.');
-          if (nav.message.isNotEmpty) {
-            showSnackBar(context, nav.message);
+          if (nav.pesan.isNotEmpty) {
+            showSnackBar(context, nav.pesan);
           }
           switch (nav.tujuan) {
             case 'ORTU_PAGE':
@@ -70,12 +69,11 @@ class _CompleteProfilePageState extends ConsumerState<EditProfilePage> {
           }
         },
         error: (error, stackTrace) {
-          print("🚀 ~ _CompleteProfilePageState ~ ref.listen ~ error:$error");
           if (error is NavigasiAuthModel) {
             QuickAlert.show(
               context: context,
               type: QuickAlertType.confirm,
-              title: error.message,
+              title: error.pesan,
               text:
                   'No. HP Yang Tersambung Ke NIK: ${error.noHp}\nApakah Anda ingin keluar dan menghapus akun sekarang dengan No HP: $noHp?',
               confirmBtnText: 'Ya',
@@ -96,7 +94,7 @@ class _CompleteProfilePageState extends ConsumerState<EditProfilePage> {
     });
 
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         backgroundColor: Palette.backgroundPrimaryColor,
         content: Row(
           children: [
@@ -142,7 +140,7 @@ class _CompleteProfilePageState extends ConsumerState<EditProfilePage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 CustomField(
                   errorColor: Palette.backgroundPrimaryColor,
                   labelColor: Palette.backgroundPrimaryColor,
@@ -164,12 +162,12 @@ class _CompleteProfilePageState extends ConsumerState<EditProfilePage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Jenis Kelamin Orang Tua',
                       style: TextStyle(
                         fontSize: 16,
@@ -196,7 +194,7 @@ class _CompleteProfilePageState extends ConsumerState<EditProfilePage> {
                               Palette.backgroundPrimaryColor,
                             ),
                           ),
-                          Text(
+                          const Text(
                             'Laki-Laki',
                             style: TextStyle(
                               fontSize: 16,
@@ -214,7 +212,7 @@ class _CompleteProfilePageState extends ConsumerState<EditProfilePage> {
                               Palette.backgroundPrimaryColor,
                             ),
                           ),
-                          Text(
+                          const Text(
                             'Perempuan',
                             style: TextStyle(
                               fontSize: 16,
@@ -226,11 +224,11 @@ class _CompleteProfilePageState extends ConsumerState<EditProfilePage> {
                       ),
                     ),
                     if (radioError)
-                      Text(
+                      const Text(
                         'Jenis Kelamin Harus Diisi!',
                         style: TextStyle(color: Palette.backgroundPrimaryColor),
                       ),
-                    if (radioError) SizedBox(height: 16),
+                    if (radioError) const SizedBox(height: 16),
                   ],
                 ),
                 CustomField(
@@ -243,7 +241,7 @@ class _CompleteProfilePageState extends ConsumerState<EditProfilePage> {
                   controller: _alamatController,
                 ),
 
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 CustomDropdown(
                   errorColor: Palette.backgroundPrimaryColor,
                   value: selectedKecamatan, // Kontrol nilai yang dipilih
@@ -265,7 +263,7 @@ class _CompleteProfilePageState extends ConsumerState<EditProfilePage> {
                   label: 'Kecamatan',
                 ),
 
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 CustomDropdown(
                   errorColor: Palette.backgroundPrimaryColor,
                   value: selectedPuskesmas,
@@ -290,7 +288,7 @@ class _CompleteProfilePageState extends ConsumerState<EditProfilePage> {
                   label: 'Puskesmas',
                 ),
 
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 CustomDropdown(
                   errorColor: Palette.backgroundPrimaryColor,
                   value: selectedPosyandu,
@@ -314,14 +312,14 @@ class _CompleteProfilePageState extends ConsumerState<EditProfilePage> {
                       : [], // Return empty list jika selectedPuskesmas null
                   label: 'Posyandu',
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    fixedSize: Size(320, 55),
+                    fixedSize: const Size(320, 55),
                     backgroundColor: Palette.backgroundPrimaryColor,
                   ),
                   onPressed: () {},
-                  child: Text(
+                  child: const Text(
                     'Ubah No. HP',
                     style: TextStyle(
                       fontSize: 16,
@@ -330,7 +328,7 @@ class _CompleteProfilePageState extends ConsumerState<EditProfilePage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 CustomButton(
                   onPressed: () async {
                     if (_selectedGender == null) {
@@ -348,7 +346,7 @@ class _CompleteProfilePageState extends ConsumerState<EditProfilePage> {
                   },
                   text: 'Simpan',
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
               ],
             ),
           ),

@@ -53,9 +53,8 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
     ref.listen(authViewModelProvider, (_, next) {
       next?.when(
         data: (nav) {
-          print('Data received from complete profile page: ${nav.message}.');
-          if (nav.message.isNotEmpty) {
-            showSnackBar(context, nav.message);
+          if (nav.pesan.isNotEmpty) {
+            showSnackBar(context, nav.pesan);
           }
           switch (nav.tujuan) {
             case 'ORTU_PAGE':
@@ -78,7 +77,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
             QuickAlert.show(
               context: context,
               type: QuickAlertType.confirm,
-              title: error.message,
+              title: error.pesan,
               text:
                   'No. HP Yang Tersambung Ke NIK: ${error.noHp}\nApakah Anda ingin keluar dan menghapus akun sekarang dengan No HP: $noHp?',
               confirmBtnText: 'Ya',
@@ -108,7 +107,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SvgPicture.asset('assets/logo.svg', width: 100, height: 100),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               SizedBox(
                 width: 200,
                 child: Text(
@@ -145,7 +144,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         CustomField(
                           errorColor: Palette.backgroundPrimaryColor,
                           labelColor: Palette.backgroundPrimaryColor,
@@ -167,12 +166,12 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'Jenis Kelamin Orang Tua',
                               style: TextStyle(
                                 fontSize: 16,
@@ -200,7 +199,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                                           Palette.backgroundPrimaryColor,
                                         ),
                                   ),
-                                  Text(
+                                  const Text(
                                     'Laki-Laki',
                                     style: TextStyle(
                                       fontSize: 16,
@@ -219,7 +218,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                                           Palette.backgroundPrimaryColor,
                                         ),
                                   ),
-                                  Text(
+                                  const Text(
                                     'Perempuan',
                                     style: TextStyle(
                                       fontSize: 16,
@@ -231,13 +230,13 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                               ),
                             ),
                             if (radioError)
-                              Text(
+                              const Text(
                                 'Jenis Kelamin Harus Diisi!',
                                 style: TextStyle(
                                   color: Palette.backgroundPrimaryColor,
                                 ),
                               ),
-                            if (radioError) SizedBox(height: 16),
+                            if (radioError) const SizedBox(height: 16),
                           ],
                         ),
                         CustomField(
@@ -249,7 +248,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                           keyboardType: TextInputType.text,
                           controller: _alamatController,
                         ),
-                        SizedBox(height: 24),
+                        const SizedBox(height: 24),
                         CustomButton(
                           onPressed: () async {
                             if (_selectedGender == null) {
@@ -348,12 +347,12 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                               : [], // Return empty list jika selectedPuskesmas null
                           label: 'Posyandu',
                         ),
-                        SizedBox(height: 6),
+                        const SizedBox(height: 6),
                         OutlinedButton(
                           style: OutlinedButton.styleFrom(
                             backgroundColor: Palette.backgroundPrimaryColor,
                             fixedSize: const Size(320, 55),
-                            side: BorderSide(
+                            side: const BorderSide(
                               color: Palette.primaryColor,
                               width: 2.0,
                             ),
@@ -363,7 +362,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                               _currentPage = 0;
                             });
                           },
-                          child: Row(
+                          child: const Row(
                             spacing: 12,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
